@@ -157,7 +157,8 @@ type CredentialTemplateChecks struct {
 }
 
 type Logo struct {
-	URI             string `json:"uri"`
+	URI             string `json:"uri,omitempty"`
+	URL             string `json:"url,omitempty"`
 	AlternativeText string `json:"alt_text"`
 }
 

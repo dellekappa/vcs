@@ -35,19 +35,23 @@ const (
 // An object that describes specifics of the Credential that the Credential Issuer supports issuance of.
 type CredentialConfigurationsSupported struct {
 	// For mso_mdoc and vc+sd-jwt vc only. Object containing a list of name/value pairs, where each name identifies a claim about the subject offered in the Credential. The value can be another such object (nested data structures), or an array of such objects.
-	Claims *map[string]interface{} `json:"claims,omitempty"`
+	Claims map[string]interface{} `json:"claims,omitempty"`
 
 	// Object containing the detailed description of the credential type.
 	CredentialDefinition *externalRef0.CredentialDefinition `json:"credential_definition,omitempty"`
 
+	IsoCredentialSigningAlgorithmsSupported []int             `json:"credential_alg_values_supported,omitempty"`
+	IsoCredentialCurvesSupported            []int             `json:"credential_crv_values_supported,omitempty"`
+	Policy                                  *CredentialPolicy `json:"policy,omitempty"`
+
 	// Array of case sensitive strings that identify the algorithms that the Issuer uses to sign the issued Credential.
-	CredentialSigningAlgValuesSupported *[]string `json:"credential_signing_alg_values_supported,omitempty"`
+	CredentialSigningAlgValuesSupported []string `json:"credential_signing_alg_values_supported,omitempty"`
 
 	// Array of case sensitive strings that identify how the Credential is bound to the identifier of the End-User who possesses the Credential.
-	CryptographicBindingMethodsSupported *[]string `json:"cryptographic_binding_methods_supported,omitempty"`
+	CryptographicBindingMethodsSupported []string `json:"cryptographic_binding_methods_supported,omitempty"`
 
 	// An array of objects, where each object contains the display properties of the supported credential for a certain language.
-	Display *[]CredentialDisplay `json:"display,omitempty"`
+	Display []CredentialDisplay `json:"display,omitempty"`
 
 	// For mso_mdoc vc only. String identifying the Credential type, as defined in [ISO.18013-5].
 	Doctype *string `json:"doctype,omitempty"`
@@ -56,7 +60,7 @@ type CredentialConfigurationsSupported struct {
 	Format string `json:"format"`
 
 	// Array of the claim name values that lists them in the order they should be displayed by the Wallet.
-	Order *[]string `json:"order,omitempty"`
+	Order []string `json:"order,omitempty"`
 
 	// Object that describes specifics of the key proof(s) that the Credential Issuer supports.
 	ProofTypesSupported *CredentialConfigurationsSupported_ProofTypesSupported `json:"proof_types_supported,omitempty"`
@@ -71,6 +75,11 @@ type CredentialConfigurationsSupported struct {
 // Object that describes specifics of the key proof(s) that the Credential Issuer supports.
 type CredentialConfigurationsSupported_ProofTypesSupported struct {
 	AdditionalProperties map[string]ProofTypeSupported `json:"-"`
+}
+
+type CredentialPolicy struct {
+	OneTimeUse bool `json:"one_time_use"`
+	BatchSize  *int `json:"batch_size,omitempty"`
 }
 
 // CredentialDisplay defines model for CredentialDisplay.
@@ -359,6 +368,7 @@ type Logo struct {
 
 	// String value that contains a URI where the Wallet can obtain the logo of the Credential Issuer.
 	Uri string `json:"uri"`
+	Url string `json:"url"`
 }
 
 // Model with key value pairs containing parameters to build OIDC core authorization request (RFC6749) for Issuer OIDC provider to perform wallet user authorization grant.

@@ -92,9 +92,15 @@ type CredentialRequest struct {
 	// Object containing information for encrypting the Credential Response.
 	CredentialResponseEncryption *CredentialResponseEncryption `json:"credential_response_encryption,omitempty"`
 
+	// The type of credential (used in combination with format=mso_mdoc)
+	Doctype *string `json:"doctype,omitempty"`
+
 	// Format of the credential being issued.
 	Format *string   `json:"format,omitempty"`
 	Proof  *JWTProof `json:"proof,omitempty"`
+
+	// The type of credential (used in combination with format=vc+sd-jwt)
+	Vct *string `json:"vct,omitempty"`
 }
 
 // Model for OIDC Credential response.

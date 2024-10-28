@@ -32,10 +32,14 @@ func ValidateVCFormat(format VCFormat) (vcsverifiable.Format, error) {
 		return vcsverifiable.Jwt, nil
 	case JwtVcJsonLd:
 		return vcsverifiable.Jwt, nil
+	case VcSdJwt:
+		return vcsverifiable.Jwt, nil
 	case LdpVc:
 		return vcsverifiable.Ldp, nil
 	case CwtVcLd:
 		return vcsverifiable.Cwt, nil
+	case MsoMdoc:
+		return vcsverifiable.Jwt, nil
 	}
 
 	return "", fmt.Errorf("unsupported vc format %s, use one of next [%s, %s]", format, JwtVcJsonLd, LdpVc)

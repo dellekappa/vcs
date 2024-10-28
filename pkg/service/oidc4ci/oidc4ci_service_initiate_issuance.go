@@ -495,7 +495,19 @@ func findCredentialConfigurationID(
 	profile *profileapi.Issuer,
 ) (string, *profileapi.CredentialsConfigurationSupported, error) {
 	for k, v := range profile.CredentialMetaData.CredentialsConfigurationSupported {
-		if lo.Contains(v.CredentialDefinition.Type, credentialType) {
+		var supportedTypes []string
+		if v.Format == verifiable.VcSdJwt {
+			supportedTypes = []string{v.Vct}
+		} else if v.Format == verifiable.MsoMdoc {
+			supportedTypes = []string{k}
+		} else {
+			supportedTypes = v.CredentialDefinition.Type
+		}
+
+		if len(supportedTypes) == 0 {
+			continue
+		}
+		if lo.Contains(supportedTypes, credentialType) {
 			return k, v, nil
 		}
 	}

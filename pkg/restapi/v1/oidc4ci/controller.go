@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"io"
 	"net/http"
 	"net/url"
@@ -408,6 +409,11 @@ func (c *Controller) buildAuthCodeURLWithPAR(
 		"response_type": {"code"},
 		"client_id":     {cfg.ClientID},
 		"state":         {state},
+	}
+
+	// #PATCH Giulio
+	if cfg.ClientSecret != "" {
+		v.Set("client_secret", cfg.ClientSecret)
 	}
 
 	if cfg.RedirectURL != "" {
@@ -851,7 +857,11 @@ func (c *Controller) OidcCredential(e echo.Context) error { //nolint:funlen
 
 	var credentialTypes []string
 
-	if credentialReq.CredentialDefinition != nil {
+	if lo.FromPtr(credentialReq.Format) == string(vcsverifiable.VcSdJwt) {
+		credentialTypes = []string{lo.FromPtr(credentialReq.Vct)}
+	} else if lo.FromPtr(credentialReq.Format) == string(vcsverifiable.MsoMdoc) {
+		credentialTypes = []string{lo.FromPtr(credentialReq.Doctype)}
+	} else if credentialReq.CredentialDefinition != nil {
 		credentialTypes = credentialReq.CredentialDefinition.Type
 	}
 

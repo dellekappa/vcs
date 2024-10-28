@@ -223,7 +223,7 @@ func createStore(typ, url, prefix string) (kmsapi.Store, error) {
 	case strings.EqualFold(typ, storageTypeMemOption):
 		return arieskms.NewAriesProviderWrapper(mem.NewProvider())
 	case strings.EqualFold(typ, storageTypeMongoDBOption):
-		mongoClient, err := mongodb.New(url, prefix)
+		mongoClient, err := mongodb.New(url, fmt.Sprintf("%s%s", prefix, "kms_db"))
 		if err != nil {
 			return nil, err
 		}

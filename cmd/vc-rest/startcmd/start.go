@@ -702,6 +702,7 @@ func buildEchoHandler(
 	)
 
 	ackService := oidc4ci.NewAckService(&oidc4ci.AckServiceConfig{
+		Enabled:    ackStore != nil,
 		EventSvc:   eventSvc,
 		EventTopic: conf.StartupParameters.issuerEventTopic,
 		AckStore:   ackStore,

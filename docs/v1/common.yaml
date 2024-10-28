@@ -53,6 +53,8 @@ components:
         - cwt_vc-ld
         - jwt_vc_json
         - ldp_vc
+        - vc+sd-jwt
+        - mso_mdoc
       description: Supported VC formats.
     VPFormat:
       title: VPFormat

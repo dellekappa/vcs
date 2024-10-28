@@ -105,22 +105,22 @@ func (s *Service) getOpenIDIssuerConfig(issuerProfile *profileapi.Issuer) *issue
 
 	issuerURL, _ := url.JoinPath(s.externalHostURL, "issuer", issuerProfile.ID, issuerProfile.Version)
 
-	credentialIssuerMetadataDisplay := s.buildCredentialIssuerMetadataDisplay(
-		issuerProfile.Name,
-		issuerProfile.URL,
-		issuerProfile.CredentialMetaData.Display,
-	)
+	//credentialIssuerMetadataDisplay := s.buildCredentialIssuerMetadataDisplay(
+	//	issuerProfile.Name,
+	//	issuerProfile.URL,
+	//	issuerProfile.CredentialMetaData.Display,
+	//)
 
 	final := &issuer.WellKnownOpenIDIssuerConfiguration{
-		CredentialIssuer:                  &issuerURL,
-		AuthorizationEndpoint:             lo.ToPtr(fmt.Sprintf("%soidc/authorize", host)),
-		CredentialEndpoint:                lo.ToPtr(fmt.Sprintf("%soidc/credential", host)),
-		BatchCredentialEndpoint:           lo.ToPtr(fmt.Sprintf("%soidc/batch_credential", host)),
-		DeferredCredentialEndpoint:        nil,
-		CredentialResponseEncryption:      nil,
-		CredentialIdentifiersSupported:    nil,
-		SignedMetadata:                    nil,
-		Display:                           lo.ToPtr(credentialIssuerMetadataDisplay),
+		CredentialIssuer:               &issuerURL,
+		AuthorizationEndpoint:          lo.ToPtr(fmt.Sprintf("%soidc/authorize", host)),
+		CredentialEndpoint:             lo.ToPtr(fmt.Sprintf("%soidc/credential", host)),
+		BatchCredentialEndpoint:        lo.ToPtr(fmt.Sprintf("%soidc/batch_credential", host)),
+		DeferredCredentialEndpoint:     lo.ToPtr(fmt.Sprintf("%soidc/deferred_credential", host)),
+		CredentialResponseEncryption:   nil,
+		CredentialIdentifiersSupported: nil,
+		SignedMetadata:                 nil,
+		//Display:                           lo.ToPtr(credentialIssuerMetadataDisplay),
 		CredentialConfigurationsSupported: credentialsConfigurationSupported,
 
 		NotificationEndpoint:   lo.ToPtr(fmt.Sprintf("%soidc/notification", host)),
@@ -233,7 +233,8 @@ func (s *Service) buildCredentialConfigurationsSupported(
 
 		if issuerProfile.VCConfig != nil {
 			cryptographicBindingMethodsSupported = []string{string(issuerProfile.VCConfig.DIDMethod)}
-			signingAlgValuesSupported = []string{string(issuerProfile.VCConfig.KeyType)}
+			signingAlgValuesSupported = []string{string(issuerProfile.VCConfig.SigningAlgorithm)}
+			//signingAlgValuesSupported = []string{string(issuerProfile.VCConfig.KeyType)}
 		}
 
 		display := s.buildCredentialConfigurationsSupportedDisplay(credentialSupported.Display)
@@ -241,25 +242,41 @@ func (s *Service) buildCredentialConfigurationsSupported(
 
 		proofTypeSupported := &issuer.CredentialConfigurationsSupported_ProofTypesSupported{
 			AdditionalProperties: map[string]issuer.ProofTypeSupported{
+				"cwt": {
+					ProofSigningAlgValuesSupported: []string{string(issuerProfile.VCConfig.SigningAlgorithm)},
+					//ProofSigningAlgValuesSupported: []string{string(issuerProfile.VCConfig.KeyType)},
+				},
 				"jwt": {
-					ProofSigningAlgValuesSupported: []string{string(issuerProfile.VCConfig.KeyType)},
+					ProofSigningAlgValuesSupported: []string{string(issuerProfile.VCConfig.SigningAlgorithm)},
+					//ProofSigningAlgValuesSupported: []string{string(issuerProfile.VCConfig.KeyType)},
 				},
 			},
 		}
 
-		credentialsConfigurationSupported.Set(credentialConfigurationID, issuer.CredentialConfigurationsSupported{
-			Claims:                               lo.ToPtr(credentialSupported.Claims),
+		c := issuer.CredentialConfigurationsSupported{
+			Claims:                               credentialSupported.Claims,
 			CredentialDefinition:                 credentialDefinition,
-			CryptographicBindingMethodsSupported: lo.ToPtr(cryptographicBindingMethodsSupported),
-			CredentialSigningAlgValuesSupported:  lo.ToPtr(signingAlgValuesSupported),
-			Display:                              lo.ToPtr(display),
-			Doctype:                              lo.ToPtr(credentialSupported.Doctype),
+			CryptographicBindingMethodsSupported: cryptographicBindingMethodsSupported,
+			CredentialSigningAlgValuesSupported:  signingAlgValuesSupported,
+			Display:                              display,
+			Doctype:                              lo.EmptyableToPtr(credentialSupported.Doctype),
 			Format:                               string(credentialSupported.Format),
-			Order:                                lo.ToPtr(credentialSupported.Order),
+			Order:                                credentialSupported.Order,
 			ProofTypesSupported:                  proofTypeSupported,
-			Scope:                                lo.ToPtr(credentialSupported.Scope),
-			Vct:                                  lo.ToPtr(credentialSupported.Vct),
-		})
+			Scope:                                lo.EmptyableToPtr(credentialSupported.Scope),
+			Vct:                                  lo.EmptyableToPtr(credentialSupported.Vct),
+		}
+
+		if c.Format == "mso_mdoc" {
+			c.IsoCredentialSigningAlgorithmsSupported = []int{-7}
+			c.IsoCredentialCurvesSupported = []int{1}
+			c.Policy = &issuer.CredentialPolicy{
+				OneTimeUse: true,
+				BatchSize:  lo.ToPtr(50),
+			}
+		}
+
+		credentialsConfigurationSupported.Set(credentialConfigurationID, c)
 	}
 
 	return credentialsConfigurationSupported
@@ -268,6 +285,9 @@ func (s *Service) buildCredentialConfigurationsSupported(
 func (s *Service) buildCredentialDefinition(
 	issuerCredentialDefinition *profileapi.CredentialDefinition,
 ) *common.CredentialDefinition {
+	if issuerCredentialDefinition == nil {
+		return nil
+	}
 	credentialSubject := make(map[string]interface{}, len(issuerCredentialDefinition.CredentialSubject))
 
 	for k, v := range issuerCredentialDefinition.CredentialSubject {
@@ -292,16 +312,17 @@ func (s *Service) buildCredentialConfigurationsSupportedDisplay(
 			logo = &issuer.Logo{
 				AltText: lo.ToPtr(display.Logo.AlternativeText),
 				Uri:     display.Logo.URI,
+				Url:     display.Logo.URL,
 			}
 		}
 
 		credentialDisplay := issuer.CredentialDisplay{
-			BackgroundColor: lo.ToPtr(display.BackgroundColor),
+			BackgroundColor: lo.EmptyableToPtr(display.BackgroundColor),
 			Locale:          lo.ToPtr(display.Locale),
 			Logo:            logo,
 			Name:            lo.ToPtr(display.Name),
-			TextColor:       lo.ToPtr(display.TextColor),
-			Url:             lo.ToPtr(display.URL),
+			TextColor:       lo.EmptyableToPtr(display.TextColor),
+			Url:             lo.EmptyableToPtr(display.URL),
 		}
 
 		credentialConfigurationsSupportedDisplay = append(credentialConfigurationsSupportedDisplay, credentialDisplay)

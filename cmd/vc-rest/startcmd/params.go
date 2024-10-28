@@ -69,7 +69,7 @@ const (
 		"include the mongodb://mongodb.example.com:27017. " +
 		commonEnvVarUsageText + databaseURLEnvKey
 
-	kmsSecretsDatabasePrefixFlagName  = "default=kms-secrets-database-prefix"         //nolint: gosec
+	kmsSecretsDatabasePrefixFlagName  = "default-kms-secrets-database-prefix"         //nolint: gosec
 	kmsSecretsDatabasePrefixEnvKey    = "VC_REST_DEFAULT_KMS_SECRETS_DATABASE_PREFIX" //nolint: gosec
 	kmsSecretsDatabasePrefixFlagUsage = "An optional prefix to be used when creating and retrieving " +
 		"the underlying KMS secrets database. " + commonEnvVarUsageText + kmsSecretsDatabasePrefixEnvKey

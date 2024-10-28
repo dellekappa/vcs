@@ -2243,6 +2243,12 @@ components:
         format:
           type: string
           description: Format of the credential being issued.
+        vct:
+          type: string
+          description: The type of credential (used in combination with format=vc+sd-jwt)
+        doctype:
+          type: string
+          description: The type of credential (used in combination with format=mso_mdoc)
         credential_definition:
           $ref: './common.yaml#/components/schemas/CredentialDefinition'
         credential_identifier:

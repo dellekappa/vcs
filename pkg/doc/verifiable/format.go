@@ -34,6 +34,8 @@ const (
 	CwtVcLD     OIDCFormat = "cwt_vc-ld"
 	JwtVCJson   OIDCFormat = "jwt_vc_json"
 	LdpVC       OIDCFormat = "ldp_vc"
+	VcSdJwt     OIDCFormat = "vc+sd-jwt"
+	MsoMdoc     OIDCFormat = "mso_mdoc"
 )
 
 func ValidateFormat(data interface{}, formats []Format) ([]byte, error) {

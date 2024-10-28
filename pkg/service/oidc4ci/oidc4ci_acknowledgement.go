@@ -25,6 +25,7 @@ type AckService struct {
 var ErrAckExpired = errors.New("expired_ack_id")
 
 type AckServiceConfig struct {
+	Enabled    bool
 	AckStore   ackStore
 	EventSvc   eventService
 	EventTopic string
@@ -44,7 +45,7 @@ func (s *AckService) CreateAck(
 	ctx context.Context,
 	ack *Ack,
 ) (*string, error) {
-	if s.cfg.AckStore == nil {
+	if !s.cfg.Enabled || s.cfg.AckStore == nil {
 		return nil, nil //nolint:nilnil
 	}
 

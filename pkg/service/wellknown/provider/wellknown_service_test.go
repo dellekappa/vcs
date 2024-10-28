@@ -216,7 +216,7 @@ func checkWellKnownOpenIDIssuerConfiguration(
 			"org.iso.18013.5.1.aamva": map[string]interface{}{
 				"organ_donor": map[string]interface{}{},
 			},
-		}, lo.FromPtr(credentialConfigurationSupported.Claims))
+		}, credentialConfigurationSupported.Claims)
 
 		definition := credentialConfigurationSupported.CredentialDefinition
 
@@ -228,10 +228,10 @@ func checkWellKnownOpenIDIssuerConfiguration(
 		assert.Equal(t, 7, len(lo.FromPtr(definition.CredentialSubject)))
 		assert.Equal(t, []string{"https://example.com/context/1"}, lo.FromPtr(definition.Context))
 
-		assert.Equal(t, []string{"orb"}, lo.FromPtr(credentialConfigurationSupported.CryptographicBindingMethodsSupported))
-		assert.Equal(t, []string{"ECDSASecp256k1DER"}, lo.FromPtr(credentialConfigurationSupported.CredentialSigningAlgValuesSupported))
+		assert.Equal(t, []string{"orb"}, credentialConfigurationSupported.CryptographicBindingMethodsSupported)
+		assert.Equal(t, []string{"ECDSASecp256k1DER"}, credentialConfigurationSupported.CredentialSigningAlgValuesSupported)
 
-		credentialConfigurationSupportedDisplay := lo.FromPtr(credentialConfigurationSupported.Display)
+		credentialConfigurationSupportedDisplay := credentialConfigurationSupported.Display
 		assert.Equal(t, 1, len(credentialConfigurationSupportedDisplay))
 		assert.Equal(t, "#12107c", lo.FromPtr(credentialConfigurationSupportedDisplay[0].BackgroundColor))
 		assert.Equal(t, "en-US", lo.FromPtr(credentialConfigurationSupportedDisplay[0].Locale))
@@ -245,7 +245,7 @@ func checkWellKnownOpenIDIssuerConfiguration(
 
 		assert.Equal(t, "doctype1", lo.FromPtr(credentialConfigurationSupported.Doctype))
 		assert.Equal(t, "ldp_vc", credentialConfigurationSupported.Format)
-		assert.Equal(t, []string{"claimName1", "claimName2", "claimName3"}, lo.FromPtr(credentialConfigurationSupported.Order))
+		assert.Equal(t, []string{"claimName1", "claimName2", "claimName3"}, credentialConfigurationSupported.Order)
 
 		expectedProofTypeSupported := issuer.CredentialConfigurationsSupported_ProofTypesSupported{
 			AdditionalProperties: map[string]issuer.ProofTypeSupported{
