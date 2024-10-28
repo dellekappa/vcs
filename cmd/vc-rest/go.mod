@@ -282,6 +282,7 @@ require (
 )
 
 replace (
+	github.com/trustbloc/kms-go => ../../../forks/kms-go
 	github.com/trustbloc/vcs => ../..
 	github.com/trustbloc/vcs/component/credentialstatus => ../../component/credentialstatus
 	github.com/trustbloc/vcs/component/echo => ../../component/echo

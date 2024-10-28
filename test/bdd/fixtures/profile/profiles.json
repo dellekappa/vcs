@@ -25,9 +25,6 @@
           }
         },
         "oidcConfig": {
-          "client_id": "vcs-issuer",
-          "client_secret_handle": "abc15ruTfv7OdhYj8uBkJ1R7jgioY54T",
-          "issuer_well_known": "https://keycloak.k3d.test/realms/vcs/.well-known/openid-configuration",
           "scopes_supported": [
             "openid",
             "profile"
