@@ -81,6 +81,33 @@ paths:
       description: Returns openid-config.
       tags:
         - issuer
+  '/oidc/idp/{profileID}/{profileVersion}/.well-known/openid-configuration':
+    parameters:
+      - schema:
+          type: string
+        name: profileID
+        in: path
+        required: true
+        description: Profile ID
+      - schema:
+          type: string
+        name: profileVersion
+        in: path
+        required: true
+        description: Profile Version
+    get:
+      summary: Request IDP OIDC Configuration.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WellKnownOpenIDConfiguration'
+      operationId: openid-config
+      description: Returns openid-config.
+      tags:
+        - issuer
   '/issuer/profiles/{profileID}/issued-credentials':
     parameters:
       - schema:
@@ -1033,6 +1060,100 @@ components:
       required:
         - status
       description: Response model for health check status.
+    WellKnownOpenIDConfiguration:
+      title: WellKnownOpenIDConfiguration response
+      x-tags:
+        - issuer
+      type: object
+      description: WellKnownOpenIDConfiguration represents the OIDC Configuration response for cases when VCS serves as IDP.
+      properties:
+        authorization_endpoint:
+          type: string
+          description: URL of the OP's OAuth 2.0 Authorization Endpoint.
+        backchannel_logout_session_required:
+          type: boolean
+        backchannel_logout_supported:
+          type: boolean
+        claims_parameter_supported:
+          type: boolean
+        code_challenge_methods_supported:
+          type: array
+          items:
+            type: string
+        credential_endpoint:
+          type: string
+          description: 'URL of the Credential Issuer''s Credential Endpoint. This URL MUST use the https scheme and MAY contain port, path and query parameter components.'
+        end_session_endpoint:
+          type: string
+        frontchannel_logout_session_required:
+          type: boolean
+        frontchannel_logout_supported:
+          type: boolean
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+          description: JSON array containing a list of the OAuth 2.0 Grant Type values that this OP supports.
+        id_token_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        introspection_endpoint:
+          type: string
+        issuer:
+          type: string
+          description: The OIDC Issuer's identifier.
+        jwks_uri:
+          type: string
+          description: The OIDC Issuer's jwks.
+        pushed_authorization_request_endpoint:
+          type: string
+        registration_endpoint:
+          type: string
+          description: URL of the OP's Dynamic Client Registration Endpoint.
+        request_object_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        request_parameter_supported:
+          type: boolean
+        request_uri_parameter_supported:
+          type: boolean
+        require_request_uri_registration:
+          type: boolean
+        response_modes_supported:
+          type: array
+          items:
+            type: string
+        response_types_supported:
+          type: array
+          description: JSON array containing a list of the OAuth 2.0 response_type values that this OP supports.
+          items:
+            type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+          description: 'JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that this server supports.'
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        token_endpoint:
+          type: string
+          description: URL of the OP's OAuth 2.0 Token Endpoint.
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+          description: JSON array containing a list of client authentication methods supported by this token endpoint. Default is "none".
+        userinfo_endpoint:
+          type: string
+          description: URL of the OP's OAuth 2.0 User Info Endpoint.
+        userinfo_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
     WellKnownOpenIDIssuerConfiguration:
       title: WellKnownOpenIDIssuerConfiguration response
       x-tags:

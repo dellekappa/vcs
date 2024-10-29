@@ -1,3 +1,7 @@
+#Copyright SecureKey Technologies Inc. All Rights Reserved.
+#
+#SPDX-License-Identifier: Apache-2.0
+
 if [ $# -eq 0 ]
   then
     echo "No arguments supplied"

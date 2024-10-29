@@ -72,6 +72,7 @@ type vcStatusManager interface {
 
 type openidCredentialIssuerConfigProvider interface {
 	GetOpenIDCredentialIssuerConfig(issuerProfile *profileapi.Issuer) (*WellKnownOpenIDIssuerConfiguration, string, error)
+	GetOpenIDConfig(issuerProfile *profileapi.Issuer) (*WellKnownOpenIDConfiguration, error)
 }
 
 type credentialIssuanceHistoryStore interface {
@@ -1304,12 +1305,29 @@ func (c *Controller) OpenidCredentialIssuerConfig(ctx echo.Context, profileID, p
 	}
 
 	return util.WriteOutput(ctx)(config, nil)
+
 }
 
 // OpenidCredentialIssuerConfigV2 request VCS IDP OIDC Configuration.
 // GET /oidc/idp/{profileID}/{profileVersion}/.well-known/openid-credential-issuer.
 func (c *Controller) OpenidCredentialIssuerConfigV2(ctx echo.Context, profileID, profileVersion string) error {
 	return c.OpenidCredentialIssuerConfig(ctx, profileID, profileVersion)
+}
+
+// OpenidConfig request IDP OIDC Configuration.
+// GET /issuer/{profileID}/{profileVersion}/.well-known/openid-configuration.
+func (c *Controller) OpenidConfig(ctx echo.Context, profileID, profileVersion string) error {
+	issuerProfile, err := c.profileSvc.GetProfile(profileID, profileVersion)
+	if err != nil {
+		return err
+	}
+
+	config, err := c.openidIssuerConfigProvider.GetOpenIDConfig(issuerProfile)
+	if err != nil {
+		return err
+	}
+
+	return util.WriteOutput(ctx)(config, nil)
 }
 
 func (c *Controller) sendFailedEvent(ctx context.Context, orgID, profileID, profileVersion string, e error) {

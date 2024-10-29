@@ -35,23 +35,19 @@ const (
 // An object that describes specifics of the Credential that the Credential Issuer supports issuance of.
 type CredentialConfigurationsSupported struct {
 	// For mso_mdoc and vc+sd-jwt vc only. Object containing a list of name/value pairs, where each name identifies a claim about the subject offered in the Credential. The value can be another such object (nested data structures), or an array of such objects.
-	Claims map[string]interface{} `json:"claims,omitempty"`
+	Claims *map[string]interface{} `json:"claims,omitempty"`
 
 	// Object containing the detailed description of the credential type.
 	CredentialDefinition *externalRef0.CredentialDefinition `json:"credential_definition,omitempty"`
 
-	IsoCredentialSigningAlgorithmsSupported []int             `json:"credential_alg_values_supported,omitempty"`
-	IsoCredentialCurvesSupported            []int             `json:"credential_crv_values_supported,omitempty"`
-	Policy                                  *CredentialPolicy `json:"policy,omitempty"`
-
 	// Array of case sensitive strings that identify the algorithms that the Issuer uses to sign the issued Credential.
-	CredentialSigningAlgValuesSupported []string `json:"credential_signing_alg_values_supported,omitempty"`
+	CredentialSigningAlgValuesSupported *[]string `json:"credential_signing_alg_values_supported,omitempty"`
 
 	// Array of case sensitive strings that identify how the Credential is bound to the identifier of the End-User who possesses the Credential.
-	CryptographicBindingMethodsSupported []string `json:"cryptographic_binding_methods_supported,omitempty"`
+	CryptographicBindingMethodsSupported *[]string `json:"cryptographic_binding_methods_supported,omitempty"`
 
 	// An array of objects, where each object contains the display properties of the supported credential for a certain language.
-	Display []CredentialDisplay `json:"display,omitempty"`
+	Display *[]CredentialDisplay `json:"display,omitempty"`
 
 	// For mso_mdoc vc only. String identifying the Credential type, as defined in [ISO.18013-5].
 	Doctype *string `json:"doctype,omitempty"`
@@ -60,7 +56,7 @@ type CredentialConfigurationsSupported struct {
 	Format string `json:"format"`
 
 	// Array of the claim name values that lists them in the order they should be displayed by the Wallet.
-	Order []string `json:"order,omitempty"`
+	Order *[]string `json:"order,omitempty"`
 
 	// Object that describes specifics of the key proof(s) that the Credential Issuer supports.
 	ProofTypesSupported *CredentialConfigurationsSupported_ProofTypesSupported `json:"proof_types_supported,omitempty"`
@@ -75,11 +71,6 @@ type CredentialConfigurationsSupported struct {
 // Object that describes specifics of the key proof(s) that the Credential Issuer supports.
 type CredentialConfigurationsSupported_ProofTypesSupported struct {
 	AdditionalProperties map[string]ProofTypeSupported `json:"-"`
-}
-
-type CredentialPolicy struct {
-	OneTimeUse bool `json:"one_time_use"`
-	BatchSize  *int `json:"batch_size,omitempty"`
 }
 
 // CredentialDisplay defines model for CredentialDisplay.
@@ -368,7 +359,6 @@ type Logo struct {
 
 	// String value that contains a URI where the Wallet can obtain the logo of the Credential Issuer.
 	Uri string `json:"uri"`
-	Url string `json:"url"`
 }
 
 // Model with key value pairs containing parameters to build OIDC core authorization request (RFC6749) for Issuer OIDC provider to perform wallet user authorization grant.
@@ -573,6 +563,59 @@ type ValidatePreAuthorizedCodeResponse struct {
 
 	// transaction id
 	TxId string `json:"tx_id"`
+}
+
+// WellKnownOpenIDConfiguration represents the OIDC Configuration response for cases when VCS serves as IDP.
+type WellKnownOpenIDConfiguration struct {
+	// URL of the OP's OAuth 2.0 Authorization Endpoint.
+	AuthorizationEndpoint            *string   `json:"authorization_endpoint,omitempty"`
+	BackchannelLogoutSessionRequired *bool     `json:"backchannel_logout_session_required,omitempty"`
+	BackchannelLogoutSupported       *bool     `json:"backchannel_logout_supported,omitempty"`
+	ClaimsParameterSupported         *bool     `json:"claims_parameter_supported,omitempty"`
+	CodeChallengeMethodsSupported    *[]string `json:"code_challenge_methods_supported,omitempty"`
+
+	// URL of the Credential Issuer's Credential Endpoint. This URL MUST use the https scheme and MAY contain port, path and query parameter components.
+	CredentialEndpoint                *string `json:"credential_endpoint,omitempty"`
+	EndSessionEndpoint                *string `json:"end_session_endpoint,omitempty"`
+	FrontchannelLogoutSessionRequired *bool   `json:"frontchannel_logout_session_required,omitempty"`
+	FrontchannelLogoutSupported       *bool   `json:"frontchannel_logout_supported,omitempty"`
+
+	// JSON array containing a list of the OAuth 2.0 Grant Type values that this OP supports.
+	GrantTypesSupported              *[]string `json:"grant_types_supported,omitempty"`
+	IdTokenSigningAlgValuesSupported *[]string `json:"id_token_signing_alg_values_supported,omitempty"`
+	IntrospectionEndpoint            *string   `json:"introspection_endpoint,omitempty"`
+
+	// The OIDC Issuer's identifier.
+	Issuer *string `json:"issuer,omitempty"`
+
+	// The OIDC Issuer's jwks.
+	JwksUri                            *string `json:"jwks_uri,omitempty"`
+	PushedAuthorizationRequestEndpoint *string `json:"pushed_authorization_request_endpoint,omitempty"`
+
+	// URL of the OP's Dynamic Client Registration Endpoint.
+	RegistrationEndpoint                   *string   `json:"registration_endpoint,omitempty"`
+	RequestObjectSigningAlgValuesSupported *[]string `json:"request_object_signing_alg_values_supported,omitempty"`
+	RequestParameterSupported              *bool     `json:"request_parameter_supported,omitempty"`
+	RequestUriParameterSupported           *bool     `json:"request_uri_parameter_supported,omitempty"`
+	RequireRequestUriRegistration          *bool     `json:"require_request_uri_registration,omitempty"`
+	ResponseModesSupported                 *[]string `json:"response_modes_supported,omitempty"`
+
+	// JSON array containing a list of the OAuth 2.0 response_type values that this OP supports.
+	ResponseTypesSupported *[]string `json:"response_types_supported,omitempty"`
+
+	// JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that this server supports.
+	ScopesSupported       *[]string `json:"scopes_supported,omitempty"`
+	SubjectTypesSupported *[]string `json:"subject_types_supported,omitempty"`
+
+	// URL of the OP's OAuth 2.0 Token Endpoint.
+	TokenEndpoint *string `json:"token_endpoint,omitempty"`
+
+	// JSON array containing a list of client authentication methods supported by this token endpoint. Default is "none".
+	TokenEndpointAuthMethodsSupported *[]string `json:"token_endpoint_auth_methods_supported,omitempty"`
+
+	// URL of the OP's OAuth 2.0 User Info Endpoint.
+	UserinfoEndpoint                  *string   `json:"userinfo_endpoint,omitempty"`
+	UserinfoSigningAlgValuesSupported *[]string `json:"userinfo_signing_alg_values_supported,omitempty"`
 }
 
 // WellKnownOpenIDIssuerConfiguration represents the OIDC Configuration response for cases when VCS serves as IDP.
@@ -966,6 +1009,9 @@ type ClientInterface interface {
 	// OpenidCredentialIssuerConfig request
 	OpenidCredentialIssuerConfig(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// OpenidConfig request
+	OpenidConfig(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// OpenidCredentialIssuerConfigV2 request
 	OpenidCredentialIssuerConfigV2(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
@@ -1284,6 +1330,18 @@ func (c *Client) SetCredentialRefreshState(ctx context.Context, profileID string
 
 func (c *Client) OpenidCredentialIssuerConfig(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewOpenidCredentialIssuerConfigRequest(c.Server, profileID, profileVersion)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) OpenidConfig(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOpenidConfigRequest(c.Server, profileID, profileVersion)
 	if err != nil {
 		return nil, err
 	}
@@ -1994,6 +2052,47 @@ func NewOpenidCredentialIssuerConfigRequest(server string, profileID string, pro
 	return req, nil
 }
 
+// NewOpenidConfigRequest generates requests for OpenidConfig
+func NewOpenidConfigRequest(server string, profileID string, profileVersion string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "profileID", runtime.ParamLocationPath, profileID)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "profileVersion", runtime.ParamLocationPath, profileVersion)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/oidc/idp/%s/%s/.well-known/openid-configuration", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewOpenidCredentialIssuerConfigV2Request generates requests for OpenidCredentialIssuerConfigV2
 func NewOpenidCredentialIssuerConfigV2Request(server string, profileID string, profileVersion string) (*http.Request, error) {
 	var err error
@@ -2146,6 +2245,9 @@ type ClientWithResponsesInterface interface {
 
 	// OpenidCredentialIssuerConfig request
 	OpenidCredentialIssuerConfigWithResponse(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*OpenidCredentialIssuerConfigResponse, error)
+
+	// OpenidConfig request
+	OpenidConfigWithResponse(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*OpenidConfigResponse, error)
 
 	// OpenidCredentialIssuerConfigV2 request
 	OpenidCredentialIssuerConfigV2WithResponse(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*OpenidCredentialIssuerConfigV2Response, error)
@@ -2480,6 +2582,28 @@ func (r OpenidCredentialIssuerConfigResponse) StatusCode() int {
 	return 0
 }
 
+type OpenidConfigResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *WellKnownOpenIDConfiguration
+}
+
+// Status returns HTTPResponse.Status
+func (r OpenidConfigResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r OpenidConfigResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type OpenidCredentialIssuerConfigV2Response struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2731,6 +2855,15 @@ func (c *ClientWithResponses) OpenidCredentialIssuerConfigWithResponse(ctx conte
 		return nil, err
 	}
 	return ParseOpenidCredentialIssuerConfigResponse(rsp)
+}
+
+// OpenidConfigWithResponse request returning *OpenidConfigResponse
+func (c *ClientWithResponses) OpenidConfigWithResponse(ctx context.Context, profileID string, profileVersion string, reqEditors ...RequestEditorFn) (*OpenidConfigResponse, error) {
+	rsp, err := c.OpenidConfig(ctx, profileID, profileVersion, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseOpenidConfigResponse(rsp)
 }
 
 // OpenidCredentialIssuerConfigV2WithResponse request returning *OpenidCredentialIssuerConfigV2Response
@@ -3122,6 +3255,32 @@ func ParseOpenidCredentialIssuerConfigResponse(rsp *http.Response) (*OpenidCrede
 	return response, nil
 }
 
+// ParseOpenidConfigResponse parses an HTTP response from a OpenidConfigWithResponse call
+func ParseOpenidConfigResponse(rsp *http.Response) (*OpenidConfigResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &OpenidConfigResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest WellKnownOpenIDConfiguration
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseOpenidCredentialIssuerConfigV2Response parses an HTTP response from a OpenidCredentialIssuerConfigV2WithResponse call
 func ParseOpenidCredentialIssuerConfigV2Response(rsp *http.Response) (*OpenidCredentialIssuerConfigV2Response, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
@@ -3195,6 +3354,9 @@ type ServerInterface interface {
 	// Request VCS IDP OIDC Configuration.
 	// (GET /issuer/{profileID}/{profileVersion}/.well-known/openid-credential-issuer)
 	OpenidCredentialIssuerConfig(ctx echo.Context, profileID string, profileVersion string) error
+	// Request IDP OIDC Configuration.
+	// (GET /oidc/idp/{profileID}/{profileVersion}/.well-known/openid-configuration)
+	OpenidConfig(ctx echo.Context, profileID string, profileVersion string) error
 	// Request VCS IDP OIDC Configuration.
 	// (GET /oidc/idp/{profileID}/{profileVersion}/.well-known/openid-credential-issuer)
 	OpenidCredentialIssuerConfigV2(ctx echo.Context, profileID string, profileVersion string) error
@@ -3453,6 +3615,30 @@ func (w *ServerInterfaceWrapper) OpenidCredentialIssuerConfig(ctx echo.Context) 
 	return err
 }
 
+// OpenidConfig converts echo context to params.
+func (w *ServerInterfaceWrapper) OpenidConfig(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "profileID" -------------
+	var profileID string
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "profileID", runtime.ParamLocationPath, ctx.Param("profileID"), &profileID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter profileID: %s", err))
+	}
+
+	// ------------- Path parameter "profileVersion" -------------
+	var profileVersion string
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "profileVersion", runtime.ParamLocationPath, ctx.Param("profileVersion"), &profileVersion)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter profileVersion: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.OpenidConfig(ctx, profileID, profileVersion)
+	return err
+}
+
 // OpenidCredentialIssuerConfigV2 converts echo context to params.
 func (w *ServerInterfaceWrapper) OpenidCredentialIssuerConfigV2(ctx echo.Context) error {
 	var err error
@@ -3520,6 +3706,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.POST(baseURL+"/issuer/profiles/:profileID/:profileVersion/interactions/initiate-oidc", wrapper.InitiateCredentialIssuance)
 	router.POST(baseURL+"/issuer/profiles/:profileID/:profileVersion/interactions/refresh", wrapper.SetCredentialRefreshState)
 	router.GET(baseURL+"/issuer/:profileID/:profileVersion/.well-known/openid-credential-issuer", wrapper.OpenidCredentialIssuerConfig)
+	router.GET(baseURL+"/oidc/idp/:profileID/:profileVersion/.well-known/openid-configuration", wrapper.OpenidConfig)
 	router.GET(baseURL+"/oidc/idp/:profileID/:profileVersion/.well-known/openid-credential-issuer", wrapper.OpenidCredentialIssuerConfigV2)
 
 }

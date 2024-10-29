@@ -60,6 +60,92 @@ func NewService(config *Config) *Service {
 	}
 }
 
+func (s *Service) GetOpenIDConfig(
+	issuerProfile *profileapi.Issuer) (*issuer.WellKnownOpenIDConfiguration, error) {
+
+	issuerMetadata := s.getOpenIDIssuerConfig(issuerProfile)
+
+	metadata := &issuer.WellKnownOpenIDConfiguration{
+		AuthorizationEndpoint:             issuerMetadata.AuthorizationEndpoint,
+		BackchannelLogoutSessionRequired:  lo.ToPtr(true),
+		BackchannelLogoutSupported:        lo.ToPtr(true),
+		ClaimsParameterSupported:          lo.ToPtr(true),
+		CodeChallengeMethodsSupported:     lo.ToPtr([]string{"S256"}),
+		CredentialEndpoint:                issuerMetadata.CredentialEndpoint,
+		EndSessionEndpoint:                lo.ToPtr("https://fake.idp/session"),
+		FrontchannelLogoutSessionRequired: lo.ToPtr(true),
+		FrontchannelLogoutSupported:       lo.ToPtr(true),
+		GrantTypesSupported:               issuerMetadata.GrantTypesSupported,
+		IdTokenSigningAlgValuesSupported: lo.ToPtr([]string{
+			"RS256",
+			"RS384",
+			"RS512",
+			"ES256",
+			"ES384",
+			"ES512",
+			"PS256",
+			"PS384",
+			"PS512",
+			"HS256",
+			"HS384",
+			"HS512",
+		}),
+		IntrospectionEndpoint:              lo.ToPtr("https://fake.idp/introspection"),
+		Issuer:                             issuerMetadata.CredentialIssuer,
+		JwksUri:                            lo.ToPtr("https://fake.idp/jwks"),
+		PushedAuthorizationRequestEndpoint: lo.ToPtr("https://fake.idp/par"),
+		RegistrationEndpoint:               issuerMetadata.RegistrationEndpoint,
+		RequestObjectSigningAlgValuesSupported: lo.ToPtr([]string{
+			"RS256",
+			"RS384",
+			"RS512",
+			"ES256",
+			"ES384",
+			"ES512",
+			"PS256",
+			"PS384",
+			"PS512",
+			"HS256",
+			"HS384",
+			"HS512",
+		}),
+		RequestParameterSupported:     lo.ToPtr(true),
+		RequestUriParameterSupported:  lo.ToPtr(true),
+		RequireRequestUriRegistration: lo.ToPtr(false),
+		ResponseModesSupported: lo.ToPtr([]string{
+			"query",
+			"fragment",
+			"form_post",
+		}),
+		ResponseTypesSupported: issuerMetadata.ResponseTypesSupported,
+		ScopesSupported:        issuerMetadata.ScopesSupported,
+		SubjectTypesSupported: lo.ToPtr([]string{
+			"public",
+			"pairwise",
+		}),
+		TokenEndpoint: issuerMetadata.TokenEndpoint,
+		//TokenEndpointAuthMethodsSupported: issuerMetadata.TokenEndpointAuthMethodsSupported,
+		TokenEndpointAuthMethodsSupported: lo.ToPtr([]string{"public"}),
+		UserinfoEndpoint:                  lo.ToPtr("https://fake.idp/userinfo"),
+		UserinfoSigningAlgValuesSupported: lo.ToPtr([]string{
+			"RS256",
+			"RS384",
+			"RS512",
+			"ES256",
+			"ES384",
+			"ES512",
+			"PS256",
+			"PS384",
+			"PS512",
+			"HS256",
+			"HS384",
+			"HS512",
+		}),
+	}
+
+	return metadata, nil
+}
+
 // GetOpenIDCredentialIssuerConfig returns issuer.WellKnownOpenIDIssuerConfiguration object, and
 // it's JWT signed representation, if this feature is enabled for specific profile.
 //
@@ -103,7 +189,8 @@ func (s *Service) getOpenIDIssuerConfig(issuerProfile *profileapi.Issuer) *issue
 
 	credentialsConfigurationSupported := s.buildCredentialConfigurationsSupported(issuerProfile)
 
-	issuerURL, _ := url.JoinPath(s.externalHostURL, "issuer", issuerProfile.ID, issuerProfile.Version)
+	//issuerURL, _ := url.JoinPath(s.externalHostURL, "issuer", issuerProfile.ID, issuerProfile.Version)
+	issuerURL, _ := url.JoinPath(s.externalHostURL, "oidc", "idp", issuerProfile.ID, issuerProfile.Version)
 
 	//credentialIssuerMetadataDisplay := s.buildCredentialIssuerMetadataDisplay(
 	//	issuerProfile.Name,
@@ -254,27 +341,27 @@ func (s *Service) buildCredentialConfigurationsSupported(
 		}
 
 		c := issuer.CredentialConfigurationsSupported{
-			Claims:                               credentialSupported.Claims,
+			Claims:                               lo.ToPtr(credentialSupported.Claims),
 			CredentialDefinition:                 credentialDefinition,
-			CryptographicBindingMethodsSupported: cryptographicBindingMethodsSupported,
-			CredentialSigningAlgValuesSupported:  signingAlgValuesSupported,
-			Display:                              display,
+			CryptographicBindingMethodsSupported: lo.ToPtr(cryptographicBindingMethodsSupported),
+			CredentialSigningAlgValuesSupported:  lo.ToPtr(signingAlgValuesSupported),
+			Display:                              lo.ToPtr(display),
 			Doctype:                              lo.EmptyableToPtr(credentialSupported.Doctype),
 			Format:                               string(credentialSupported.Format),
-			Order:                                credentialSupported.Order,
+			Order:                                lo.ToPtr(credentialSupported.Order),
 			ProofTypesSupported:                  proofTypeSupported,
 			Scope:                                lo.EmptyableToPtr(credentialSupported.Scope),
 			Vct:                                  lo.EmptyableToPtr(credentialSupported.Vct),
 		}
 
-		if c.Format == "mso_mdoc" {
-			c.IsoCredentialSigningAlgorithmsSupported = []int{-7}
-			c.IsoCredentialCurvesSupported = []int{1}
-			c.Policy = &issuer.CredentialPolicy{
-				OneTimeUse: true,
-				BatchSize:  lo.ToPtr(50),
-			}
-		}
+		//if c.Format == "mso_mdoc" {
+		//	c.IsoCredentialSigningAlgorithmsSupported = []int{-7}
+		//	c.IsoCredentialCurvesSupported = []int{1}
+		//	c.Policy = &issuer.CredentialPolicy{
+		//		OneTimeUse: true,
+		//		BatchSize:  lo.ToPtr(50),
+		//	}
+		//}
 
 		credentialsConfigurationSupported.Set(credentialConfigurationID, c)
 	}
@@ -312,7 +399,7 @@ func (s *Service) buildCredentialConfigurationsSupportedDisplay(
 			logo = &issuer.Logo{
 				AltText: lo.ToPtr(display.Logo.AlternativeText),
 				Uri:     display.Logo.URI,
-				Url:     display.Logo.URL,
+				//Url:     display.Logo.URL,
 			}
 		}
 
