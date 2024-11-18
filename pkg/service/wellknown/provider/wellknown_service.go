@@ -17,7 +17,7 @@ import (
 	josejwt "github.com/go-jose/go-jose/v3/jwt"
 	"github.com/samber/lo"
 
-	"github.com/trustbloc/vc-go/jwt"
+	"github.com/dellekappa/vc-go/jwt"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/kms"

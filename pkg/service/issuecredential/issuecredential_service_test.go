@@ -25,6 +25,7 @@ import (
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/did-go/doc/did"
 	"github.com/trustbloc/did-go/doc/did/endpoint"
 	util "github.com/trustbloc/did-go/doc/util/time"
@@ -32,7 +33,6 @@ import (
 	vdrmock "github.com/trustbloc/did-go/vdr/mock"
 	"github.com/trustbloc/kms-go/secretlock/noop"
 	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vccrypto "github.com/trustbloc/vcs/pkg/doc/vc/crypto"

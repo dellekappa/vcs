@@ -16,14 +16,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
 	"github.com/trustbloc/kms-go/doc/jose"
 	storageapi "github.com/trustbloc/kms-go/spi/storage"
 	"github.com/trustbloc/kms-go/wrapper/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/verifiable"
 	"go.uber.org/zap"
 
 	jwssigner "github.com/trustbloc/vcs/component/wallet-cli/pkg/signer"

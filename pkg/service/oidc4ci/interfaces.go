@@ -3,7 +3,7 @@ package oidc4ci
 import (
 	"context"
 
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/service/issuecredential"
 )

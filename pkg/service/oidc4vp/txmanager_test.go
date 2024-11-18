@@ -13,12 +13,12 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/dataprotect"
 	"github.com/trustbloc/vcs/pkg/internal/testutil"

@@ -17,8 +17,8 @@ import (
 
 	"github.com/samber/lo"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/verifiable"
 )
 
 var (

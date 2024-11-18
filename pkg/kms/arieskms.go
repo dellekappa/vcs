@@ -191,6 +191,10 @@ func (km *KeyManager) NewVCSigner(
 	return signer.NewKMSSigner(fks, signatureType, km.metrics), nil
 }
 
+func (km *KeyManager) NewCertSigner() {
+
+}
+
 func createLocalSecretLock(
 	keyPath string,
 	kmsMasterKey string,

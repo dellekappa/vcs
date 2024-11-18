@@ -12,9 +12,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/verifiable"
 	jsonld "github.com/piprate/json-gold/ld"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"

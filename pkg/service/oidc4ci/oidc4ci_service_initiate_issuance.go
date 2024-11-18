@@ -14,12 +14,12 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/dellekappa/vc-go/jwt"
+	verifiable2 "github.com/dellekappa/vc-go/verifiable"
 	josejwt "github.com/go-jose/go-jose/v3/jwt"
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/jwt"
-	verifiable2 "github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/internal/logfields"
 	"github.com/trustbloc/vcs/pkg/doc/vc"
@@ -499,7 +499,7 @@ func findCredentialConfigurationID(
 		if v.Format == verifiable.VcSdJwt {
 			supportedTypes = []string{v.Vct}
 		} else if v.Format == verifiable.MsoMdoc {
-			supportedTypes = []string{k}
+			supportedTypes = []string{v.Doctype}
 		} else {
 			supportedTypes = v.CredentialDefinition.Type
 		}

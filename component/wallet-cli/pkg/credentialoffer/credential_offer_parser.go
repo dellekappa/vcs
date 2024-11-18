@@ -13,10 +13,10 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/proof/defaults"
+	"github.com/dellekappa/vc-go/vermethod"
 	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/proof/defaults"
-	"github.com/trustbloc/vc-go/vermethod"
 	"github.com/valyala/fastjson"
 
 	"github.com/trustbloc/vcs/pkg/service/oidc4ci"

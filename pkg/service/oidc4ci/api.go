@@ -8,12 +8,13 @@ package oidc4ci
 
 import (
 	"context"
+	"crypto"
 	"errors"
 	"net/url"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/labstack/echo/v4"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
@@ -116,6 +117,7 @@ type PrepareCredentialRequest struct {
 	DID              string
 	AudienceClaim    string
 	HashedToken      string
+	HolderKey        crypto.PublicKey
 }
 
 type PrepareCredentialResult struct {

@@ -10,12 +10,12 @@ import (
 	"encoding/hex"
 	"testing"
 
+	"github.com/dellekappa/vc-go/verifiable"
+	cwt2 "github.com/dellekappa/vc-go/verifiable/cwt"
 	"github.com/fxamacker/cbor/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/trustbloc/kms-go/spi/kms"
 	"github.com/trustbloc/kms-go/wrapper/api"
-	"github.com/trustbloc/vc-go/verifiable"
-	cwt2 "github.com/trustbloc/vc-go/verifiable/cwt"
 	"github.com/veraison/go-cose"
 )
 

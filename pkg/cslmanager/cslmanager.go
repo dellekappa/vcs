@@ -16,9 +16,9 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/internal/logfields"
 	"github.com/trustbloc/vcs/pkg/doc/vc"

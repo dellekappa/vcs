@@ -11,9 +11,9 @@ import (
 	"context"
 	"testing"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/vc-go/verifiable"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/service/verifycredential"
 	nooptracer "go.opentelemetry.io/otel/trace/noop"

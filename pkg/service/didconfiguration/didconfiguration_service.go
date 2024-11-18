@@ -13,8 +13,8 @@ import (
 	"errors"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	utiltime "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"

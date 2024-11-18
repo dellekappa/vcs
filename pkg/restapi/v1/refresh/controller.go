@@ -12,9 +12,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/labstack/echo/v4"
 	"github.com/piprate/json-gold/ld"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/internal/utils"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"

@@ -12,9 +12,9 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	util "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/vc-go/verifiable"
 )
 
 const (
@@ -81,6 +81,7 @@ func (s *PrepareCredentialService) prepareCredentialFromClaims(
 	_ context.Context,
 	req *PrepareCredentialsRequest,
 ) (*verifiable.Credential, error) {
+
 	contexts := req.CredentialConfiguration.CredentialTemplate.Contexts
 	if len(contexts) == 0 {
 		contexts = []string{defaultCtx}
@@ -88,11 +89,12 @@ func (s *PrepareCredentialService) prepareCredentialFromClaims(
 
 	// prepare credential for signing
 	vcc := verifiable.CredentialContents{
-		Context: contexts,
-		ID:      uuid.New().URN(),
-		Types:   []string{"VerifiableCredential", req.CredentialConfiguration.CredentialTemplate.Type},
-		Issuer:  &verifiable.Issuer{ID: req.IssuerDID},
-		Issued:  util.NewTime(time.Now()),
+		Context:   contexts,
+		ID:        uuid.New().URN(),
+		Types:     []string{"VerifiableCredential", req.CredentialConfiguration.CredentialTemplate.Type},
+		Issuer:    &verifiable.Issuer{ID: req.IssuerDID},
+		Issued:    util.NewTime(time.Now()),
+		HolderKey: req.HolderKey,
 	}
 
 	customFields := map[string]interface{}{}

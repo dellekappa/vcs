@@ -16,6 +16,7 @@ import (
 	"github.com/henvic/httpretty"
 
 	"github.com/cucumber/godog"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/piprate/json-gold/ld"
 	lddocloader "github.com/trustbloc/did-go/doc/ld/documentloader"
 	"github.com/trustbloc/did-go/legacy/mem"
@@ -29,7 +30,6 @@ import (
 	"github.com/trustbloc/kms-go/wrapper/api"
 	"github.com/trustbloc/kms-go/wrapper/localsuite"
 	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/attestation"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/trustregistry"

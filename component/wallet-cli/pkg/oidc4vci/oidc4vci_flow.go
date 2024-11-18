@@ -24,6 +24,9 @@ import (
 	"time"
 
 	"github.com/cli/browser"
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
@@ -32,9 +35,6 @@ import (
 	"github.com/trustbloc/kms-go/doc/jose"
 	"github.com/trustbloc/kms-go/spi/kms"
 	"github.com/trustbloc/kms-go/wrapper/api"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/verifiable"
 	"golang.org/x/oauth2"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/attestation"

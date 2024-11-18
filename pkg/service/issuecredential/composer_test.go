@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	util "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/service/issuecredential"
 )

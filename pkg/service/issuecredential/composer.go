@@ -12,9 +12,9 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	util "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/vc-go/verifiable"
 )
 
 type CredentialComposer struct {

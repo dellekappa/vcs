@@ -11,6 +11,7 @@ package issuer
 
 import (
 	"context"
+	gocrypto "crypto"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -20,6 +21,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
+	"github.com/go-jose/go-jose/v3"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/piprate/json-gold/ld"
@@ -27,7 +30,6 @@ import (
 	"github.com/trustbloc/did-go/doc/ld/validator"
 	utiltime "github.com/trustbloc/did-go/doc/util/time"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/verifiable"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 
@@ -49,6 +51,8 @@ import (
 var logger = log.New("restapi-issuer")
 
 var _ ServerInterface = (*Controller)(nil) // make sure Controller implements ServerInterface
+
+type JSONWebKey = jose.JSONWebKey
 
 type profileService interface {
 	GetProfile(profileID profileapi.ID, profileVersion profileapi.Version) (*profileapi.Issuer, error)
@@ -872,6 +876,7 @@ func (c *Controller) PrepareCredential(e echo.Context) error {
 					DID:              lo.FromPtr(body.Did),
 					AudienceClaim:    body.AudienceClaim,
 					HashedToken:      body.HashedToken,
+					HolderKey:        body.Jwk.Key.(gocrypto.PublicKey),
 				},
 			},
 		},

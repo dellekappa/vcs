@@ -13,9 +13,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/dataprotect"
 	vcs "github.com/trustbloc/vcs/pkg/doc/verifiable"

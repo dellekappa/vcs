@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/trustbloc/vc-go/presexch"
+	"github.com/dellekappa/vc-go/presexch"
 )
 
 type txDocument struct {

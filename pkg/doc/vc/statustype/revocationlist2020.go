@@ -11,9 +11,9 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	utiltime "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	vcapi "github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/bitstring"

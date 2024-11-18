@@ -420,6 +420,9 @@ type PrepareCredential struct {
 	// Hashed token received from the client.
 	HashedToken string `json:"hashed_token"`
 
+	// The public key of the client
+	Jwk *JSONWebKey `json:"jwk,omitempty"`
+
 	// Object containing requested information for encrypting the Credential Response.
 	RequestedCredentialResponseEncryption *RequestedCredentialResponseEncryption `json:"requested_credential_response_encryption,omitempty"`
 
@@ -443,6 +446,9 @@ type PrepareCredentialBase struct {
 
 	// Hashed token received from the client.
 	HashedToken string `json:"hashed_token"`
+
+	// The public key of the client
+	Jwk *JSONWebKey `json:"jwk,omitempty"`
 
 	// Object containing requested information for encrypting the Credential Response.
 	RequestedCredentialResponseEncryption *RequestedCredentialResponseEncryption `json:"requested_credential_response_encryption,omitempty"`

@@ -17,13 +17,13 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/piprate/json-gold/ld"
 	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	kmsapi "github.com/trustbloc/kms-go/spi/kms"
 	"github.com/trustbloc/kms-go/spi/storage"
 	"github.com/trustbloc/kms-go/wrapper/api"
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/internal/vdrutil"
 	vcs "github.com/trustbloc/vcs/pkg/doc/verifiable"

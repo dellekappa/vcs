@@ -229,9 +229,9 @@ clean:
 update-vc:
 	@find . -type d \( -name build -prune \) -o -name go.mod -print | while read -r gomod_path; do \
 		dir_path=$$(dirname "$$gomod_path"); \
-		if grep -q "github.com/trustbloc/vc-go" "$$gomod_path"; then \
+		if grep -q "github.com/dellekappa/vc-go" "$$gomod_path"; then \
 			echo "Executing 'updating vc' in directory: $$dir_path"; \
-			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/trustbloc/vc-go@$(VC_FRAMEWORK_VERSION) && go mod tidy) || exit 1; \
+			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/dellekappa/vc-go@$(VC_FRAMEWORK_VERSION) && go mod tidy) || exit 1; \
 		fi; \
 	done
 

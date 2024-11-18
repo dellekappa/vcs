@@ -20,6 +20,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/deepmap/oapi-codegen v1.16.3
+	github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b
 	github.com/fxamacker/cbor/v2 v2.7.0
 	github.com/getkin/kin-openapi v0.127.0
 	github.com/go-jose/go-jose/v3 v3.0.3
@@ -45,9 +46,8 @@ require (
 	github.com/trustbloc/did-go v1.3.1-0.20241015091350-bb3317ba5bdd
 	github.com/trustbloc/kms-go v1.1.3-0.20241001141623-8d9510c6bb88
 	github.com/trustbloc/logutil-go v1.0.0-rc1
-	github.com/trustbloc/vc-go v1.2.1-0.20241024133843-c0dd16d854d1
 	github.com/valyala/fastjson v1.6.4
-	github.com/veraison/go-cose v1.3.0-rc.1
+	github.com/veraison/go-cose v1.3.0
 	github.com/xeipuuv/gojsonschema v1.2.0
 	go.mongodb.org/mongo-driver v1.16.1
 	go.opentelemetry.io/contrib/instrumentation/go.mongodb.org/mongo-driver/mongo/otelmongo v0.54.0
@@ -258,3 +258,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
+
+replace github.com/dellekappa/vc-go => ../forks/vc-go

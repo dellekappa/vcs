@@ -26,10 +26,10 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/did-go/doc/did"
 	model "github.com/trustbloc/did-go/doc/did/endpoint"
 	vdrmock "github.com/trustbloc/did-go/vdr/mock"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/bitstring"

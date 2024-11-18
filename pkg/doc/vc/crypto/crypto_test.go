@@ -16,6 +16,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
+	"github.com/dellekappa/vc-go/sdjwt/common"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/piprate/json-gold/ld"
 	"github.com/stretchr/testify/require"
 	"github.com/trustbloc/did-go/doc/did"
@@ -30,9 +33,6 @@ import (
 	"github.com/trustbloc/kms-go/spi/kms"
 	"github.com/trustbloc/kms-go/wrapper/api"
 	"github.com/trustbloc/kms-go/wrapper/localsuite"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/ecdsa2019"
-	"github.com/trustbloc/vc-go/sdjwt/common"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 

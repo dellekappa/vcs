@@ -13,9 +13,9 @@ import (
 
 	"github.com/google/uuid"
 
+	"github.com/dellekappa/vc-go/presexch"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/vc-go/presexch"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/service/oidc4vp"
 	nooptracer "go.opentelemetry.io/otel/trace/noop"

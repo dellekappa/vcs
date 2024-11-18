@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package status
 
 import (
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 )

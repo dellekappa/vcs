@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/dellekappa/vc-go/crypto-ext/pubkey"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"io"
 	"net/http"
@@ -26,6 +27,14 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/dellekappa/vc-go/cwt"
+	"github.com/dellekappa/vc-go/dataintegrity"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/eddsa2022"
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/proof"
+	"github.com/dellekappa/vc-go/proof/checker"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/fxamacker/cbor/v2"
 	gojose "github.com/go-jose/go-jose/v3"
 	"github.com/google/uuid"
@@ -35,14 +44,6 @@ import (
 	"github.com/samber/lo"
 	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/cwt"
-	"github.com/trustbloc/vc-go/dataintegrity"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/ecdsa2019"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/eddsa2022"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/proof"
-	"github.com/trustbloc/vc-go/proof/checker"
-	"github.com/trustbloc/vc-go/verifiable"
 	"github.com/veraison/go-cose"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
@@ -121,13 +122,13 @@ type ProfileService interface {
 	GetProfile(profileID profileapi.ID, profileVersion profileapi.Version) (*profileapi.Issuer, error)
 }
 
+type JwtProofChecker[T jwt.ProofChecker] interface {
+	jwt.ProofChecker
+	WithSignatureVerificationWrapping(wrapper func(verify checker.VerifyFunc) checker.VerifyFunc) T
+}
+
 type CwtProofChecker interface {
-	CheckCWTProof(
-		checkCWTRequest checker.CheckCWTProofRequest,
-		expectedProofIssuer string,
-		msg []byte,
-		signature []byte,
-	) error
+	cwt.ProofChecker
 }
 
 type AckService interface {
@@ -153,7 +154,7 @@ type Config struct {
 	ProfileService          ProfileService
 	ClientManager           ClientManager
 	ClientIDSchemeService   ClientIDSchemeService
-	JWTVerifier             jwt.ProofChecker
+	JWTVerifier             JwtProofChecker[jwt.ProofChecker]
 	CWTVerifier             CwtProofChecker
 	Tracer                  trace.Tracer
 	IssuerVCSPublicHost     string
@@ -176,7 +177,7 @@ type Controller struct {
 	profileService          ProfileService
 	clientManager           ClientManager
 	clientIDSchemeService   ClientIDSchemeService
-	jwtVerifier             jwt.ProofChecker
+	jwtVerifier             JwtProofChecker[jwt.ProofChecker]
 	cwtVerifier             CwtProofChecker
 	tracer                  trace.Tracer
 	issuerVCSPublicHost     string
@@ -679,70 +680,96 @@ func (c *Controller) HandleProof(
 	clientID string,
 	credentialReq *CredentialRequest,
 	session *fosite.DefaultSession,
-) (string, string, error) {
+) (string, string, *pubkey.PublicKey, error) {
 	var proofClaims ProofClaims
 
 	proofHeaders := ProofHeaders{
 		ProofType: credentialReq.Proof.ProofType,
 	}
 
+	var devicePubKey *pubkey.PublicKey
+
 	switch credentialReq.Proof.ProofType {
 	case proofTypeJWT:
+		verifier := c.jwtVerifier.WithSignatureVerificationWrapping(func(verify checker.VerifyFunc) checker.VerifyFunc {
+			return func(signature, msg []byte, pubKey *pubkey.PublicKey) error {
+				err := verify(signature, msg, pubKey)
+				if err != nil {
+					return err
+				}
+				devicePubKey = pubKey
+				return nil
+			}
+		})
+
 		jws, rawClaims, err := jwt.ParseAndCheckProof(lo.FromPtr(credentialReq.Proof.Jwt),
-			c.jwtVerifier, false,
+			verifier, false,
 			jwt.WithIgnoreClaimsMapDecoding(true),
 		)
 		if err != nil {
-			return "", "",
+			return "", "", nil,
 				resterr.NewOIDCError(string(resterr.InvalidOrMissingProofOIDCErr), fmt.Errorf("parse jwt: %w", err))
 		}
 
 		proofHeaders.Type, _ = jws.Headers.Type()
-		proofHeaders.KeyID, _ = jws.Headers.KeyID()
+
+		kid, ok := jws.Headers.KeyID()
+		if !ok {
+			key, jwkOk := jws.Headers.JWK()
+			jwkJson, err := key.MarshalJSON()
+			if err != nil {
+				return "", "", nil, resterr.NewOIDCError(string(resterr.InvalidOrMissingProofOIDCErr), fmt.Errorf("marshall jwk: %w", err))
+			}
+			if jwkOk {
+				kid = fmt.Sprintf("did:jwk:%s#0", base64.URLEncoding.EncodeToString(jwkJson))
+			}
+		}
+
+		proofHeaders.KeyID = kid
 
 		if err = json.Unmarshal(rawClaims, &proofClaims); err != nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid jwt claims"))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid jwt claims"))
 		}
 	case proofTypeCWT:
 		cwtBytes, err := hex.DecodeString(lo.FromPtr(credentialReq.Proof.Cwt))
 		if err != nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid cwt"))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid cwt"))
 		}
 
 		cwtParsed, rawClaims, err := cwt.ParseAndCheckProof(cwtBytes, c.cwtVerifier, false)
 		if err != nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("parse cwt: %w", err))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("parse cwt: %w", err))
 		}
 
 		if err = cbor.Unmarshal(rawClaims, &proofClaims); err != nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid cwt claims"))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid cwt claims"))
 		}
 
 		typ, ok := cwtParsed.Headers.Protected[cose.HeaderLabelContentType].(string)
 		if !ok {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid COSE content type"))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid COSE content type"))
 		}
 		proofHeaders.Type = typ
 
 		keyBytes, ok := cwtParsed.Headers.Protected[proof.COSEKeyHeader].(string)
 		if !ok {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid COSE_KEY"))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid COSE_KEY"))
 		}
 
 		proofHeaders.KeyID = keyBytes
 	case proofTypeLDPVP:
 		if credentialReq.Proof.LdpVp == nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("missing ldp_vp"))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("missing ldp_vp"))
 		}
 
 		rawProof, err := json.Marshal(*credentialReq.Proof.LdpVp)
 		if err != nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid ldp_vp"))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, errors.New("invalid ldp_vp"))
 		}
 
 		ver, err := c.getDataIntegrityVerifier()
 		if err != nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("get data integrity verifier: %w", err))
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("get data integrity verifier: %w", err))
 		}
 
 		presentationOpts := []verifiable.PresentationOpt{
@@ -763,12 +790,12 @@ func (c *Controller) HandleProof(
 		presentation, err := c.ldpProofParser.Parse(rawProof, presentationOpts)
 
 		if err != nil {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr,
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr,
 				errors.New("can not parse ldp_vp as presentation"))
 		}
 
 		if len(presentation.Proofs) != 1 {
-			return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("expected 1 proof, got %d",
+			return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("expected 1 proof, got %d",
 				len(presentation.Proofs)))
 		}
 
@@ -789,7 +816,7 @@ func (c *Controller) HandleProof(
 		if v, ok := proof["created"]; ok {
 			t, timeErr := time.Parse(time.RFC3339, v.(string))
 			if timeErr != nil {
-				return "", "", resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("parse created: %w", timeErr))
+				return "", "", nil, resterr.NewOIDCError(invalidRequestOIDCErr, fmt.Errorf("parse created: %w", timeErr))
 			}
 			proofClaims.IssuedAt = lo.ToPtr(t.Unix())
 		}
@@ -797,10 +824,10 @@ func (c *Controller) HandleProof(
 
 	did, err := c.validateProofClaims(clientID, &proofClaims, proofHeaders, session)
 	if err != nil {
-		return "", "", err
+		return "", "", nil, err
 	}
 
-	return did, proofClaims.Audience, nil
+	return did, proofClaims.Audience, devicePubKey, nil
 }
 
 func (c *Controller) getDataIntegrityVerifier() (*dataintegrity.Verifier, error) {
@@ -850,7 +877,7 @@ func (c *Controller) OidcCredential(e echo.Context) error { //nolint:funlen
 
 	session := ar.GetSession().(*fosite.DefaultSession) //nolint:errcheck
 
-	did, aud, err := c.HandleProof(ar.GetClient().GetID(), &credentialReq, session)
+	did, aud, key, err := c.HandleProof(ar.GetClient().GetID(), &credentialReq, session)
 	if err != nil {
 		return err
 	}
@@ -872,6 +899,7 @@ func (c *Controller) OidcCredential(e echo.Context) error { //nolint:funlen
 		Format:        credentialReq.Format,
 		AudienceClaim: aud,
 		HashedToken:   hashToken(token),
+		Jwk:           &key.JWK.JSONWebKey,
 	}
 
 	if credentialReq.CredentialResponseEncryption != nil {
@@ -976,9 +1004,10 @@ func (c *Controller) OidcBatchCredential(e echo.Context) error { //nolint:funlen
 	}
 
 	var did, aud string
+	var key *pubkey.PublicKey
 	for _, cr := range credentialReq.CredentialRequests {
 		credentialRequest := cr
-		did, aud, err = c.HandleProof(ar.GetClient().GetID(), &credentialRequest, session)
+		did, aud, key, err = c.HandleProof(ar.GetClient().GetID(), &credentialRequest, session)
 		if err != nil {
 			return err
 		}
@@ -994,6 +1023,7 @@ func (c *Controller) OidcBatchCredential(e echo.Context) error { //nolint:funlen
 			Did:                                   &did,
 			Format:                                credentialRequest.Format,
 			HashedToken:                           hashToken(token),
+			Jwk:                                   &key.JWK.JSONWebKey,
 			Types:                                 credentialTypes,
 			RequestedCredentialResponseEncryption: nil,
 		}

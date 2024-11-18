@@ -12,6 +12,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/eddsa2022"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/stretchr/testify/require"
 	"github.com/trustbloc/did-go/doc/did"
 	utiltime "github.com/trustbloc/did-go/doc/util/time"
@@ -19,9 +22,6 @@ import (
 	vdrmock "github.com/trustbloc/did-go/vdr/mock"
 	mockwrapper "github.com/trustbloc/kms-go/mock/wrapper"
 	kmsapi "github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/ecdsa2019"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/eddsa2022"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"

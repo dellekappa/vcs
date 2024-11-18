@@ -21,9 +21,9 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/dellekappa/vc-go/util/maphelpers"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/samber/lo"
-	"github.com/trustbloc/vc-go/util/maphelpers"
-	"github.com/trustbloc/vc-go/verifiable"
 )
 
 const (

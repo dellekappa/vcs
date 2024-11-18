@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/verifiable"
 	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/trustbloc/vcs/pkg/storage/mongodb"

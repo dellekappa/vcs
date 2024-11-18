@@ -23,9 +23,9 @@ import (
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/did-go/doc/did"
 	vdrmock "github.com/trustbloc/did-go/vdr/mock"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/bitstring"

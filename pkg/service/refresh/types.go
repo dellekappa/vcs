@@ -7,8 +7,8 @@ SPDX-License-Identifier: Apache-2.0
 package refresh
 
 import (
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/profile"
 )

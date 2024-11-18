@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 
 package statustype
 
-import "github.com/trustbloc/vc-go/verifiable"
+import "github.com/dellekappa/vc-go/verifiable"
 
 const (
 	vcType = "VerifiableCredential"

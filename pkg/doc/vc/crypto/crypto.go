@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package crypto
 
 import (
+	"crypto"
 	"fmt"
 	"strings"
 	"time"
@@ -17,21 +18,21 @@ import (
 	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/veraison/go-cose"
 
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/proof/creator"
-	"github.com/trustbloc/vc-go/proof/jwtproofs/eddsa"
-	"github.com/trustbloc/vc-go/proof/jwtproofs/es256"
-	"github.com/trustbloc/vc-go/proof/jwtproofs/es256k"
-	"github.com/trustbloc/vc-go/proof/jwtproofs/es384"
-	"github.com/trustbloc/vc-go/proof/jwtproofs/es521"
-	"github.com/trustbloc/vc-go/proof/jwtproofs/ps256"
-	"github.com/trustbloc/vc-go/proof/jwtproofs/rs256"
-	"github.com/trustbloc/vc-go/proof/ldproofs/bbsblssignature2020"
-	"github.com/trustbloc/vc-go/proof/ldproofs/ecdsasecp256k1signature2019"
-	"github.com/trustbloc/vc-go/proof/ldproofs/ed25519signature2018"
-	"github.com/trustbloc/vc-go/proof/ldproofs/ed25519signature2020"
-	"github.com/trustbloc/vc-go/proof/ldproofs/jsonwebsignature2020"
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/proof/creator"
+	"github.com/dellekappa/vc-go/proof/jwtproofs/eddsa"
+	"github.com/dellekappa/vc-go/proof/jwtproofs/es256"
+	"github.com/dellekappa/vc-go/proof/jwtproofs/es256k"
+	"github.com/dellekappa/vc-go/proof/jwtproofs/es384"
+	"github.com/dellekappa/vc-go/proof/jwtproofs/es521"
+	"github.com/dellekappa/vc-go/proof/jwtproofs/ps256"
+	"github.com/dellekappa/vc-go/proof/jwtproofs/rs256"
+	"github.com/dellekappa/vc-go/proof/ldproofs/bbsblssignature2020"
+	"github.com/dellekappa/vc-go/proof/ldproofs/ecdsasecp256k1signature2019"
+	"github.com/dellekappa/vc-go/proof/ldproofs/ed25519signature2018"
+	"github.com/dellekappa/vc-go/proof/ldproofs/ed25519signature2020"
+	"github.com/dellekappa/vc-go/proof/ldproofs/jsonwebsignature2020"
+	"github.com/dellekappa/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/jws"
@@ -163,6 +164,8 @@ type Crypto struct {
 func (c *Crypto) SignCredential(
 	signerData *vc.Signer, vc *verifiable.Credential, opts ...SigningOpts) (*verifiable.Credential, error) {
 	switch signerData.Format {
+	case vcsverifiable.Mdoc:
+		return c.signCredentialMDOC(signerData, vc, opts...)
 	case vcsverifiable.Cwt:
 		return c.signCredentialCWT(signerData, vc, opts...)
 	case vcsverifiable.Jwt:
@@ -292,6 +295,35 @@ func (c *Crypto) prepareSigner(signerData *vc.Signer, opts ...SigningOpts) (vc.S
 	return s, method, nil
 }
 
+func (c *Crypto) signCredentialMDOC(signerData *vc.Signer,
+	credential *verifiable.Credential,
+	opts ...SigningOpts,
+) (*verifiable.Credential, error) {
+	s, method, err := c.prepareSigner(signerData, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	cwtAlgo, err := verifiable.KeyTypeToCWSAlgo(signerData.KeyType)
+	if err != nil {
+		return nil, fmt.Errorf("getting CWS algo based on signature type: %w", err)
+	}
+
+	hashAlg := signerData.SDJWT.HashAlg
+	if hashAlg == 0 {
+		hashAlg = crypto.SHA256
+	}
+
+	options := []verifiable.MakeMDocOption{
+		verifiable.MakeMDocWithHash(hashAlg),
+		//verifiable.MakeMDocWithCerts(signerData.MDoc.Certs),
+	}
+
+	//TODO: we need certs to be passed over. For testing purpose we generate self signed cert
+
+	return c.getMDocSignedCredential(credential, s, cwtAlgo, method, options...)
+}
+
 // signCredentialJWT returns vc in JWT format including the signature section.
 func (c *Crypto) signCredentialCWT(
 	signerData *vc.Signer,
@@ -399,6 +431,23 @@ func (c *Crypto) getSDJWTSignedCredential(
 	}
 
 	return sdCred, nil
+}
+
+func (c *Crypto) getMDocSignedCredential(
+	credential *verifiable.Credential,
+	signer vc.SignerAlgorithm,
+	cwsAlgo cose.Algorithm,
+	signingKeyID string,
+	options ...verifiable.MakeMDocOption,
+) (*verifiable.Credential, error) {
+	var err error
+
+	credential, err = credential.CreateSignedMDocVC(cwsAlgo, newProofCreator(signer), signingKeyID, options...)
+	if err != nil {
+		return nil, fmt.Errorf("MarshalJWS error: %w", err)
+	}
+
+	return credential, nil
 }
 
 // SignPresentation signs a presentation.
@@ -561,3 +610,35 @@ func getSignatureRepresentation(signRep string) (verifiable.SignatureRepresentat
 
 	return signatureRepresentation, nil
 }
+
+//func createX509Cert(key *ecdsa.PrivateKey) (*x509.Certificate, error) {
+//	//key, err := rsa.GenerateKey(rand.Reader, 4096)
+//	//if err != nil {
+//	//	return err
+//	//}
+//
+//	template := &x509.Certificate{
+//		SerialNumber: big.NewInt(2019),
+//		Subject: pkix.Name{
+//			Organization:  []string{"Poste Italiane"},
+//			Country:       []string{"IT"},
+//			Province:      []string{""},
+//			Locality:      []string{"Rome"},
+//			StreetAddress: []string{"viale Europa"},
+//			PostalCode:    []string{"00144"},
+//		},
+//		NotBefore:             time.Now(),
+//		NotAfter:              time.Now().AddDate(10, 0, 0),
+//		IsCA:                  false,
+//		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+//		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+//		BasicConstraintsValid: true,
+//	}
+//
+//	der, err := x509.CreateCertificate(rand.Reader, template, template, &key.PublicKey, key)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	return x509.ParseCertificate(der)
+//}

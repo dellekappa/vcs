@@ -12,8 +12,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/samber/lo"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 )

@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/service/issuecredential"

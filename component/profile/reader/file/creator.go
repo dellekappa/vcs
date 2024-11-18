@@ -7,8 +7,15 @@ SPDX-License-Identifier: Apache-2.0
 package file
 
 import (
+	gocrypto "crypto"
+	"crypto/rand"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/base64"
 	"fmt"
+	"math/big"
 	"strings"
+	"time"
 
 	"github.com/trustbloc/did-go/doc/did"
 	"github.com/trustbloc/did-go/doc/did/endpoint"
@@ -184,9 +191,14 @@ func (c *Creator) jwkDID(
 	verificationMethodType vcsverifiable.SignatureType,
 	keyType kmsapi.KeyType,
 	km KeysCreator,
-	_, _ string,
+	didDomain, _ string,
 ) (*createResult, error) { //nolint: unparam
-	verMethod, err := newVerMethods(1, km, verificationMethodType, keyType)
+	opts := make([]verMethodOpt, 0)
+	if didDomain != "" {
+		opts = append(opts, withDIDDomain(didDomain))
+	}
+
+	verMethod, err := newVerMethods(1, km, verificationMethodType, keyType, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("did:key: failed to create new ver method: %w", err)
 	}
@@ -298,14 +310,32 @@ func (c *Creator) ionDID(
 	}, nil
 }
 
+type verMethodCfg struct {
+	didDomain string
+}
+
+type verMethodOpt func(opts *verMethodCfg)
+
 func newVerMethods(count int, km KeysCreator, verMethodType vcsverifiable.SignatureType,
-	keyType kmsapi.KeyType) ([]*did.VerificationMethod, error) {
+	keyType kmsapi.KeyType, opts ...verMethodOpt) ([]*did.VerificationMethod, error) {
 	methods := make([]*did.VerificationMethod, count)
+
+	cfg := verMethodCfg{}
+	for _, o := range opts {
+		o(&cfg)
+	}
 
 	for i := 0; i < count; i++ {
 		keyID, j, err := km.CreateJWKKey(keyType)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create key: %w", err)
+		}
+
+		if cfg.didDomain != "" {
+			err = createAndAppendX509Cert(cfg.didDomain, j)
+			if err != nil {
+				return nil, fmt.Errorf("failed to create verification method: %w", err)
+			}
 		}
 
 		// TODO sidetree doesn't support VM controller: https://github.com/decentralized-identity/sidetree/issues/1010
@@ -323,4 +353,45 @@ func newVerMethods(count int, km KeysCreator, verMethodType vcsverifiable.Signat
 	}
 
 	return methods, nil
+}
+
+func withDIDDomain(didDomain string) verMethodOpt {
+	return func(opts *verMethodCfg) {
+		opts.didDomain = didDomain
+	}
+}
+
+func createAndAppendX509Cert(didDomain string, key *jwk.JWK) error {
+
+	template := &x509.Certificate{
+		SerialNumber: big.NewInt(2019),
+		Subject: pkix.Name{
+			CommonName: didDomain,
+		},
+		NotBefore: time.Now(),
+		NotAfter:  time.Now().AddDate(10, 0, 0),
+		IsCA:      false,
+		// ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+		BasicConstraintsValid: true,
+	}
+
+	der, err := x509.CreateCertificate(rand.Reader, template, template, key.Public().Key, key.Key)
+	if err != nil {
+		return err
+	}
+
+	cert, err := x509.ParseCertificate(der)
+	if err != nil {
+		return err
+	}
+
+	hash := gocrypto.SHA1.New()
+	_, _ = hash.Write(der)
+	thumbprint := base64.RawURLEncoding.EncodeToString(hash.Sum(nil))
+
+	key.Certificates = []*x509.Certificate{cert}
+	key.CertificateThumbprintSHA1 = []byte(thumbprint)
+
+	return nil
 }

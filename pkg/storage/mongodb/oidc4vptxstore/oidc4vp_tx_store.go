@@ -12,8 +12,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dellekappa/vc-go/presexch"
 	jsonld "github.com/piprate/json-gold/ld"
-	"github.com/trustbloc/vc-go/presexch"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

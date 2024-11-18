@@ -99,3 +99,26 @@ func (s *KMSSigner) textToLines(txt string) [][]byte {
 
 	return linesBytes
 }
+
+// CertSigner to sign X509 certs
+type CertSigner struct {
+	signatureType vcsverifiable.SignatureType
+	bbs           bool
+	metrics       metricsProvider
+	signer        api.FixedKeySigner
+	multiSigner   api.FixedKeyMultiSigner
+}
+
+func NewCertSigner(multiSigner api.FixedKeySigner,
+	signatureType vcsverifiable.SignatureType, metrics metricsProvider) *CertSigner {
+	if metrics == nil {
+		metrics = &noopMetricsProvider.NoMetrics{}
+	}
+
+	return &CertSigner{
+		signatureType: signatureType,
+		bbs:           signatureType == vcsverifiable.BbsBlsSignature2020,
+		metrics:       metrics,
+		signer:        multiSigner,
+	}
+}

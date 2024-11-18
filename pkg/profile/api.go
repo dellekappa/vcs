@@ -10,11 +10,11 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/sdjwt/common"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/did-go/method/key"
 	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/sdjwt/common"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"

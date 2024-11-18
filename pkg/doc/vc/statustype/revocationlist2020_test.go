@@ -9,8 +9,8 @@ package statustype
 import (
 	"testing"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	vcapi "github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/bitstring"

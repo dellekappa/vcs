@@ -20,14 +20,14 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/labstack/echo/v4"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	vdrmock "github.com/trustbloc/did-go/vdr/mock"
 	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/verifiable"
 	nooptracer "go.opentelemetry.io/otel/trace/noop"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"

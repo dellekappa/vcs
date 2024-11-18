@@ -24,9 +24,10 @@ const (
 
 // For mapping between Format and OIDCFormat see oidc4ci.SelectProperOIDCFormat.
 const (
-	Jwt Format = "jwt"
-	Ldp Format = "ldp"
-	Cwt Format = "cwt"
+	Jwt  Format = "jwt"
+	Ldp  Format = "ldp"
+	Cwt  Format = "cwt"
+	Mdoc Format = "mdoc"
 )
 
 const (

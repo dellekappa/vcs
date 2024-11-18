@@ -17,11 +17,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/verifiable"
 	"go.uber.org/zap"
 
 	profileapi "github.com/trustbloc/vcs/pkg/profile"

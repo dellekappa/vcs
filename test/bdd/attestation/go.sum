@@ -82,6 +82,9 @@ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/decred/dcrd/crypto/blake256 v1.0.0/go.mod h1:sQl2p6Y26YV+ZOcSTP6thNdn47hh8kt6rqSlvmrXFAc=
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 h1:YLtO71vCjJRCBcrPMtQ9nqBsqpA1m5sE92cU+pd5Mcc=
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1/go.mod h1:hyedUtir6IdtD/7lIxGeCxkaw7y45JueMRL4DIyJDKs=
+github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b/go.mod h1:gkeZLqvI+J1/3fsDKMz50yNTi0TMKSJ35ZgrTA6XBgg=
+github.com/dellekappa/vc-go v1.2.1-0.20241024133843-c0dd16d854d1 h1:z1YCowgkcRz/Gbf04/QArqYjQNspB5QGOhawmWswPsc=
+github.com/dellekappa/vc-go v1.2.1-0.20241024133843-c0dd16d854d1/go.mod h1:LJTZ+GIYr/HeklpmhzlNfz9zAd/t4mj4Kylr9+ubHnc=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=
@@ -234,8 +237,6 @@ github.com/trustbloc/kms-go v1.1.3-0.20241001141623-8d9510c6bb88 h1:k3KNf9tE4TBV
 github.com/trustbloc/kms-go v1.1.3-0.20241001141623-8d9510c6bb88/go.mod h1:OKOtsLbE6W5s4mpjWkvk8XEqcmt9vTgVmDNkHELpWO0=
 github.com/trustbloc/logutil-go v0.0.0-20221124174025-c46110e3ea42 h1:Mzg9wvEoUIWPoI/GHz3YlVbd4nKWeSPGc6+3l95eOZU=
 github.com/trustbloc/logutil-go v0.0.0-20221124174025-c46110e3ea42/go.mod h1:HRaXVV1caceumbDBwLO3ByiCcAc18KwrNvZ7JQBvDIQ=
-github.com/trustbloc/vc-go v1.2.1-0.20241024133843-c0dd16d854d1 h1:z1YCowgkcRz/Gbf04/QArqYjQNspB5QGOhawmWswPsc=
-github.com/trustbloc/vc-go v1.2.1-0.20241024133843-c0dd16d854d1/go.mod h1:LJTZ+GIYr/HeklpmhzlNfz9zAd/t4mj4Kylr9+ubHnc=
 github.com/veraison/go-cose v1.1.1-0.20240126165338-2300d5c96dbd h1:QhdCHSW1/oosJbzBTEYLU6xcKxXbQzzqFnhCtW2UWbA=
 github.com/veraison/go-cose v1.1.1-0.20240126165338-2300d5c96dbd/go.mod h1:D1wnviyjdmcF8AO5Y9kVGU6OGuvXUMGiE0Auo/fYRYo=
 github.com/x448/float16 v0.8.4 h1:qLwI1I70+NjRFUR3zs1JPUCgaCXSh3SW62uAKT1mSBM=

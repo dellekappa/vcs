@@ -11,7 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/verifiable"
 )
 
 func (tm *TxManager) EncryptClaims(ctx context.Context, data *ReceivedClaims) (*ClaimData, error) {

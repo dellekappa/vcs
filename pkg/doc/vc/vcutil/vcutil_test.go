@@ -10,9 +10,9 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 )

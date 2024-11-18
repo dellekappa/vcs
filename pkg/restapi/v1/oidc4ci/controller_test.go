@@ -28,6 +28,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/proof/testsupport"
+	verifiable2 "github.com/dellekappa/vc-go/verifiable"
 	"github.com/fxamacker/cbor/v2"
 	gojose "github.com/go-jose/go-jose/v3"
 	"github.com/golang/mock/gomock"
@@ -38,9 +41,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/trustbloc/kms-go/doc/jose"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/proof/testsupport"
-	verifiable2 "github.com/trustbloc/vc-go/verifiable"
 	"github.com/veraison/go-cose"
 	nooptracer "go.opentelemetry.io/otel/trace/noop"
 
@@ -4866,7 +4866,7 @@ var ldpProofWithInvalidDate []byte
 func TestHandleLDPProof(t *testing.T) {
 	t.Run("invalid proof", func(t *testing.T) {
 		ctr := oidc4ci.NewController(&oidc4ci.Config{})
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "ldp_vp",
 				LdpVp:     nil,
@@ -4885,7 +4885,7 @@ func TestHandleLDPProof(t *testing.T) {
 
 		ldpParser.EXPECT().Parse(gomock.Any(), gomock.Any()).Return(nil, errors.New("parse error"))
 
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "ldp_vp",
 				LdpVp:     &finalPres,
@@ -4909,7 +4909,7 @@ func TestHandleLDPProof(t *testing.T) {
 					verifiable2.WithDisabledJSONLDChecks())
 			})
 
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "ldp_vp",
 				LdpVp:     &finalPres,
@@ -4933,7 +4933,7 @@ func TestHandleLDPProof(t *testing.T) {
 					verifiable2.WithDisabledJSONLDChecks())
 			})
 
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "ldp_vp",
 				LdpVp:     &finalPres,
@@ -4950,7 +4950,7 @@ func TestHandleCWTProof(t *testing.T) {
 
 	t.Run("invalid string", func(t *testing.T) {
 		ctr := oidc4ci.NewController(&oidc4ci.Config{})
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "cwt",
 				Cwt:       lo.ToPtr("0xxx0"),
@@ -4967,7 +4967,7 @@ func TestHandleCWTProof(t *testing.T) {
 
 		verifier.EXPECT().CheckCWTProof(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
 			Return(errors.New("unexpected cwt error"))
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "cwt",
 				Cwt:       &exampleProof,
@@ -4991,7 +4991,7 @@ func TestHandleCWTProof(t *testing.T) {
 
 		verifier.EXPECT().CheckCWTProof(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
 			Return(nil)
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "cwt",
 				Cwt:       lo.ToPtr(hex.EncodeToString(proof)),
@@ -5018,7 +5018,7 @@ func TestHandleCWTProof(t *testing.T) {
 
 		verifier.EXPECT().CheckCWTProof(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).
 			Return(nil)
-		_, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
+		_, _, _, err := ctr.HandleProof("invalid", &oidc4ci.CredentialRequest{
 			Proof: &oidc4ci.JWTProof{
 				ProofType: "cwt",
 				Cwt:       lo.ToPtr(hex.EncodeToString(proof)),

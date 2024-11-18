@@ -10,6 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.61.2
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/deepmap/oapi-codegen v1.16.3
+	github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/go-jose/go-jose/v3 v3.0.3
 	github.com/google/uuid v1.6.0
@@ -25,7 +26,6 @@ require (
 	github.com/trustbloc/did-go v1.3.1-0.20241015091350-bb3317ba5bdd
 	github.com/trustbloc/logutil-go v1.0.0
 	github.com/trustbloc/sidetree-go v1.0.1-0.20240219121130-f4260aff7104
-	github.com/trustbloc/vc-go v1.2.1-0.20241024133843-c0dd16d854d1
 	github.com/trustbloc/vcs v0.0.0
 	github.com/trustbloc/vcs/component/credentialstatus v0.0.0-00010101000000-000000000000
 	github.com/trustbloc/vcs/component/echo v0.0.0-00010101000000-000000000000
@@ -234,7 +234,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fastjson v1.6.4 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	github.com/veraison/go-cose v1.3.0-rc.1 // indirect
+	github.com/veraison/go-cose v1.3.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
@@ -282,7 +282,7 @@ require (
 )
 
 replace (
-	github.com/trustbloc/kms-go => ../../../forks/kms-go
+	github.com/dellekappa/vc-go => ../../../forks/vc-go
 	github.com/trustbloc/vcs => ../..
 	github.com/trustbloc/vcs/component/credentialstatus => ../../component/credentialstatus
 	github.com/trustbloc/vcs/component/echo => ../../component/echo

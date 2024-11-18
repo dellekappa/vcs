@@ -9,12 +9,12 @@ package crypto
 import (
 	"fmt"
 
+	"github.com/dellekappa/vc-go/dataintegrity"
+	dataintegritysuite "github.com/dellekappa/vc-go/dataintegrity/suite"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/eddsa2022"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/samber/lo"
-	"github.com/trustbloc/vc-go/dataintegrity"
-	dataintegritysuite "github.com/trustbloc/vc-go/dataintegrity/suite"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/ecdsa2019"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/eddsa2022"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 )

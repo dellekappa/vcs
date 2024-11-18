@@ -19,12 +19,12 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	tlsutils "github.com/trustbloc/cmdutil-go/pkg/utils/tls"
 	utiltime "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/vc-go/jwt"
-	"github.com/trustbloc/vc-go/verifiable"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )

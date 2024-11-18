@@ -21,6 +21,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/piprate/json-gold/ld"
 	"github.com/trustbloc/did-go/legacy/mem"
 	"github.com/trustbloc/did-go/method/jwk"
@@ -34,7 +35,6 @@ import (
 	"github.com/trustbloc/kms-go/wrapper/localsuite"
 	"github.com/trustbloc/logutil-go/pkg/log"
 	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/attestation"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/oidc4vci"

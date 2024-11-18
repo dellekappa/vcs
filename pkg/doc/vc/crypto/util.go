@@ -10,8 +10,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/did-go/doc/did"
-	"github.com/trustbloc/vc-go/verifiable"
 )
 
 const (

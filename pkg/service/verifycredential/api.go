@@ -9,7 +9,7 @@ package verifycredential
 import (
 	"context"
 
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/verifiable"
 
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 )

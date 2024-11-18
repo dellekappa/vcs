@@ -14,14 +14,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dellekappa/vc-go/proof/defaults"
+	"github.com/dellekappa/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/vermethod"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
 	"github.com/trustbloc/did-go/doc/ld/validator"
 	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/proof/defaults"
-	"github.com/trustbloc/vc-go/verifiable"
-	"github.com/trustbloc/vc-go/vermethod"
 
 	"github.com/trustbloc/vcs/internal/logfields"
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"

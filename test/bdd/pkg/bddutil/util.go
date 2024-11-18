@@ -20,6 +20,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dellekappa/vc-go/proof/defaults"
+	"github.com/dellekappa/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/vermethod"
 	docdid "github.com/trustbloc/did-go/doc/did"
 	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
 	lddocloader "github.com/trustbloc/did-go/doc/ld/documentloader"
@@ -28,9 +31,6 @@ import (
 	"github.com/trustbloc/did-go/legacy/mem"
 	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/proof/defaults"
-	"github.com/trustbloc/vc-go/verifiable"
-	"github.com/trustbloc/vc-go/vermethod"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
 )

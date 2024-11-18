@@ -1,6 +1,6 @@
 package oidc4ci
 
-import "github.com/trustbloc/vc-go/verifiable"
+import "github.com/dellekappa/vc-go/verifiable"
 
 type DefaultLDPProofParser struct {
 }

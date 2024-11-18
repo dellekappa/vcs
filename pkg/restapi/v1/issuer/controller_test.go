@@ -19,6 +19,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
@@ -26,7 +27,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	timeutil "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/vc-go/verifiable"
 	nooptracer "go.opentelemetry.io/otel/trace/noop"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"

@@ -15,11 +15,11 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/internal/claims"
 	"github.com/trustbloc/vcs/internal/logfields"

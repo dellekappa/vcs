@@ -28,11 +28,11 @@ import (
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	timeutil "github.com/trustbloc/did-go/doc/util/time"
 	vdr2 "github.com/trustbloc/did-go/vdr"
 	vdr "github.com/trustbloc/did-go/vdr/api"
 	vdrmock "github.com/trustbloc/did-go/vdr/mock"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/component/credentialstatus/internal/testutil"
 	"github.com/trustbloc/vcs/pkg/cslmanager"

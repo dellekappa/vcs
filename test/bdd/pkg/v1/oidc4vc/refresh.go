@@ -14,7 +14,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/trustbloc/vc-go/verifiable"
+	"github.com/dellekappa/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/refresh"
 	"github.com/trustbloc/vcs/pkg/restapi/v1/issuer"

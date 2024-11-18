@@ -9,7 +9,7 @@ package oidc4vp
 import (
 	"time"
 
-	"github.com/trustbloc/vc-go/presexch"
+	"github.com/dellekappa/vc-go/presexch"
 )
 
 type RequestObject struct {

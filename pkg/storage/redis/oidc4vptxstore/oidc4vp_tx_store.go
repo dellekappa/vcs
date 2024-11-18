@@ -13,10 +13,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/dellekappa/vc-go/presexch"
 	"github.com/google/uuid"
 	jsonld "github.com/piprate/json-gold/ld"
 	redisapi "github.com/redis/go-redis/v9"
-	"github.com/trustbloc/vc-go/presexch"
 
 	"github.com/trustbloc/vcs/pkg/service/oidc4vp"
 	"github.com/trustbloc/vcs/pkg/storage/redis"

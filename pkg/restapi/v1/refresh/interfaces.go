@@ -9,11 +9,11 @@ package refresh
 import (
 	"context"
 
+	"github.com/dellekappa/vc-go/proof/checker"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/did-go/doc/ld/processor"
 	"github.com/trustbloc/did-go/doc/ld/proof"
 	"github.com/trustbloc/kms-go/doc/jose"
-	"github.com/trustbloc/vc-go/proof/checker"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/service/refresh"

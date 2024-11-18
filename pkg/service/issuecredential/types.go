@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package issuecredential
 
 import (
+	"crypto"
 	"time"
 
 	"github.com/samber/lo"
@@ -29,6 +30,7 @@ type PrepareCredentialsRequest struct {
 	ClaimData               map[string]interface{}
 	IssuerDID               string
 	SubjectDID              string
+	HolderKey               crypto.PublicKey
 	CredentialConfiguration *TxCredentialConfiguration
 
 	IssuerID              string

@@ -17,6 +17,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/proof/testsupport"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/jinzhu/copier"
@@ -25,8 +26,9 @@ import (
 	arieskms "github.com/trustbloc/kms-go/kms"
 	"github.com/trustbloc/kms-go/wrapper/api"
 	"github.com/trustbloc/kms-go/wrapper/localsuite"
-	"github.com/trustbloc/vc-go/proof/testsupport"
 
+	"github.com/dellekappa/vc-go/presexch"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/trustbloc/did-go/doc/did"
 	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
 	lddocloader "github.com/trustbloc/did-go/doc/ld/documentloader"
@@ -37,8 +39,6 @@ import (
 	"github.com/trustbloc/kms-go/doc/util/fingerprint"
 	"github.com/trustbloc/kms-go/secretlock/noop"
 	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/vc-go/presexch"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"

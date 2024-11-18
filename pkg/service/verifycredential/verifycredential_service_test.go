@@ -12,6 +12,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/dellekappa/vc-go/dataintegrity"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 	"github.com/trustbloc/did-go/doc/did"
@@ -23,9 +26,6 @@ import (
 	kmskeytypes "github.com/trustbloc/kms-go/spi/kms"
 	"github.com/trustbloc/kms-go/wrapper/api"
 	"github.com/trustbloc/kms-go/wrapper/localsuite"
-	"github.com/trustbloc/vc-go/dataintegrity"
-	"github.com/trustbloc/vc-go/dataintegrity/suite/ecdsa2019"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"

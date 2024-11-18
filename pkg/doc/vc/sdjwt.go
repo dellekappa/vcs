@@ -9,7 +9,7 @@ package vc
 import (
 	"crypto"
 
-	"github.com/trustbloc/vc-go/sdjwt/common"
+	"github.com/dellekappa/vc-go/sdjwt/common"
 )
 
 // SDJWT represents the SD-JWT configuration.

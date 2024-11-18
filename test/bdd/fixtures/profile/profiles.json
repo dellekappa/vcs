@@ -14,7 +14,7 @@
           "signingAlgorithm": "ES256",
           "signatureRepresentation": 0,
           "keyType": "ECDSAP256DER",
-          "format": "jwt",
+          "format": "mdoc",
           "didMethod": "jwk",
           "status": {
             "disable": true,
@@ -52,7 +52,7 @@
             "issuer": "did:jwk:acme_issuer"
           },
           {
-            "type": "eu.europa.ec.eudi.pid_mdoc",
+            "type": "eu.europa.ec.eudi.pid.1",
             "id": "eudi.pid.mdoc",
             "issuer": "did:jwk:acme_issuer"
           }
@@ -654,7 +654,8 @@
           }
         }
       },
-      "createDID": true
+      "createDID": true,
+      "didDomain": "https://my.custom.issuer.com"
     },
     {
       "issuer": {

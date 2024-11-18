@@ -10,6 +10,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/vc-go/proof/testsupport"
+	"github.com/dellekappa/vc-go/verifiable"
+	cwt2 "github.com/dellekappa/vc-go/verifiable/cwt"
 	"github.com/fxamacker/cbor/v2"
 	"github.com/stretchr/testify/require"
 	"github.com/trustbloc/did-go/doc/did"
@@ -19,9 +22,6 @@ import (
 	"github.com/trustbloc/kms-go/doc/jose/jwk"
 	"github.com/trustbloc/kms-go/spi/kms"
 	"github.com/trustbloc/kms-go/wrapper/api"
-	"github.com/trustbloc/vc-go/proof/testsupport"
-	"github.com/trustbloc/vc-go/verifiable"
-	cwt2 "github.com/trustbloc/vc-go/verifiable/cwt"
 	"github.com/veraison/go-cose"
 
 	vcs "github.com/trustbloc/vcs/pkg/doc/verifiable"

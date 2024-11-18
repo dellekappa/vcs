@@ -18,11 +18,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
 	"github.com/trustbloc/logutil-go/pkg/log"
-	"github.com/trustbloc/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/dataprotect"
 	"github.com/trustbloc/vcs/pkg/doc/vc"
@@ -842,6 +842,7 @@ func (s *Service) prepareCredential( //nolint:funlen
 		ClaimData:               claimData,
 		IssuerDID:               tx.DID,
 		SubjectDID:              prepareCredentialRequest.DID,
+		HolderKey:               prepareCredentialRequest.HolderKey,
 		CredentialConfiguration: txCredentialConfiguration,
 		IssuerID:                tx.ProfileID,
 		IssuerVersion:           tx.ProfileVersion,
