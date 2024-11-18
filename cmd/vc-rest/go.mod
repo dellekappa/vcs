@@ -282,7 +282,6 @@ require (
 )
 
 replace (
-	github.com/dellekappa/vc-go => ../../../forks/vc-go
 	github.com/trustbloc/vcs => ../..
 	github.com/trustbloc/vcs/component/credentialstatus => ../../component/credentialstatus
 	github.com/trustbloc/vcs/component/echo => ../../component/echo

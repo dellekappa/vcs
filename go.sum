@@ -152,6 +152,8 @@ github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 h1:rpfIENRNNilwHwZeG5+P150SMrnN
 github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0/go.mod h1:v57UDF4pDQJcEfFUCRop3lJL149eHGSe9Jvczhzjo/0=
 github.com/deepmap/oapi-codegen v1.16.3 h1:GT9G86SbQtT1r8ZB+4Cybi9VGdu1P5ieNvNdEoCSbrA=
 github.com/deepmap/oapi-codegen v1.16.3/go.mod h1:JD6ErqeX0nYnhdciLc61Konj3NBASREMlkHOgHn8WAM=
+github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b h1:r4XHw791J+0728vFLH1BCEfQHYSQ1iwqANqkPnISaIM=
+github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b/go.mod h1:gkeZLqvI+J1/3fsDKMz50yNTi0TMKSJ35ZgrTA6XBgg=
 github.com/dgraph-io/ristretto v0.1.1 h1:6CWw5tJNgpegArSHpNHJKldNeq03FQCwYvfMVWajOK8=
 github.com/dgraph-io/ristretto v0.1.1/go.mod h1:S1GPSBCYCIhmVNfcth17y2zZtQT6wzkzgwUve0VDWWA=
 github.com/dgryski/go-farm v0.0.0-20190423205320-6a90982ecee2 h1:tdlZCpZ/P9DhczCTSixgIKmwPv6+wP5DGjqLYw5SUiA=
