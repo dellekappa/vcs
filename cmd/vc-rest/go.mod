@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.61.2
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/deepmap/oapi-codegen v1.16.3
-	github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b
+	github.com/dellekappa/vc-go v0.0.0-20241119000845-24fd24a7ca4b
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/go-jose/go-jose/v3 v3.0.3
 	github.com/google/uuid v1.6.0
