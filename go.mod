@@ -20,7 +20,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/deepmap/oapi-codegen v1.16.3
-	github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b
+	github.com/dellekappa/vc-go v0.0.0-20241119000845-24fd24a7ca4b
 	github.com/fxamacker/cbor/v2 v2.7.0
 	github.com/getkin/kin-openapi v0.127.0
 	github.com/go-jose/go-jose/v3 v3.0.3
@@ -257,4 +257,9 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
+)
+
+replace (
+	github.com/trustbloc/did-go => github.com/dellekappa/did-go v0.0.0-20241118233943-1556b402413f
+	github.com/trustbloc/kms-go => github.com/dellekappa/kms-go v0.0.0-20241118233542-5ace9bb6d6bf
 )
