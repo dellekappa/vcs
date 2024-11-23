@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/samber/lo"
-	"github.com/trustbloc/kms-go/spi/kms"
 )
 
 // SignatureType type of signature used to sign vc.

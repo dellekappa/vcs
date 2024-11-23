@@ -17,13 +17,13 @@ import (
 	"strconv"
 	"strings"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	"github.com/dellekappa/vc-go/proof/defaults"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/dellekappa/vc-go/vermethod"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
 	"github.com/spf13/cobra"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
 
 	"github.com/trustbloc/vcs/internal/logfields"
@@ -31,7 +31,7 @@ import (
 	vccrypto "github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	"github.com/trustbloc/vcs/pkg/doc/vc/statustype"
 	"github.com/trustbloc/vcs/pkg/event/spi"
-	vcskms "github.com/trustbloc/vcs/pkg/kms"
+	vcskms "github.com/trustbloc/vcs/pkg/kcms"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"
 	"github.com/trustbloc/vcs/pkg/service/credentialstatus"

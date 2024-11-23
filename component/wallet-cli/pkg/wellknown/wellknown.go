@@ -14,10 +14,10 @@ import (
 	"log/slog"
 	"net/http"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/proof/defaults"
 	"github.com/dellekappa/vc-go/vermethod"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/valyala/fastjson"
 
 	issuerv1 "github.com/trustbloc/vcs/pkg/restapi/v1/issuer"

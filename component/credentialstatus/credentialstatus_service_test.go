@@ -19,20 +19,20 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/kcms-go/spi/kms"
+	longform "github.com/dellekappa/sidetree-go/pkg/vdr/sidetreelongform"
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/kms-go/spi/kms"
-	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 
+	timeutil "github.com/dellekappa/did-go/doc/util/time"
+	vdr2 "github.com/dellekappa/did-go/vdr"
+	vdr "github.com/dellekappa/did-go/vdr/api"
+	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/dellekappa/vc-go/verifiable"
-	timeutil "github.com/trustbloc/did-go/doc/util/time"
-	vdr2 "github.com/trustbloc/did-go/vdr"
-	vdr "github.com/trustbloc/did-go/vdr/api"
-	vdrmock "github.com/trustbloc/did-go/vdr/mock"
 
 	"github.com/trustbloc/vcs/component/credentialstatus/internal/testutil"
 	"github.com/trustbloc/vcs/pkg/cslmanager"

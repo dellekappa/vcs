@@ -17,9 +17,9 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/dellekappa/did-go/doc/did"
+	"github.com/dellekappa/did-go/doc/did/endpoint"
 	"github.com/google/uuid"
-	"github.com/trustbloc/did-go/doc/did"
-	"github.com/trustbloc/did-go/doc/did/endpoint"
 )
 
 const (

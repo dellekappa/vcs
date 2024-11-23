@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package signer
 
 import (
-	"github.com/trustbloc/kms-go/doc/jose"
+	"github.com/dellekappa/kcms-go/doc/jose"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 )

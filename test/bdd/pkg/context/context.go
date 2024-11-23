@@ -14,11 +14,11 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/dellekappa/did-go/method/httpbinding"
+	vdrpkg "github.com/dellekappa/did-go/vdr"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	longform "github.com/dellekappa/sidetree-go/pkg/vdr/sidetreelongform"
 	tlsutils "github.com/trustbloc/cmdutil-go/pkg/utils/tls"
-	"github.com/trustbloc/did-go/method/httpbinding"
-	vdrpkg "github.com/trustbloc/did-go/vdr"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
 
 	"github.com/trustbloc/vcs/pkg/profile"
 )

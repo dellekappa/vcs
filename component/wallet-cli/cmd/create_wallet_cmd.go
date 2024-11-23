@@ -10,12 +10,12 @@ import (
 	"fmt"
 	"log/slog"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	kmsapi "github.com/dellekappa/kcms-go/spi/kms"
+	storageapi "github.com/dellekappa/kcms-go/spi/storage"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/piprate/json-gold/ld"
 	"github.com/spf13/cobra"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	kmsapi "github.com/trustbloc/kms-go/spi/kms"
-	storageapi "github.com/trustbloc/kms-go/spi/storage"
-	"github.com/trustbloc/kms-go/wrapper/api"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/wallet"
 )

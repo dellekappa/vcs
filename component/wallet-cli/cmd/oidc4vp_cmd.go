@@ -17,12 +17,12 @@ import (
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/attestation"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/trustregistry"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	storageapi "github.com/dellekappa/kcms-go/spi/storage"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/henvic/httpretty"
 	"github.com/piprate/json-gold/ld"
 	"github.com/spf13/cobra"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	storageapi "github.com/trustbloc/kms-go/spi/storage"
-	"github.com/trustbloc/kms-go/wrapper/api"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/internal/formatter"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/oidc4vp"

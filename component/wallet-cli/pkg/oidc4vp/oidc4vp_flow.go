@@ -20,6 +20,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dellekappa/did-go/doc/did"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/kcms-go/doc/jose"
+	"github.com/dellekappa/kcms-go/suite/api"
 	didconfigclient "github.com/dellekappa/vc-go/didconfig/client"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/presexch"
@@ -28,16 +32,12 @@ import (
 	"github.com/dellekappa/vc-go/vermethod"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
-	"github.com/trustbloc/did-go/doc/did"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/kms-go/doc/jose"
-	"github.com/trustbloc/kms-go/wrapper/api"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/internal/presentation"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/attestation"
 	jwssigner "github.com/trustbloc/vcs/component/wallet-cli/pkg/signer"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/wallet"
-	kmssigner "github.com/trustbloc/vcs/pkg/kms/signer"
+	kmssigner "github.com/trustbloc/vcs/pkg/kcms/signer"
 )
 
 const (

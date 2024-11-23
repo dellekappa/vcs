@@ -16,19 +16,19 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dellekappa/kcms-go/doc/jose"
+	storageapi "github.com/dellekappa/kcms-go/spi/storage"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
-	"github.com/trustbloc/kms-go/doc/jose"
-	storageapi "github.com/trustbloc/kms-go/spi/storage"
-	"github.com/trustbloc/kms-go/wrapper/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
 	"go.uber.org/zap"
 
 	jwssigner "github.com/trustbloc/vcs/component/wallet-cli/pkg/signer"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/wallet"
-	kmssigner "github.com/trustbloc/vcs/pkg/kms/signer"
+	kmssigner "github.com/trustbloc/vcs/pkg/kcms/signer"
 )
 
 const (

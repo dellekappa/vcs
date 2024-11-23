@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package oidc4vc
 
 import (
-	util "github.com/trustbloc/did-go/doc/util/time"
+	util "github.com/dellekappa/did-go/doc/util/time"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"github.com/trustbloc/vcs/pkg/service/oidc4vp"

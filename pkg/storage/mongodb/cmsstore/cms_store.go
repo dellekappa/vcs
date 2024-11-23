@@ -4,13 +4,12 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-package arieskmsstore
+package cmsstore
 
 import (
 	"errors"
 	"fmt"
-
-	arieskms "github.com/dellekappa/kcms-go/kms"
+	cmsapi "github.com/dellekappa/kcms-go/spi/cms"
 	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,7 +22,7 @@ type Store struct {
 }
 
 const (
-	ariesKMSStoreName = "aries_kms_store"
+	cmsStoreName = "cms_store"
 )
 
 // NewStore initializes a Store.
@@ -36,16 +35,16 @@ type dataWrapper struct {
 	Bin []byte `bson:"bin,omitempty"`
 }
 
-// Put stores the given key under the given keysetID. Overwrites silently.
-func (s *Store) Put(keysetID string, key []byte) error {
-	coll := s.client.Database().Collection(ariesKMSStoreName)
+// Put stores the given cert under the given certID. Overwrites silently.
+func (s *Store) Put(certID string, key []byte) error {
+	coll := s.client.Database().Collection(cmsStoreName)
 
 	ctx, cancel := s.client.ContextWithTimeout()
 	defer cancel()
 
-	_, err := coll.UpdateByID(ctx, keysetID, bson.M{
+	_, err := coll.UpdateByID(ctx, certID, bson.M{
 		"$set": &dataWrapper{
-			ID:  keysetID,
+			ID:  certID,
 			Bin: key,
 		},
 	}, options.Update().SetUpsert(true))
@@ -56,21 +55,21 @@ func (s *Store) Put(keysetID string, key []byte) error {
 	return nil
 }
 
-// Get retrieves the key stored under the given keysetID. If no key is found,
-// the returned error is expected to wrap ErrKeyNotFound. KMS implementations
+// Get retrieves the cert stored under the given certID. If no cert is found,
+// the returned error is expected to wrap ErrCertNotFound. CMS implementations
 // may check to see if the error wraps that error type for certain operations.
-func (s *Store) Get(keysetID string) ([]byte, error) {
-	coll := s.client.Database().Collection(ariesKMSStoreName)
+func (s *Store) Get(certID string) ([]byte, error) {
+	coll := s.client.Database().Collection(cmsStoreName)
 
 	ctx, cancel := s.client.ContextWithTimeout()
 	defer cancel()
 
 	result := &dataWrapper{}
 
-	err := coll.FindOne(ctx, bson.M{"_id": keysetID}).Decode(result)
+	err := coll.FindOne(ctx, bson.M{"_id": certID}).Decode(result)
 	if errors.Is(err, mongo.ErrNoDocuments) {
 		return nil, fmt.Errorf("%w. Underlying error: %s",
-			arieskms.ErrKeyNotFound, err.Error())
+			cmsapi.ErrCertNotFound, err.Error())
 	}
 
 	if err != nil {
@@ -80,15 +79,15 @@ func (s *Store) Get(keysetID string) ([]byte, error) {
 	return result.Bin, nil
 }
 
-// Delete deletes the key stored under the given keysetID. A KeyManager will
+// Delete deletes the cert stored under the given certID. A CertManager will
 // assume that attempting to delete a non-existent key will not return an error.
-func (s *Store) Delete(keysetID string) error {
-	coll := s.client.Database().Collection(ariesKMSStoreName)
+func (s *Store) Delete(certID string) error {
+	coll := s.client.Database().Collection(cmsStoreName)
 
 	ctx, cancel := s.client.ContextWithTimeout()
 	defer cancel()
 
-	_, err := coll.DeleteOne(ctx, bson.M{"_id": keysetID})
+	_, err := coll.DeleteOne(ctx, bson.M{"_id": certID})
 	if err != nil {
 		return fmt.Errorf("failed to run DeleteOne command in MongoDB: %w", err)
 	}

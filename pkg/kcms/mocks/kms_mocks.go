@@ -7,9 +7,10 @@ package mocks
 import (
 	reflect "reflect"
 
+	jwk "github.com/dellekappa/kcms-go/doc/jose/jwk"
+	kms "github.com/dellekappa/kcms-go/spi/kms"
 	gomock "github.com/golang/mock/gomock"
-	jwk "github.com/trustbloc/kms-go/doc/jose/jwk"
-	kms "github.com/trustbloc/kms-go/spi/kms"
+
 	vc "github.com/trustbloc/vcs/pkg/doc/vc"
 	verifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 )

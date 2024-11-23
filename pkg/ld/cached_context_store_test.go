@@ -10,10 +10,10 @@ import (
 	"errors"
 	"testing"
 
+	ldcontext "github.com/dellekappa/did-go/doc/ld/context"
 	"github.com/golang/mock/gomock"
 	jsonld "github.com/piprate/json-gold/ld"
 	"github.com/stretchr/testify/require"
-	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
 
 	"github.com/trustbloc/vcs/pkg/ld"
 )

@@ -17,17 +17,17 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dellekappa/did-go/doc/did"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/dellekappa/vc-go/presexch"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/piprate/json-gold/ld"
-	"github.com/trustbloc/did-go/doc/did"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/kms-go/wrapper/api"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/internal/presentation"
 	jwssigner "github.com/trustbloc/vcs/component/wallet-cli/pkg/signer"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/wallet"
-	kmssigner "github.com/trustbloc/vcs/pkg/kms/signer"
+	kmssigner "github.com/trustbloc/vcs/pkg/kcms/signer"
 	"github.com/trustbloc/vcs/pkg/restapi/v1/refresh"
 )
 

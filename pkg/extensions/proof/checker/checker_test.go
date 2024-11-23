@@ -9,9 +9,9 @@ package checker_test
 import (
 	"testing"
 
+	"github.com/dellekappa/did-go/doc/ld/proof"
+	"github.com/dellekappa/kcms-go/doc/jose"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/did-go/doc/ld/proof"
-	"github.com/trustbloc/kms-go/doc/jose"
 	"github.com/veraison/go-cose"
 
 	"github.com/dellekappa/vc-go/proof/checker"

@@ -20,7 +20,9 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/deepmap/oapi-codegen v1.16.3
-	github.com/dellekappa/vc-go v0.0.0-20241119000845-24fd24a7ca4b
+	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f
+	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83
+	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8
 	github.com/fxamacker/cbor/v2 v2.7.0
 	github.com/getkin/kin-openapi v0.127.0
 	github.com/go-jose/go-jose/v3 v3.0.3
@@ -43,8 +45,6 @@ require (
 	github.com/tidwall/gjson v1.17.3
 	github.com/tidwall/sjson v1.2.5
 	github.com/trustbloc/bbs-signature-go v1.0.2
-	github.com/trustbloc/did-go v1.3.1-0.20241015091350-bb3317ba5bdd
-	github.com/trustbloc/kms-go v1.1.3-0.20241001141623-8d9510c6bb88
 	github.com/trustbloc/logutil-go v1.0.0-rc1
 	github.com/valyala/fastjson v1.6.4
 	github.com/veraison/go-cose v1.3.0
@@ -136,7 +136,6 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20240730141124-034f12af3bf6 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
-	github.com/google/tink/go v1.7.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0 // indirect
@@ -214,6 +213,7 @@ require (
 	github.com/teserakt-io/golang-ed25519 v0.0.0-20210104091850-3888c087a4c8 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
+	github.com/tink-crypto/tink-go/v2 v2.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -252,14 +252,9 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/grpc v1.66.1 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	google.golang.org/protobuf v1.35.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
-)
-
-replace (
-	github.com/trustbloc/did-go => github.com/dellekappa/did-go v0.0.0-20241118233943-1556b402413f
-	github.com/trustbloc/kms-go => github.com/dellekappa/kms-go v0.0.0-20241118233542-5ace9bb6d6bf
 )

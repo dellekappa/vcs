@@ -7,14 +7,14 @@ SPDX-License-Identifier: Apache-2.0
 package vcskms
 
 import (
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	mockwrapper "github.com/trustbloc/kms-go/mock/wrapper"
-	kmsapi "github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	mockwrapper "github.com/dellekappa/kcms-go/mock/wrapper"
+	kmsapi "github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
-	"github.com/trustbloc/vcs/pkg/kms"
-	"github.com/trustbloc/vcs/pkg/kms/signer"
+	"github.com/trustbloc/vcs/pkg/kcms"
+	"github.com/trustbloc/vcs/pkg/kcms/signer"
 )
 
 // MockKMS mocks kms.VCSKeyManager.
@@ -68,4 +68,4 @@ func (m *MockKMS) CreateCryptoKey(_ kmsapi.KeyType) (string, interface{}, error)
 	return "", nil, nil
 }
 
-var _ kms.VCSKeyManager = &MockKMS{}
+var _ kcms.VCSKeyManager = &MockKMS{}

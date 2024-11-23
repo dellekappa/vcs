@@ -15,12 +15,12 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/dellekappa/did-go/doc/did"
+	"github.com/dellekappa/did-go/doc/did/endpoint"
+	ldcontext "github.com/dellekappa/did-go/doc/ld/context"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/did-go/doc/did"
-	"github.com/trustbloc/did-go/doc/did/endpoint"
-	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	vdrmock "github.com/trustbloc/did-go/vdr/mock"
 
 	"github.com/trustbloc/vcs/pkg/internal/testutil"
 )

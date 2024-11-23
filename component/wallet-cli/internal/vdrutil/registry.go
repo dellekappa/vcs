@@ -11,13 +11,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/trustbloc/did-go/doc/did"
-	"github.com/trustbloc/did-go/method/jwk"
-	"github.com/trustbloc/did-go/method/key"
-	"github.com/trustbloc/did-go/method/web"
-	"github.com/trustbloc/did-go/vdr"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
+	"github.com/dellekappa/did-go/doc/did"
+	"github.com/dellekappa/did-go/method/jwk"
+	"github.com/dellekappa/did-go/method/key"
+	"github.com/dellekappa/did-go/method/web"
+	"github.com/dellekappa/did-go/vdr"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	longform "github.com/dellekappa/sidetree-go/pkg/vdr/sidetreelongform"
 )
 
 func NewRegistry(tls *tls.Config) (vdrapi.Registry, error) {

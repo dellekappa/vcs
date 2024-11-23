@@ -12,12 +12,12 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
+	timeutil "github.com/dellekappa/did-go/doc/util/time"
 	"github.com/google/uuid"
 	dctest "github.com/ory/dockertest/v3"
 	dc "github.com/ory/dockertest/v3/docker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	timeutil "github.com/trustbloc/did-go/doc/util/time"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 

@@ -11,10 +11,10 @@ import (
 	"fmt"
 	"net/http"
 
+	storageapi "github.com/dellekappa/kcms-go/spi/storage"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/piprate/json-gold/ld"
 	"github.com/spf13/cobra"
-	storageapi "github.com/trustbloc/kms-go/spi/storage"
-	"github.com/trustbloc/kms-go/wrapper/api"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/attestation"
 	"github.com/trustbloc/vcs/component/wallet-cli/pkg/wallet"

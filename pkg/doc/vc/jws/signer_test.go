@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/trustbloc/kms-go/doc/jose"
+	"github.com/dellekappa/kcms-go/doc/jose"
 )
 
 func TestNewSigner(t *testing.T) {

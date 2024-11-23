@@ -10,9 +10,9 @@ import (
 	"errors"
 	"testing"
 
+	mockldstore "github.com/dellekappa/did-go/doc/ld/mock"
+	ldstore "github.com/dellekappa/did-go/doc/ld/store"
 	"github.com/stretchr/testify/require"
-	mockldstore "github.com/trustbloc/did-go/doc/ld/mock"
-	ldstore "github.com/trustbloc/did-go/doc/ld/store"
 
 	"github.com/trustbloc/vcs/pkg/ld"
 )

@@ -12,10 +12,10 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
+	arieskms "github.com/dellekappa/kcms-go/kms"
 	dctest "github.com/ory/dockertest/v3"
 	dc "github.com/ory/dockertest/v3/docker"
 	"github.com/stretchr/testify/require"
-	arieskms "github.com/trustbloc/kms-go/kms"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 

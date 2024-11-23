@@ -11,8 +11,8 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/dellekappa/did-go/doc/util/time"
 	"github.com/dellekappa/vc-go/verifiable"
-	"github.com/trustbloc/did-go/doc/util/time"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"

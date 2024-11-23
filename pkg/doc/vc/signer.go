@@ -7,8 +7,8 @@ SPDX-License-Identifier: Apache-2.0
 package vc
 
 import (
+	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/vc-go/verifiable"
-	"github.com/trustbloc/kms-go/spi/kms"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 )

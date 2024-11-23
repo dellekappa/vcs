@@ -10,8 +10,8 @@ import (
 	"errors"
 	"fmt"
 
+	ldstore "github.com/dellekappa/did-go/doc/ld/store"
 	"github.com/google/uuid"
-	ldstore "github.com/trustbloc/did-go/doc/ld/store"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"

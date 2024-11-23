@@ -4,34 +4,36 @@ Copyright SecureKey Technologies Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-package kms
+package kcms
 
 import (
 	"context"
 	"fmt"
+	cmsapi "github.com/dellekappa/kcms-go/spi/cms"
+	"github.com/trustbloc/vcs/pkg/storage/mongodb/cmsstore"
 	"io"
 	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/trustbloc/did-go/legacy/mem"
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	arieskms "github.com/trustbloc/kms-go/kms"
-	"github.com/trustbloc/kms-go/secretlock/local"
-	kmsapi "github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/spi/secretlock"
-	"github.com/trustbloc/kms-go/wrapper/api"
-	"github.com/trustbloc/kms-go/wrapper/localsuite"
-	"github.com/trustbloc/kms-go/wrapper/websuite"
+	"github.com/dellekappa/did-go/legacy/mem"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	arieskms "github.com/dellekappa/kcms-go/kms"
+	"github.com/dellekappa/kcms-go/secretlock/local"
+	kmsapi "github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/spi/secretlock"
+	"github.com/dellekappa/kcms-go/suite/api"
+	"github.com/dellekappa/kcms-go/suite/localsuite"
+	"github.com/dellekappa/kcms-go/suite/websuite"
 
-	awssvc "github.com/trustbloc/vcs/pkg/kms/aws"
+	awssvc "github.com/trustbloc/vcs/pkg/kcms/aws"
 	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 	"github.com/trustbloc/vcs/pkg/storage/mongodb/arieskmsstore"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
-	"github.com/trustbloc/vcs/pkg/kms/key"
-	"github.com/trustbloc/vcs/pkg/kms/signer"
+	"github.com/trustbloc/vcs/pkg/kcms/key"
+	"github.com/trustbloc/vcs/pkg/kcms/signer"
 )
 
 // nolint: gochecknoglobals
@@ -79,7 +81,7 @@ func GetAriesKeyManager(suite api.Suite, kmsType Type, metrics metricsProvider) 
 func NewAriesKeyManager(cfg *Config, metrics metricsProvider) (*KeyManager, error) {
 	switch cfg.KMSType {
 	case Local:
-		suite, err := createLocalKMS(cfg)
+		suite, err := createLocalKCMSSuite(cfg)
 		if err != nil {
 			return nil, err
 		}
@@ -125,7 +127,7 @@ func NewAriesKeyManager(cfg *Config, metrics metricsProvider) (*KeyManager, erro
 	return nil, fmt.Errorf("unsupported kms type: %s", cfg.KMSType)
 }
 
-func createLocalKMS(cfg *Config) (api.Suite, error) {
+func createLocalKCMSSuite(cfg *Config) (api.Suite, error) {
 	secretLockService, err := createLocalSecretLock(
 		cfg.SecretLockKeyPath,
 		cfg.MasterKey,
@@ -134,12 +136,17 @@ func createLocalKMS(cfg *Config) (api.Suite, error) {
 		return nil, err
 	}
 
-	kmsStore, err := createStore(cfg.DBType, cfg.DBURL, cfg.DBName)
+	kmsStore, err := createKMSStore(cfg.DBType, cfg.DBURL, cfg.DBName)
 	if err != nil {
 		return nil, err
 	}
 
-	return localsuite.NewLocalCryptoSuite(keystoreLocalPrimaryKeyURI, kmsStore, secretLockService)
+	cmsStore, err := createCMSStore(cfg.DBType, cfg.DBURL, cfg.DBName)
+	if err != nil {
+		return nil, err
+	}
+
+	return localsuite.NewLocalKCMSSuite(keystoreLocalPrimaryKeyURI, kmsStore, cmsStore, secretLockService)
 }
 
 func (km *KeyManager) SupportedKeyTypes() []kmsapi.KeyType {
@@ -222,7 +229,7 @@ func createLocalSecretLock(
 	return secretLock, nil
 }
 
-func createStore(typ, url, prefix string) (kmsapi.Store, error) {
+func createKMSStore(typ, url, prefix string) (kmsapi.Store, error) {
 	switch {
 	case strings.EqualFold(typ, storageTypeMemOption):
 		return arieskms.NewAriesProviderWrapper(mem.NewProvider())
@@ -233,6 +240,22 @@ func createStore(typ, url, prefix string) (kmsapi.Store, error) {
 		}
 
 		return arieskmsstore.NewStore(mongoClient), nil
+	default:
+		return nil, fmt.Errorf("not supported database type: %s", typ)
+	}
+}
+
+func createCMSStore(typ, url, prefix string) (cmsapi.Store, error) {
+	switch {
+	case strings.EqualFold(typ, storageTypeMemOption):
+		return nil, fmt.Errorf("database type %s not yet implemented", typ)
+	case strings.EqualFold(typ, storageTypeMongoDBOption):
+		mongoClient, err := mongodb.New(url, fmt.Sprintf("%s%s", prefix, "cms_db"))
+		if err != nil {
+			return nil, err
+		}
+
+		return cmsstore.NewStore(mongoClient), nil
 	default:
 		return nil, fmt.Errorf("not supported database type: %s", typ)
 	}

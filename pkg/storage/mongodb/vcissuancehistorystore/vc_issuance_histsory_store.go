@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"time"
 
+	timeutil "github.com/dellekappa/did-go/doc/util/time"
 	"github.com/samber/lo"
-	timeutil "github.com/trustbloc/did-go/doc/util/time"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
 

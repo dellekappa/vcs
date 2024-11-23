@@ -17,6 +17,9 @@ import (
 	"sync"
 	"time"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/kcms-go/doc/jose"
+	kmsapi "github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/vc-go/dataintegrity"
 	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
 	"github.com/dellekappa/vc-go/dataintegrity/suite/eddsa2022"
@@ -28,9 +31,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/kms-go/doc/jose"
-	kmsapi "github.com/trustbloc/kms-go/spi/kms"
 	"github.com/trustbloc/logutil-go/pkg/log"
 	"github.com/valyala/fastjson"
 
@@ -39,7 +39,7 @@ import (
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"github.com/trustbloc/vcs/pkg/event/spi"
-	vcskms "github.com/trustbloc/vcs/pkg/kms"
+	vcskms "github.com/trustbloc/vcs/pkg/kcms"
 	noopMetricsProvider "github.com/trustbloc/vcs/pkg/observability/metrics/noop"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"

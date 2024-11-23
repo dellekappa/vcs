@@ -17,13 +17,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/trustbloc/did-go/doc/did"
-	"github.com/trustbloc/did-go/doc/did/endpoint"
-	"github.com/trustbloc/did-go/method/key"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	kmsapi "github.com/trustbloc/kms-go/spi/kms"
-	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
+	"github.com/dellekappa/did-go/doc/did"
+	"github.com/dellekappa/did-go/doc/did/endpoint"
+	"github.com/dellekappa/did-go/method/key"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	kmsapi "github.com/dellekappa/kcms-go/spi/kms"
+	longform "github.com/dellekappa/sidetree-go/pkg/vdr/sidetreelongform"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
@@ -331,12 +331,12 @@ func newVerMethods(count int, km KeysCreator, verMethodType vcsverifiable.Signat
 			return nil, fmt.Errorf("failed to create key: %w", err)
 		}
 
-		if cfg.didDomain != "" {
-			err = createAndAppendX509Cert(cfg.didDomain, j)
-			if err != nil {
-				return nil, fmt.Errorf("failed to create verification method: %w", err)
-			}
-		}
+		//if cfg.didDomain != "" {
+		//	err = createAndAppendX509Cert(cfg.didDomain, j)
+		//	if err != nil {
+		//		return nil, fmt.Errorf("failed to create verification method: %w", err)
+		//	}
+		//}
 
 		// TODO sidetree doesn't support VM controller: https://github.com/decentralized-identity/sidetree/issues/1010
 		vm, err := did.NewVerificationMethodFromJWK(

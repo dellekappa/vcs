@@ -13,13 +13,13 @@ import (
 	"errors"
 	"time"
 
+	utiltime "github.com/dellekappa/did-go/doc/util/time"
 	"github.com/dellekappa/vc-go/verifiable"
-	utiltime "github.com/trustbloc/did-go/doc/util/time"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
-	vcskms "github.com/trustbloc/vcs/pkg/kms"
+	vcskms "github.com/trustbloc/vcs/pkg/kcms"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"
 )

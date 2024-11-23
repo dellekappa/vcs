@@ -26,7 +26,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/btcsuite/btcd/btcec"
-	arieskms "github.com/trustbloc/kms-go/spi/kms"
+	arieskms "github.com/dellekappa/kcms-go/spi/kms"
 )
 
 type awsClient interface {

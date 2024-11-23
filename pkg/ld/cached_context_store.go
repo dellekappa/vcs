@@ -9,9 +9,9 @@ SPDX-License-Identifier: Apache-2.0
 package ld
 
 import (
+	ldcontext "github.com/dellekappa/did-go/doc/ld/context"
+	ldstore "github.com/dellekappa/did-go/doc/ld/store"
 	jsonld "github.com/piprate/json-gold/ld"
-	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
-	ldstore "github.com/trustbloc/did-go/doc/ld/store"
 )
 
 const (

@@ -28,6 +28,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/kcms-go/doc/jose"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/proof/testsupport"
 	verifiable2 "github.com/dellekappa/vc-go/verifiable"
@@ -40,7 +41,6 @@ import (
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/kms-go/doc/jose"
 	"github.com/veraison/go-cose"
 	nooptracer "go.opentelemetry.io/otel/trace/noop"
 

@@ -239,9 +239,9 @@ update-vc:
 update-kms:
 	@find . -type d \( -name build -prune \) -o -name go.mod -print | while read -r gomod_path; do \
 		dir_path=$$(dirname "$$gomod_path"); \
-		if grep -q "github.com/trustbloc/kms-go" "$$gomod_path"; then \
+		if grep -q "github.com/dellekappa/kcms-go" "$$gomod_path"; then \
 			echo "Executing 'updating vc' in directory: $$dir_path"; \
-			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/trustbloc/kms-go@$(KMS_FRAMEWORK_VERSION) && go mod tidy) || exit 1; \
+			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/dellekappa/kcms-go@$(KMS_FRAMEWORK_VERSION) && go mod tidy) || exit 1; \
 		fi; \
 	done
 
@@ -249,9 +249,9 @@ update-kms:
 update-did:
 	@find . -type d \( -name build -prune \) -o -name go.mod -print | while read -r gomod_path; do \
 		dir_path=$$(dirname "$$gomod_path"); \
-		if grep -q "github.com/trustbloc/did-go" "$$gomod_path"; then \
+		if grep -q "github.com/dellekappa/did-go" "$$gomod_path"; then \
 			echo "Executing 'updating vc' in directory: $$dir_path"; \
-			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/trustbloc/did-go@$(DID_GO_VERSION) && go mod tidy) || exit 1; \
+			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/dellekappa/did-go@$(DID_GO_VERSION) && go mod tidy) || exit 1; \
 		fi; \
 	done
 
@@ -259,9 +259,9 @@ update-did:
 update-sidetree:
 	@find . -type d \( -name build -prune \) -o -name go.mod -print | while read -r gomod_path; do \
 		dir_path=$$(dirname "$$gomod_path"); \
-		if grep -q "github.com/trustbloc/sidetree-go" "$$gomod_path"; then \
+		if grep -q "github.com/dellekappa/sidetree-go" "$$gomod_path"; then \
 			echo "Executing 'updating vc' in directory: $$dir_path"; \
-			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/trustbloc/sidetree-go@$(SIDE_TREE_VERSION) && go mod tidy) || exit 1; \
+			(cd "$$dir_path" && GOPROXY=$(GOPROXY) go get github.com/dellekappa/sidetree-go@$(SIDE_TREE_VERSION) && go mod tidy) || exit 1; \
 		fi; \
 	done
 

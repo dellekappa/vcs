@@ -9,7 +9,10 @@ go 1.22.1
 toolchain go1.22.4
 
 require (
-	github.com/dellekappa/vc-go v0.0.0-20241030110518-13476d9f7d3b
+	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f
+	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83
+	github.com/dellekappa/sidetree-go v0.0.0-20241123093113-8f4592fa7b94
+	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8
 	github.com/google/uuid v1.6.0
 	github.com/greenpau/go-calculator v1.0.1
 	github.com/imroc/req/v3 v3.42.0
@@ -18,10 +21,7 @@ require (
 	github.com/piprate/json-gold v0.5.1-0.20230111113000-6ddbe6e6f19f
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/samber/lo v1.47.0
-	github.com/trustbloc/did-go v1.3.1-0.20241015091350-bb3317ba5bdd
-	github.com/trustbloc/kms-go v1.1.3-0.20241001141623-8d9510c6bb88
 	github.com/trustbloc/logutil-go v1.0.0
-	github.com/trustbloc/sidetree-go v1.0.1-0.20240219121130-f4260aff7104
 	github.com/trustbloc/vcs v0.1.9-0.20230210204445-f2870a36f0ea
 	github.com/trustbloc/vcs/component/wallet-cli v0.0.0-20240103173902-7fbe030659b2
 	github.com/trustbloc/vcs/test/bdd v0.0.0-00010101000000-000000000000
@@ -102,11 +102,9 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/glog v1.2.2 // indirect
 	github.com/golang/mock v1.6.0 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20240730141124-034f12af3bf6 // indirect
 	github.com/google/pprof v0.0.0-20230901174712-0191c66da455 // indirect
-	github.com/google/tink/go v1.7.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0 // indirect
@@ -190,6 +188,7 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
+	github.com/tink-crypto/tink-go/v2 v2.2.0 // indirect
 	github.com/trustbloc/bbs-signature-go v1.0.2 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
@@ -239,7 +238,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/grpc v1.66.1 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	google.golang.org/protobuf v1.35.2 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect

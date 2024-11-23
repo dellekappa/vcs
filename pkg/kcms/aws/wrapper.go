@@ -7,10 +7,10 @@ package aws
 
 import (
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	"github.com/trustbloc/kms-go/doc/jose/jwk/jwksupport"
-	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk/jwksupport"
+	"github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
 )
 
 // NewSuite returns a api.Suite built on top of aws kms.
@@ -90,6 +90,14 @@ func (s *suiteImpl) KMSCryptoVerifier() (api.KMSCryptoVerifier, error) {
 
 func (s *suiteImpl) KMSCryptoSigner() (api.KMSCryptoSigner, error) {
 	return &signer{svc: s.svc}, nil
+}
+
+func (s *suiteImpl) CMSCertIssuer() (api.CMSCertIssuer, error) {
+	return nil, api.ErrNotImplemented
+}
+
+func (s *suiteImpl) FixedKeyCertIssuer(kid string) (api.FixedKeyCertIssuer, error) {
+	return nil, api.ErrNotImplemented
 }
 
 type signer struct {

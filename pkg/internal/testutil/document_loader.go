@@ -10,11 +10,11 @@ import (
 	_ "embed" //nolint:gci // required for go:embed
 	"testing"
 
+	ldcontext "github.com/dellekappa/did-go/doc/ld/context"
+	ld "github.com/dellekappa/did-go/doc/ld/documentloader"
+	mockldstore "github.com/dellekappa/did-go/doc/ld/mock"
+	ldstore "github.com/dellekappa/did-go/doc/ld/store"
 	"github.com/stretchr/testify/require"
-	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
-	ld "github.com/trustbloc/did-go/doc/ld/documentloader"
-	mockldstore "github.com/trustbloc/did-go/doc/ld/mock"
-	ldstore "github.com/trustbloc/did-go/doc/ld/store"
 )
 
 // nolint:gochecknoglobals // embedded test contexts

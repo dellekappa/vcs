@@ -9,9 +9,9 @@ package diddoc
 import (
 	"testing"
 
+	diddoc "github.com/dellekappa/did-go/doc/did"
+	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/stretchr/testify/require"
-	diddoc "github.com/trustbloc/did-go/doc/did"
-	vdrmock "github.com/trustbloc/did-go/vdr/mock"
 )
 
 const (

@@ -11,7 +11,7 @@ import (
 	"reflect"
 	"testing"
 
-	mockwrapper "github.com/trustbloc/kms-go/mock/wrapper"
+	mockwrapper "github.com/dellekappa/kcms-go/mock/wrapper"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	noopMetricsProvider "github.com/trustbloc/vcs/pkg/observability/metrics/noop"
 )

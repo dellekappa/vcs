@@ -9,7 +9,7 @@ package dataprotect
 import (
 	"context"
 
-	"github.com/trustbloc/kms-go/wrapper/api"
+	"github.com/dellekappa/kcms-go/suite/api"
 )
 
 //go:generate mockgen -source dataprotect.go -destination dataprotect_mocks_test.go -package dataprotect_test

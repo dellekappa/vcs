@@ -16,16 +16,16 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/golang/mock/gomock"
 	"github.com/piprate/json-gold/ld"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/kms-go/spi/kms"
 
 	"github.com/trustbloc/vcs/internal/mock/vcskms"
 
+	"github.com/dellekappa/did-go/doc/did"
+	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/dellekappa/vc-go/verifiable"
-	"github.com/trustbloc/did-go/doc/did"
-	vdrmock "github.com/trustbloc/did-go/vdr/mock"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/bitstring"

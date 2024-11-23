@@ -21,12 +21,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	arieskms "github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	arieskms "github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
 )
 
 func TestSign(t *testing.T) {

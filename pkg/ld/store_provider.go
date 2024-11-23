@@ -9,7 +9,7 @@ package ld
 import (
 	"fmt"
 
-	ldstoreapi "github.com/trustbloc/did-go/doc/ld/store"
+	ldstoreapi "github.com/dellekappa/did-go/doc/ld/store"
 
 	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 	"github.com/trustbloc/vcs/pkg/storage/mongodb/ldstore"

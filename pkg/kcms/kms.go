@@ -6,13 +6,13 @@ SPDX-License-Identifier: Apache-2.0
 
 //go:generate mockgen -destination mocks/kms_mocks.go -self_package mocks -package mocks -source=kms.go -mock_names VCSKeyManager=MockVCSKeyManager
 
-package kms
+package kcms
 
 import (
 	"net/http"
 
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	"github.com/trustbloc/kms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	"github.com/dellekappa/kcms-go/spi/kms"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"

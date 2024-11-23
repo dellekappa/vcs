@@ -21,7 +21,7 @@ import (
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vccrypto "github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	"github.com/trustbloc/vcs/pkg/event/spi"
-	vcskms "github.com/trustbloc/vcs/pkg/kms"
+	vcskms "github.com/trustbloc/vcs/pkg/kcms"
 	"github.com/trustbloc/vcs/pkg/lifecycle"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/service/credentialstatus"

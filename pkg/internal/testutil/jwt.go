@@ -9,16 +9,16 @@ package testutil
 import (
 	"testing"
 
+	"github.com/dellekappa/did-go/doc/did"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	vdrmock "github.com/dellekappa/did-go/vdr/mock"
+	"github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/proof/creator"
 	"github.com/dellekappa/vc-go/proof/jwtproofs/eddsa"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/did-go/doc/did"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	vdrmock "github.com/trustbloc/did-go/vdr/mock"
-	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
 )
 
 type SignedClaimsJWTResult struct {

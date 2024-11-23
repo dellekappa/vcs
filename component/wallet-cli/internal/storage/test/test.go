@@ -10,9 +10,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/dellekappa/kcms-go/spi/storage"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/kms-go/spi/storage"
 )
 
 // TestAll tests common storage functionality.

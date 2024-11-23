@@ -20,14 +20,14 @@ import (
 	"github.com/dellekappa/vc-go/jwt"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
-	"github.com/trustbloc/vcs/pkg/kms"
+	"github.com/trustbloc/vcs/pkg/kcms"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/v1/common"
 	"github.com/trustbloc/vcs/pkg/restapi/v1/issuer"
 )
 
 type kmsRegistry interface {
-	GetKeyManager(config *kms.Config) (kms.VCSKeyManager, error)
+	GetKeyManager(config *kcms.Config) (kcms.VCSKeyManager, error)
 }
 
 type cryptoJWTSigner interface {

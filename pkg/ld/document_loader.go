@@ -10,10 +10,10 @@ import (
 	_ "embed" //nolint:gci // required for go:embed
 	"fmt"
 
+	ldcontext "github.com/dellekappa/did-go/doc/ld/context"
+	lddocloader "github.com/dellekappa/did-go/doc/ld/documentloader"
+	ldstore "github.com/dellekappa/did-go/doc/ld/store"
 	jsonld "github.com/piprate/json-gold/ld"
-	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
-	lddocloader "github.com/trustbloc/did-go/doc/ld/documentloader"
-	ldstore "github.com/trustbloc/did-go/doc/ld/store"
 )
 
 // nolint:gochecknoglobals //embedded contexts

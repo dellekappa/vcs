@@ -18,7 +18,7 @@ import (
 
 	"github.com/trustbloc/vcs/cmd/common"
 	"github.com/trustbloc/vcs/pkg/event/spi"
-	"github.com/trustbloc/vcs/pkg/kms"
+	"github.com/trustbloc/vcs/pkg/kcms"
 	"github.com/trustbloc/vcs/pkg/observability/tracing"
 	profilereader "github.com/trustbloc/vcs/pkg/profile/reader"
 )
@@ -487,7 +487,7 @@ type httpParameters struct {
 }
 
 type kmsParameters struct {
-	kmsType                  kms.Type
+	kmsType                  kcms.Type
 	kmsEndpoint              string
 	kmsRegion                string
 	kmsSecretsDatabaseType   string
@@ -946,7 +946,7 @@ func getKMSParameters(cmd *cobra.Command) (*kmsParameters, error) {
 		return nil, err
 	}
 
-	kmsType := kms.Type(kmsTypeStr)
+	kmsType := kcms.Type(kmsTypeStr)
 
 	if !supportedKmsType(kmsType) {
 		return nil, fmt.Errorf("unsupported kms type: %s", kmsType)
@@ -962,7 +962,7 @@ func getKMSParameters(cmd *cobra.Command) (*kmsParameters, error) {
 	masterKey := cmdutils.GetUserSetOptionalVarFromString(cmd, masterKeyFlagName, masterKeyEnvKey)
 
 	keyDatabaseType, err := cmdutils.GetUserSetVarFromString(cmd, kmsSecretsDatabaseTypeFlagName,
-		kmsSecretsDatabaseTypeEnvKey, kmsType != kms.Local)
+		kmsSecretsDatabaseTypeEnvKey, kmsType != kcms.Local)
 	if err != nil {
 		return nil, err
 	}
@@ -984,8 +984,8 @@ func getKMSParameters(cmd *cobra.Command) (*kmsParameters, error) {
 	}, nil
 }
 
-func supportedKmsType(kmsType kms.Type) bool {
-	if kmsType != kms.Local && kmsType != kms.Web && kmsType != kms.AWS {
+func supportedKmsType(kmsType kcms.Type) bool {
+	if kmsType != kcms.Local && kmsType != kcms.Web && kmsType != kcms.AWS {
 		return false
 	}
 

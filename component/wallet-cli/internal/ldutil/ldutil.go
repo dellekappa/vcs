@@ -12,12 +12,12 @@ import (
 	"fmt"
 	"net/http"
 
+	ldcontext "github.com/dellekappa/did-go/doc/ld/context"
+	"github.com/dellekappa/did-go/doc/ld/context/remote"
+	ld "github.com/dellekappa/did-go/doc/ld/documentloader"
+	ldstore "github.com/dellekappa/did-go/doc/ld/store"
+	"github.com/dellekappa/kcms-go/spi/storage"
 	jsonld "github.com/piprate/json-gold/ld"
-	ldcontext "github.com/trustbloc/did-go/doc/ld/context"
-	"github.com/trustbloc/did-go/doc/ld/context/remote"
-	ld "github.com/trustbloc/did-go/doc/ld/documentloader"
-	ldstore "github.com/trustbloc/did-go/doc/ld/store"
-	"github.com/trustbloc/kms-go/spi/storage"
 )
 
 // nolint:gochecknoglobals //embedded test contexts

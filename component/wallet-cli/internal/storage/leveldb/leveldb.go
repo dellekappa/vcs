@@ -15,7 +15,7 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 
-	"github.com/trustbloc/kms-go/spi/storage"
+	"github.com/dellekappa/kcms-go/spi/storage"
 )
 
 const (

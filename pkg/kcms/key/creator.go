@@ -9,9 +9,9 @@ package key //nolint: cyclop
 import (
 	"fmt"
 
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	"github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
 )
 
 // JWKKeyCreator creates a new key of the given type using a given key manager, returning the key's ID

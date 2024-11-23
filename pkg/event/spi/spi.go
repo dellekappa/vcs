@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"time"
 
-	utiltime "github.com/trustbloc/did-go/doc/util/time"
+	utiltime "github.com/dellekappa/did-go/doc/util/time"
 	"github.com/trustbloc/logutil-go/pkg/log"
 )
 

@@ -11,6 +11,9 @@ import (
 	"fmt"
 	"time"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/presexch"
 	"github.com/dellekappa/vc-go/verifiable"
@@ -18,9 +21,6 @@ import (
 	"github.com/fxamacker/cbor/v2"
 	"github.com/google/uuid"
 	"github.com/piprate/json-gold/ld"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
 	"github.com/veraison/go-cose"
 
 	jwssigner "github.com/trustbloc/vcs/component/wallet-cli/pkg/signer"
@@ -28,8 +28,8 @@ import (
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vccrypto "github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	vcs "github.com/trustbloc/vcs/pkg/doc/verifiable"
-	vcskms "github.com/trustbloc/vcs/pkg/kms"
-	kmssigner "github.com/trustbloc/vcs/pkg/kms/signer"
+	vcskms "github.com/trustbloc/vcs/pkg/kcms"
+	kmssigner "github.com/trustbloc/vcs/pkg/kcms/signer"
 	"github.com/trustbloc/vcs/pkg/observability/metrics/noop"
 )
 

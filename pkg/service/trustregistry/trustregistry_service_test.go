@@ -17,6 +17,8 @@ import (
 	"testing"
 	"time"
 
+	utiltime "github.com/dellekappa/did-go/doc/util/time"
+	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/proof/checker"
 	"github.com/dellekappa/vc-go/proof/testsupport"
@@ -24,8 +26,6 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
-	utiltime "github.com/trustbloc/did-go/doc/util/time"
-	"github.com/trustbloc/kms-go/spi/kms"
 
 	"github.com/trustbloc/vcs/pkg/internal/testutil"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"

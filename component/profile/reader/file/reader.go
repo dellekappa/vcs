@@ -16,18 +16,18 @@ import (
 	"path/filepath"
 	"reflect"
 
+	"github.com/dellekappa/did-go/method/jwk"
+	"github.com/dellekappa/did-go/method/key"
+	vdrpkg "github.com/dellekappa/did-go/vdr"
+	longform "github.com/dellekappa/sidetree-go/pkg/vdr/sidetreelongform"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/cobra"
 	cmdutils "github.com/trustbloc/cmdutil-go/pkg/utils/cmd" //nolint:typecheck
-	"github.com/trustbloc/did-go/method/jwk"
-	"github.com/trustbloc/did-go/method/key"
-	vdrpkg "github.com/trustbloc/did-go/vdr"
-	"github.com/trustbloc/logutil-go/pkg/log" //nolint:typecheck
-	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
+	"github.com/trustbloc/logutil-go/pkg/log"                //nolint:typecheck
 
 	"github.com/trustbloc/vcs/internal/logfields"
-	vcskms "github.com/trustbloc/vcs/pkg/kms"
+	vcskms "github.com/trustbloc/vcs/pkg/kcms"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"
 )

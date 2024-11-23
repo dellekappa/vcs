@@ -10,16 +10,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/trustbloc/did-go/doc/did"
-	"github.com/trustbloc/did-go/method/jwk"
-	didkey "github.com/trustbloc/did-go/method/key"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
-	longform "github.com/trustbloc/sidetree-go/pkg/vdr/sidetreelongform"
+	"github.com/dellekappa/did-go/doc/did"
+	"github.com/dellekappa/did-go/method/jwk"
+	didkey "github.com/dellekappa/did-go/method/key"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
+	longform "github.com/dellekappa/sidetree-go/pkg/vdr/sidetreelongform"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
-	"github.com/trustbloc/vcs/pkg/kms/key"
+	"github.com/trustbloc/vcs/pkg/kcms/key"
 )
 
 type CreateResult struct {

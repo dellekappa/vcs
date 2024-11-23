@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
-	vcskms "github.com/trustbloc/vcs/pkg/kms"
+	vcskms "github.com/trustbloc/vcs/pkg/kcms"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"
 )

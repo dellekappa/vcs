@@ -13,8 +13,8 @@ import (
 	"github.com/veraison/go-cose"
 	"testing"
 
+	"github.com/dellekappa/did-go/doc/did"
 	"github.com/dellekappa/vc-go/verifiable"
-	"github.com/trustbloc/did-go/doc/did"
 )
 
 func TestGetVerificationMethodFromProof(t *testing.T) {

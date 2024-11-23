@@ -12,19 +12,19 @@ import (
 	"errors"
 	"testing"
 
+	ariesmockstorage "github.com/dellekappa/did-go/legacy/mock/storage"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	arieskms "github.com/dellekappa/kcms-go/kms"
+	mockwrapper "github.com/dellekappa/kcms-go/mock/wrapper"
+	"github.com/dellekappa/kcms-go/secretlock/noop"
+	"github.com/dellekappa/kcms-go/suite/api"
+	"github.com/dellekappa/kcms-go/suite/localsuite"
 	"github.com/stretchr/testify/require"
-	ariesmockstorage "github.com/trustbloc/did-go/legacy/mock/storage"
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	arieskms "github.com/trustbloc/kms-go/kms"
-	mockwrapper "github.com/trustbloc/kms-go/mock/wrapper"
-	"github.com/trustbloc/kms-go/secretlock/noop"
-	"github.com/trustbloc/kms-go/wrapper/api"
-	"github.com/trustbloc/kms-go/wrapper/localsuite"
 
+	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/trustbloc/bbs-signature-go/bbs12381g2pub"
-	"github.com/trustbloc/kms-go/spi/kms"
 
-	"github.com/trustbloc/vcs/pkg/kms/key"
+	"github.com/trustbloc/vcs/pkg/kcms/key"
 )
 
 func TestJWKKeyCreator(t *testing.T) {

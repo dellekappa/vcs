@@ -4,7 +4,7 @@ Copyright SecureKey Technologies Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-package kms_test
+package kcms_test
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/stretchr/testify/assert"
 
-	kms2 "github.com/trustbloc/vcs/pkg/kms"
+	kms2 "github.com/trustbloc/vcs/pkg/kcms"
 )
 
 func TestResolver(t *testing.T) {

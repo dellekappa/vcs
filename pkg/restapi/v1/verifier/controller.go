@@ -20,6 +20,7 @@ import (
 	"strings"
 	"time"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	"github.com/dellekappa/vc-go/jwt"
 	"github.com/dellekappa/vc-go/presexch"
 	"github.com/dellekappa/vc-go/proof/defaults"
@@ -28,7 +29,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
 	"github.com/valyala/fastjson"
 	"go.opentelemetry.io/otel/attribute"
@@ -41,7 +41,7 @@ import (
 	"github.com/trustbloc/vcs/pkg/doc/vp"
 	"github.com/trustbloc/vcs/pkg/event/spi"
 	"github.com/trustbloc/vcs/pkg/internal/common/diddoc"
-	"github.com/trustbloc/vcs/pkg/kms"
+	"github.com/trustbloc/vcs/pkg/kcms"
 	noopMetricsProvider "github.com/trustbloc/vcs/pkg/observability/metrics/noop"
 	"github.com/trustbloc/vcs/pkg/observability/tracing/attributeutil"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
@@ -95,10 +95,10 @@ type PresentationDefinition = json.RawMessage
 
 var _ ServerInterface = (*Controller)(nil) // make sure Controller implements ServerInterface
 
-type kmsManager = kms.VCSKeyManager
+type kmsManager = kcms.VCSKeyManager
 
 type kmsRegistry interface {
-	GetKeyManager(config *kms.Config) (kmsManager, error)
+	GetKeyManager(config *kcms.Config) (kmsManager, error)
 }
 
 type profileService interface {

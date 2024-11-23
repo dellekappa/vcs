@@ -12,7 +12,7 @@ import (
 	"fmt"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
-	"github.com/trustbloc/vcs/pkg/kms"
+	"github.com/trustbloc/vcs/pkg/kcms"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"
 )
@@ -99,7 +99,7 @@ func MapToDIDMethod(method profileapi.Method) (DIDMethod, error) {
 			method, DIDMethodKey, DIDMethodWeb, DIDMethodOrb)
 }
 
-func ValidateKMSConfig(config *KMSConfig) (*kms.Config, error) {
+func ValidateKMSConfig(config *KMSConfig) (*kcms.Config, error) {
 	if config == nil {
 		return nil, nil //nolint: nilnil
 	}
@@ -109,12 +109,12 @@ func ValidateKMSConfig(config *KMSConfig) (*kms.Config, error) {
 		return nil, resterr.NewValidationError(resterr.InvalidValue, kmsConfigType, err)
 	}
 
-	if kmsType == kms.AWS || kmsType == kms.Web {
+	if kmsType == kcms.AWS || kmsType == kcms.Web {
 		if config.Endpoint == nil {
 			return nil, resterr.NewValidationError(resterr.InvalidValue, kmsConfigEndpoint,
 				fmt.Errorf("enpoint is required for %s kms", config.Type))
 		}
-		return &kms.Config{
+		return &kcms.Config{
 			KMSType:  kmsType,
 			Endpoint: *config.Endpoint,
 		}, nil
@@ -140,7 +140,7 @@ func ValidateKMSConfig(config *KMSConfig) (*kms.Config, error) {
 			fmt.Errorf("dbPrefix is required for %s kms", config.Type))
 	}
 
-	return &kms.Config{
+	return &kcms.Config{
 		KMSType:           kmsType,
 		SecretLockKeyPath: *config.SecretLockKeyPath,
 		DBType:            *config.DbType,
@@ -149,27 +149,27 @@ func ValidateKMSConfig(config *KMSConfig) (*kms.Config, error) {
 	}, nil
 }
 
-func ValidateKMSType(kmsType KMSConfigType) (kms.Type, error) {
+func ValidateKMSType(kmsType KMSConfigType) (kcms.Type, error) {
 	switch kmsType {
 	case KMSConfigTypeAws:
-		return kms.AWS, nil
+		return kcms.AWS, nil
 	case KMSConfigTypeLocal:
-		return kms.Local, nil
+		return kcms.Local, nil
 	case KMSConfigTypeWeb:
-		return kms.Web, nil
+		return kcms.Web, nil
 	}
 
 	return "", fmt.Errorf("unsupported kms type %s, use one of next [%s, %s, %s]",
 		kmsType, KMSConfigTypeAws, KMSConfigTypeLocal, KMSConfigTypeWeb)
 }
 
-func MapToKMSConfigType(kmsType kms.Type) (KMSConfigType, error) {
+func MapToKMSConfigType(kmsType kcms.Type) (KMSConfigType, error) {
 	switch kmsType {
-	case kms.AWS:
+	case kcms.AWS:
 		return KMSConfigTypeAws, nil
-	case kms.Local:
+	case kcms.Local:
 		return KMSConfigTypeLocal, nil
-	case kms.Web:
+	case kcms.Web:
 		return KMSConfigTypeWeb, nil
 	}
 

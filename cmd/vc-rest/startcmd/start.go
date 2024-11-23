@@ -26,6 +26,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	oapimw "github.com/deepmap/oapi-codegen/pkg/middleware"
 	"github.com/deepmap/oapi-codegen/pkg/securityprovider"
+	"github.com/dellekappa/did-go/doc/ld/context/remote"
+	"github.com/dellekappa/did-go/doc/ld/documentloader"
 	"github.com/dellekappa/vc-go/proof/defaults"
 	"github.com/dellekappa/vc-go/vermethod"
 	"github.com/dgraph-io/ristretto"
@@ -35,8 +37,6 @@ import (
 	jsonld "github.com/piprate/json-gold/ld"
 	echopprof "github.com/sevenNt/echo-pprof"
 	"github.com/spf13/cobra"
-	"github.com/trustbloc/did-go/doc/ld/context/remote"
-	"github.com/trustbloc/did-go/doc/ld/documentloader"
 	"github.com/trustbloc/logutil-go/pkg/log"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/aws/aws-sdk-go-v2/otelaws"
@@ -58,7 +58,7 @@ import (
 	"github.com/trustbloc/vcs/pkg/doc/validator/jsonschema"
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	"github.com/trustbloc/vcs/pkg/doc/vc/statustype"
-	"github.com/trustbloc/vcs/pkg/kms"
+	"github.com/trustbloc/vcs/pkg/kcms"
 	"github.com/trustbloc/vcs/pkg/ld"
 	"github.com/trustbloc/vcs/pkg/oauth2client"
 	"github.com/trustbloc/vcs/pkg/observability/health/healthutil"
@@ -451,7 +451,7 @@ func buildEchoHandler(
 	tlsConfig := &tls.Config{RootCAs: conf.RootCAs, MinVersion: tls.VersionTLS12}
 	mongoDbNameWithPrefix := conf.StartupParameters.dbParameters.databasePrefix + "vcs_db"
 
-	defaultKmsConfig := kms.Config{
+	defaultKmsConfig := kcms.Config{
 		KMSType:           conf.StartupParameters.kmsParameters.kmsType,
 		Endpoint:          conf.StartupParameters.kmsParameters.kmsEndpoint,
 		Region:            conf.StartupParameters.kmsParameters.kmsRegion,
@@ -464,12 +464,12 @@ func buildEchoHandler(
 		MasterKey:         conf.StartupParameters.kmsParameters.masterKey,
 	}
 
-	defaultVCSKeyManager, err := kms.NewAriesKeyManager(&defaultKmsConfig, metrics)
+	defaultVCSKeyManager, err := kcms.NewAriesKeyManager(&defaultKmsConfig, metrics)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create default kms: %w", err)
 	}
 
-	kmsRegistry := kms.NewRegistry(defaultVCSKeyManager, defaultKmsConfig, metrics)
+	kmsRegistry := kcms.NewRegistry(defaultVCSKeyManager, defaultKmsConfig, metrics)
 
 	var redisClient, redisClientNoTracing *redisclient.Client
 	if conf.StartupParameters.transientDataParams.storeType == redisStore {

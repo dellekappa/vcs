@@ -16,7 +16,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 
-	"github.com/trustbloc/kms-go/spi/storage"
+	"github.com/dellekappa/kcms-go/spi/storage"
 	"github.com/trustbloc/vcs/component/wallet-cli/internal/storage/leveldb"
 	commontest "github.com/trustbloc/vcs/component/wallet-cli/internal/storage/test"
 )

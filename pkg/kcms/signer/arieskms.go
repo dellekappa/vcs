@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/trustbloc/kms-go/wrapper/api"
+	"github.com/dellekappa/kcms-go/suite/api"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	noopMetricsProvider "github.com/trustbloc/vcs/pkg/observability/metrics/noop"

@@ -12,9 +12,9 @@ import (
 	"net/url"
 	"time"
 
+	util "github.com/dellekappa/did-go/doc/util/time"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/google/uuid"
-	util "github.com/trustbloc/did-go/doc/util/time"
 )
 
 const (

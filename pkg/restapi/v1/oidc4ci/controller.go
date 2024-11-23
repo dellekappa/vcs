@@ -27,6 +27,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	"github.com/dellekappa/vc-go/cwt"
 	"github.com/dellekappa/vc-go/dataintegrity"
 	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
@@ -42,7 +43,6 @@ import (
 	"github.com/ory/fosite"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
 	"github.com/veraison/go-cose"
 	"go.opentelemetry.io/otel/attribute"

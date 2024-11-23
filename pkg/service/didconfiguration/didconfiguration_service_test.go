@@ -11,15 +11,15 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/trustbloc/kms-go/spi/kms"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
-	"github.com/trustbloc/vcs/pkg/kms/mocks"
+	"github.com/trustbloc/vcs/pkg/kcms/mocks"
 	"github.com/trustbloc/vcs/pkg/profile"
 )
 

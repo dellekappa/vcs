@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"net/http"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	"github.com/dellekappa/vc-go/dataintegrity"
 	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
 	"github.com/dellekappa/vc-go/dataintegrity/suite/eddsa2022"
@@ -21,7 +22,6 @@ import (
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/dellekappa/vc-go/vermethod"
 	"github.com/piprate/json-gold/ld"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/trustbloc/logutil-go/pkg/log"
 
 	"github.com/trustbloc/vcs/internal/logfields"

@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/trustbloc/did-go/legacy/mem"
-	"github.com/trustbloc/kms-go/spi/storage"
+	"github.com/dellekappa/did-go/legacy/mem"
+	"github.com/dellekappa/kcms-go/spi/storage"
 
 	"github.com/trustbloc/vcs/component/wallet-cli/internal/storage/leveldb"
 	"github.com/trustbloc/vcs/component/wallet-cli/internal/storage/mongodb"

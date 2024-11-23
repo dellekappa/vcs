@@ -11,23 +11,23 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dellekappa/did-go/doc/did"
+	"github.com/dellekappa/did-go/doc/did/endpoint"
+	jsonld "github.com/dellekappa/did-go/doc/ld/processor"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	vdrmock "github.com/dellekappa/did-go/vdr/mock"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	"github.com/dellekappa/kcms-go/kms"
+	"github.com/dellekappa/kcms-go/secretlock/noop"
+	kmskeytypes "github.com/dellekappa/kcms-go/spi/kms"
+	"github.com/dellekappa/kcms-go/suite/api"
+	"github.com/dellekappa/kcms-go/suite/localsuite"
 	"github.com/dellekappa/vc-go/jwt"
+	mockstorage "github.com/dellekappa/vc-go/legacy/mock/storage"
 	"github.com/dellekappa/vc-go/proof/testsupport"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/piprate/json-gold/ld"
 	"github.com/stretchr/testify/require"
-	"github.com/trustbloc/did-go/doc/did"
-	"github.com/trustbloc/did-go/doc/did/endpoint"
-	jsonld "github.com/trustbloc/did-go/doc/ld/processor"
-	ariesmockstorage "github.com/trustbloc/did-go/legacy/mock/storage"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	vdrmock "github.com/trustbloc/did-go/vdr/mock"
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	"github.com/trustbloc/kms-go/kms"
-	"github.com/trustbloc/kms-go/secretlock/noop"
-	kmskeytypes "github.com/trustbloc/kms-go/spi/kms"
-	"github.com/trustbloc/kms-go/wrapper/api"
-	"github.com/trustbloc/kms-go/wrapper/localsuite"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 )
@@ -184,12 +184,15 @@ func createDIDDoc(t *testing.T, didID, keyID string, pubJWK *jwk.JWK) *did.Doc {
 func createKMS(t *testing.T) api.Suite {
 	t.Helper()
 
-	storeProv, err := kms.NewAriesProviderWrapper(ariesmockstorage.NewMockStoreProvider())
+	kmsStore, err := kms.NewAriesProviderWrapper(mockstorage.NewKMSMockStoreProvider())
 	require.NoError(t, err)
 
-	cryptoSuite, err := localsuite.NewLocalCryptoSuite(
+	cmsStore := mockstorage.NewCMSMockStore()
+
+	cryptoSuite, err := localsuite.NewLocalKCMSSuite(
 		"local-lock://custom/primary/key/",
-		storeProv,
+		kmsStore,
+		cmsStore,
 		&noop.NoLock{},
 	)
 	require.NoError(t, err)

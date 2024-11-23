@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package jws
 
 import (
-	"github.com/trustbloc/kms-go/doc/jose"
+	"github.com/dellekappa/kcms-go/doc/jose"
 )
 
 type signer interface {

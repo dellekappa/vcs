@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dellekappa/did-go/doc/did"
+	ldprocessor "github.com/dellekappa/did-go/doc/ld/processor"
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	"github.com/piprate/json-gold/ld"
-	"github.com/trustbloc/did-go/doc/did"
-	ldprocessor "github.com/trustbloc/did-go/doc/ld/processor"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
 	"github.com/veraison/go-cose"
 
 	"github.com/dellekappa/vc-go/jwt"

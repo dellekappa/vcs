@@ -7,6 +7,10 @@ import (
 	"net/http"
 	"time"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/kcms-go/doc/jose"
+	"github.com/dellekappa/kcms-go/doc/jose/jwk"
+	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/vc-go/cwt"
 	"github.com/dellekappa/vc-go/dataintegrity"
 	"github.com/dellekappa/vc-go/dataintegrity/suite"
@@ -32,10 +36,6 @@ import (
 	"github.com/fxamacker/cbor/v2"
 	"github.com/piprate/json-gold/ld"
 	"github.com/samber/lo"
-	vdrapi "github.com/trustbloc/did-go/vdr/api"
-	"github.com/trustbloc/kms-go/doc/jose"
-	"github.com/trustbloc/kms-go/doc/jose/jwk"
-	"github.com/trustbloc/kms-go/spi/kms"
 	"github.com/veraison/go-cose"
 )
 

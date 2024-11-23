@@ -10,9 +10,9 @@ import (
 	"context"
 	"errors"
 
+	util "github.com/dellekappa/did-go/doc/util/time"
 	"github.com/dellekappa/vc-go/presexch"
 	"github.com/dellekappa/vc-go/verifiable"
-	util "github.com/trustbloc/did-go/doc/util/time"
 
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
