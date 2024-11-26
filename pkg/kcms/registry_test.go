@@ -24,7 +24,7 @@ func TestRegistry_GetKeyManager(t *testing.T) {
 		r := kcms.NewRegistry(nil, kcms.Config{KMSType: kcms.Local}, nil)
 		require.NotNil(t, r)
 
-		_, err := r.GetKeyManager(nil)
+		_, err := r.GetKeyCertManager(nil)
 		require.NoError(t, err)
 	})
 
@@ -32,7 +32,7 @@ func TestRegistry_GetKeyManager(t *testing.T) {
 		r := kcms.NewRegistry(nil, kcms.Config{KMSType: kcms.Local}, nil)
 		require.NotNil(t, r)
 
-		_, err := r.GetKeyManager(&kcms.Config{
+		_, err := r.GetKeyCertManager(&kcms.Config{
 			KMSType: "aws",
 		})
 

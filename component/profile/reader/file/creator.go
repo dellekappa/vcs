@@ -8,7 +8,6 @@ package file
 
 import (
 	gocrypto "crypto"
-	"crypto/rand"
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/base64"
@@ -60,10 +59,11 @@ type Creator struct {
 	config *creatorConfig
 }
 
-// KeysCreator create keys for DID creation process.
-type KeysCreator interface {
+// KeyCertCreator create keys and certs for DID creation process.
+type KeyCertCreator interface {
 	CreateJWKKey(keyType kmsapi.KeyType) (string, *jwk.JWK, error)
 	CreateCryptoKey(keyType kmsapi.KeyType) (string, interface{}, error)
+	CreateX509Certificate(template *x509.Certificate, key *jwk.JWK) (*x509.Certificate, error)
 }
 
 // creatorConfig configures PublicDID.
@@ -80,9 +80,9 @@ func newCreator(config *creatorConfig) *Creator {
 
 // publicDID creates a new public DID given a key manager.
 func (c *Creator) publicDID(method profileapi.Method, verificationMethodType vcsverifiable.SignatureType,
-	keyType kmsapi.KeyType, km KeysCreator, didDomain, difDidOrigin string) (*createResult, error) {
+	keyType kmsapi.KeyType, km KeyCertCreator, didDomain, difDidOrigin string) (*createResult, error) {
 	methods := map[profileapi.Method]func(verificationMethodType vcsverifiable.SignatureType, keyType kmsapi.KeyType,
-		km KeysCreator, didDomain, difDidOrigin string) (*createResult, error){
+		km KeyCertCreator, didDomain, difDidOrigin string) (*createResult, error){
 		profileapi.KeyDIDMethod: c.keyDID,
 		profileapi.OrbDIDMethod: c.createDID,
 		profileapi.WebDIDMethod: c.webDID,
@@ -101,7 +101,7 @@ func (c *Creator) publicDID(method profileapi.Method, verificationMethodType vcs
 func (c *Creator) createDID(
 	verificationMethodType vcsverifiable.SignatureType,
 	keyType kmsapi.KeyType,
-	km KeysCreator,
+	km KeyCertCreator,
 	_, _ string,
 ) (*createResult, error) { //nolint: unparam
 	methods, err := newVerMethods(3, km, verificationMethodType, keyType) // nolint:gomnd
@@ -161,7 +161,7 @@ func (c *Creator) createDID(
 func (c *Creator) keyDID(
 	verificationMethodType vcsverifiable.SignatureType,
 	keyType kmsapi.KeyType,
-	km KeysCreator,
+	km KeyCertCreator,
 	_, _ string,
 ) (*createResult, error) { //nolint: unparam
 	verMethod, err := newVerMethods(1, km, verificationMethodType, keyType)
@@ -190,7 +190,7 @@ func (c *Creator) keyDID(
 func (c *Creator) jwkDID(
 	verificationMethodType vcsverifiable.SignatureType,
 	keyType kmsapi.KeyType,
-	km KeysCreator,
+	km KeyCertCreator,
 	didDomain, _ string,
 ) (*createResult, error) { //nolint: unparam
 	opts := make([]verMethodOpt, 0)
@@ -222,7 +222,7 @@ func (c *Creator) jwkDID(
 }
 
 func (c *Creator) webDID(verificationMethodType vcsverifiable.SignatureType, keyType kmsapi.KeyType,
-	km KeysCreator, didDomain, difDidOrigin string) (*createResult, error) {
+	km KeyCertCreator, didDomain, difDidOrigin string) (*createResult, error) {
 	r, err := c.createDID(verificationMethodType, keyType, km, didDomain, difDidOrigin)
 	if err != nil {
 		return nil, err
@@ -249,7 +249,7 @@ type serviceEndpointData struct {
 func (c *Creator) ionDID(
 	verificationMethodType vcsverifiable.SignatureType,
 	keyType kmsapi.KeyType,
-	km KeysCreator, _, difDidOrigin string,
+	km KeyCertCreator, _, difDidOrigin string,
 ) (*createResult, error) { //nolint:unparam
 	verMethod, err := newVerMethods(1, km, verificationMethodType, keyType)
 	if err != nil {
@@ -316,7 +316,7 @@ type verMethodCfg struct {
 
 type verMethodOpt func(opts *verMethodCfg)
 
-func newVerMethods(count int, km KeysCreator, verMethodType vcsverifiable.SignatureType,
+func newVerMethods(count int, km KeyCertCreator, verMethodType vcsverifiable.SignatureType,
 	keyType kmsapi.KeyType, opts ...verMethodOpt) ([]*did.VerificationMethod, error) {
 	methods := make([]*did.VerificationMethod, count)
 
@@ -331,12 +331,12 @@ func newVerMethods(count int, km KeysCreator, verMethodType vcsverifiable.Signat
 			return nil, fmt.Errorf("failed to create key: %w", err)
 		}
 
-		//if cfg.didDomain != "" {
-		//	err = createAndAppendX509Cert(cfg.didDomain, j)
-		//	if err != nil {
-		//		return nil, fmt.Errorf("failed to create verification method: %w", err)
-		//	}
-		//}
+		if cfg.didDomain != "" {
+			err = createAndAppendX509Cert(cfg.didDomain, j, km)
+			if err != nil {
+				return nil, fmt.Errorf("failed to create certificate: %w", err)
+			}
+		}
 
 		// TODO sidetree doesn't support VM controller: https://github.com/decentralized-identity/sidetree/issues/1010
 		vm, err := did.NewVerificationMethodFromJWK(
@@ -361,7 +361,7 @@ func withDIDDomain(didDomain string) verMethodOpt {
 	}
 }
 
-func createAndAppendX509Cert(didDomain string, key *jwk.JWK) error {
+func createAndAppendX509Cert(didDomain string, key *jwk.JWK, km KeyCertCreator) error {
 
 	template := &x509.Certificate{
 		SerialNumber: big.NewInt(2019),
@@ -376,18 +376,13 @@ func createAndAppendX509Cert(didDomain string, key *jwk.JWK) error {
 		BasicConstraintsValid: true,
 	}
 
-	der, err := x509.CreateCertificate(rand.Reader, template, template, key.Public().Key, key.Key)
-	if err != nil {
-		return err
-	}
-
-	cert, err := x509.ParseCertificate(der)
+	cert, err := km.CreateX509Certificate(template, key)
 	if err != nil {
 		return err
 	}
 
 	hash := gocrypto.SHA1.New()
-	_, _ = hash.Write(der)
+	_, _ = hash.Write(cert.Raw)
 	thumbprint := base64.RawURLEncoding.EncodeToString(hash.Sum(nil))
 
 	key.Certificates = []*x509.Certificate{cert}

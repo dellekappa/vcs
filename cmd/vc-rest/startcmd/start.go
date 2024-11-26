@@ -464,7 +464,7 @@ func buildEchoHandler(
 		MasterKey:         conf.StartupParameters.kmsParameters.masterKey,
 	}
 
-	defaultVCSKeyManager, err := kcms.NewAriesKeyManager(&defaultKmsConfig, metrics)
+	defaultVCSKeyManager, err := kcms.NewAriesKeyCertManager(&defaultKmsConfig, metrics)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create default kms: %w", err)
 	}

@@ -8,7 +8,7 @@ go 1.22.1
 toolchain go1.22.4
 
 require (
-	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8
+	github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b
 	github.com/piprate/json-gold v0.5.1-0.20230111113000-6ddbe6e6f19f
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
@@ -49,8 +49,8 @@ require (
 	github.com/consensys/gnark-crypto v0.14.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 // indirect
-	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f // indirect
-	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83 // indirect
+	github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c // indirect
+	github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178 // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -162,4 +162,6 @@ require (
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
 
-replace github.com/trustbloc/vcs => ../../
+replace (
+	github.com/trustbloc/vcs => ../../
+)

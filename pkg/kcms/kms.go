@@ -9,6 +9,7 @@ SPDX-License-Identifier: Apache-2.0
 package kcms
 
 import (
+	"crypto/x509"
 	"net/http"
 
 	"github.com/dellekappa/kcms-go/doc/jose/jwk"
@@ -41,9 +42,11 @@ type Config struct {
 	MasterKey         string
 }
 
-type VCSKeyManager interface {
+type VCSKeyCertManager interface {
 	SupportedKeyTypes() []kms.KeyType
 	CreateJWKKey(keyType kms.KeyType) (string, *jwk.JWK, error)
 	CreateCryptoKey(keyType kms.KeyType) (string, interface{}, error)
+	CreateX509Certificate(template *x509.Certificate, key *jwk.JWK) (*x509.Certificate, error)
 	NewVCSigner(creator string, signatureType vcsverifiable.SignatureType) (vc.SignerAlgorithm, error)
+	GetX509Certificates(chainID string) ([]*x509.Certificate, error)
 }

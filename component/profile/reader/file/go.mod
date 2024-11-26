@@ -8,8 +8,8 @@ go 1.22.1
 toolchain go1.22.4
 
 require (
-	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f
-	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83
+	github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c
+	github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178
 	github.com/dellekappa/sidetree-go v0.0.0-20241123093113-8f4592fa7b94
 	github.com/google/uuid v1.6.0
 	github.com/hashicorp/go-version v1.2.0
@@ -51,7 +51,7 @@ require (
 	github.com/consensys/gnark-crypto v0.14.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 // indirect
-	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8 // indirect
+	github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b // indirect
 	github.com/dgraph-io/ristretto v0.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/evanphx/json-patch v4.1.0+incompatible // indirect

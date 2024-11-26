@@ -9,8 +9,8 @@ go 1.22
 toolchain go1.22.4
 
 require (
-	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f
-	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8
+	github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c
+	github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.0
 	github.com/trustbloc/cmdutil-go v1.0.0
@@ -27,7 +27,7 @@ require (
 	github.com/consensys/bavard v0.1.13 // indirect
 	github.com/consensys/gnark-crypto v0.12.1 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
-	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83 // indirect
+	github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

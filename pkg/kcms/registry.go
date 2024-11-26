@@ -7,13 +7,13 @@ SPDX-License-Identifier: Apache-2.0
 package kcms
 
 type Registry struct {
-	defaultVCSKeyManager  VCSKeyManager
+	defaultVCSKeyManager  VCSKeyCertManager
 	defaultConfig         Config
 	defaultMetricProvider metricsProvider
 }
 
 func NewRegistry(
-	defaultVCSKeyManager VCSKeyManager,
+	defaultVCSKeyManager VCSKeyCertManager,
 	defaultKmsConfig Config,
 	defaultMetricProvider metricsProvider,
 ) *Registry {
@@ -24,7 +24,7 @@ func NewRegistry(
 	}
 }
 
-func (r *Registry) GetKeyManager(config *Config) (VCSKeyManager, error) {
+func (r *Registry) GetKeyCertManager(config *Config) (VCSKeyCertManager, error) {
 	if config == nil {
 		return r.defaultVCSKeyManager, nil
 	}
@@ -35,5 +35,5 @@ func (r *Registry) GetKeyManager(config *Config) (VCSKeyManager, error) {
 		cfgCopy.MasterKey = config.MasterKey
 	}
 
-	return NewAriesKeyManager(&cfgCopy, r.defaultMetricProvider)
+	return NewAriesKeyCertManager(&cfgCopy, r.defaultMetricProvider)
 }

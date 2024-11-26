@@ -37,7 +37,7 @@ type vcCrypto interface {
 }
 
 type kmsRegistry interface {
-	GetKeyManager(config *vcskms.Config) (vcskms.VCSKeyManager, error)
+	GetKeyCertManager(config *vcskms.Config) (vcskms.VCSKeyCertManager, error)
 }
 
 type cslVCStore interface {
@@ -227,7 +227,7 @@ func (s *Manager) createNewVCAndCSLIndexWrapper(ctx context.Context,
 	profile *profileapi.Issuer,
 	listID credentialstatus.ListID,
 ) (*credentialstatus.CSLIndexWrapper, error) {
-	kms, err := s.kmsRegistry.GetKeyManager(profile.KMSConfig)
+	kms, err := s.kmsRegistry.GetKeyCertManager(profile.KMSConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get KMS: %w", err)
 	}

@@ -310,7 +310,7 @@ func createDid(didDomain string, _ string, kmsConfig *vcskms.Config, webHook str
 		vdr: vdrpkg.New(vdrpkg.WithVDR(lf), vdrpkg.WithVDR(jwk.New()), vdrpkg.WithVDR(key.New())),
 	})
 
-	keyCreator, err := config.KMSRegistry.GetKeyManager(kmsConfig)
+	keyCreator, err := config.KMSRegistry.GetKeyCertManager(kmsConfig)
 	if err != nil {
 		return nil, fmt.Errorf("get keyCreator %w", err)
 	}

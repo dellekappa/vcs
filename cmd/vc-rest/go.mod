@@ -10,9 +10,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.61.2
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/deepmap/oapi-codegen v1.16.3
-	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f
+	github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c
 	github.com/dellekappa/sidetree-go v0.0.0-20241123093113-8f4592fa7b94
-	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8
+	github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/go-jose/go-jose/v3 v3.0.3
 	github.com/google/uuid v1.6.0
@@ -101,7 +101,7 @@ require (
 	github.com/cristalhq/jwt/v4 v4.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 // indirect
-	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83 // indirect
+	github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/docker/cli v26.1.4+incompatible // indirect
 	github.com/docker/docker v26.1.4+incompatible // indirect

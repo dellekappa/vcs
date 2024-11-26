@@ -295,7 +295,7 @@ func signPresentationLDP(
 			KMSKeyID:                kmsKeyID,
 			SignatureType:           signatureType,
 			SignatureRepresentation: verifiable.SignatureProofValue,
-			KMS:                     vcskms.GetAriesKeyManager(req.CryptoSuite, vcskms.Local, noop.GetMetrics()),
+			KMS:                     vcskms.GetAriesKeyCertManager(req.CryptoSuite, vcskms.Local, noop.GetMetrics()),
 		},
 		vp,
 		vccrypto.WithChallenge(req.Nonce),

@@ -8,6 +8,7 @@ package kcms
 
 import (
 	"context"
+	"crypto/x509"
 	"fmt"
 	cmsapi "github.com/dellekappa/kcms-go/spi/cms"
 	"github.com/trustbloc/vcs/pkg/storage/mongodb/cmsstore"
@@ -64,21 +65,21 @@ type metricsProvider interface {
 	SignTime(value time.Duration)
 }
 
-type KeyManager struct {
+type KeyCertManager struct {
 	kmsType Type
 	metrics metricsProvider
 	suite   api.Suite
 }
 
-func GetAriesKeyManager(suite api.Suite, kmsType Type, metrics metricsProvider) *KeyManager {
-	return &KeyManager{
+func GetAriesKeyCertManager(suite api.Suite, kmsType Type, metrics metricsProvider) *KeyCertManager {
+	return &KeyCertManager{
 		suite:   suite,
 		kmsType: kmsType,
 		metrics: metrics,
 	}
 }
 
-func NewAriesKeyManager(cfg *Config, metrics metricsProvider) (*KeyManager, error) {
+func NewAriesKeyCertManager(cfg *Config, metrics metricsProvider) (*KeyCertManager, error) {
 	switch cfg.KMSType {
 	case Local:
 		suite, err := createLocalKCMSSuite(cfg)
@@ -86,13 +87,13 @@ func NewAriesKeyManager(cfg *Config, metrics metricsProvider) (*KeyManager, erro
 			return nil, err
 		}
 
-		return &KeyManager{
+		return &KeyCertManager{
 			kmsType: cfg.KMSType,
 			metrics: metrics,
 			suite:   suite,
 		}, nil
 	case Web:
-		return &KeyManager{
+		return &KeyCertManager{
 			kmsType: cfg.KMSType,
 			metrics: metrics,
 			suite:   websuite.NewWebCryptoSuite(cfg.Endpoint, cfg.HTTPClient),
@@ -117,7 +118,7 @@ func NewAriesKeyManager(cfg *Config, metrics metricsProvider) (*KeyManager, erro
 
 		awsSuite := awssvc.NewSuite(&awsConfig, nil, "", opts...)
 
-		return &KeyManager{
+		return &KeyCertManager{
 			kmsType: cfg.KMSType,
 			metrics: metrics,
 			suite:   awsSuite,
@@ -149,7 +150,7 @@ func createLocalKCMSSuite(cfg *Config) (api.Suite, error) {
 	return localsuite.NewLocalKCMSSuite(keystoreLocalPrimaryKeyURI, kmsStore, cmsStore, secretLockService)
 }
 
-func (km *KeyManager) SupportedKeyTypes() []kmsapi.KeyType {
+func (km *KeyCertManager) SupportedKeyTypes() []kmsapi.KeyType {
 	if km.kmsType == AWS {
 		return awsSupportedKeyTypes
 	}
@@ -157,11 +158,11 @@ func (km *KeyManager) SupportedKeyTypes() []kmsapi.KeyType {
 	return ariesSupportedKeyTypes
 }
 
-func (km *KeyManager) Suite() api.Suite {
+func (km *KeyCertManager) Suite() api.Suite {
 	return km.suite
 }
 
-func (km *KeyManager) CreateJWKKey(keyType kmsapi.KeyType) (string, *jwk.JWK, error) {
+func (km *KeyCertManager) CreateJWKKey(keyType kmsapi.KeyType) (string, *jwk.JWK, error) {
 	creator, err := km.Suite().KeyCreator()
 	if err != nil {
 		return "", nil, err
@@ -170,7 +171,7 @@ func (km *KeyManager) CreateJWKKey(keyType kmsapi.KeyType) (string, *jwk.JWK, er
 	return key.JWKKeyCreator(creator)(keyType)
 }
 
-func (km *KeyManager) CreateCryptoKey(keyType kmsapi.KeyType) (string, interface{}, error) {
+func (km *KeyCertManager) CreateCryptoKey(keyType kmsapi.KeyType) (string, interface{}, error) {
 	creator, err := km.Suite().RawKeyCreator()
 	if err != nil {
 		return "", nil, err
@@ -179,7 +180,16 @@ func (km *KeyManager) CreateCryptoKey(keyType kmsapi.KeyType) (string, interface
 	return key.CryptoKeyCreator(creator)(keyType)
 }
 
-func (km *KeyManager) NewVCSigner(
+func (km *KeyCertManager) CreateX509Certificate(template *x509.Certificate, key *jwk.JWK) (*x509.Certificate, error) {
+	creator, err := km.Suite().CMSCertIssuer()
+	if err != nil {
+		return nil, err
+	}
+
+	return creator.IssueCertificate(template, key)
+}
+
+func (km *KeyCertManager) NewVCSigner(
 	creator string, signatureType vcsverifiable.SignatureType) (vc.SignerAlgorithm, error) {
 	if signatureType == vcsverifiable.BbsBlsSignature2020 {
 		fks, err := km.Suite().FixedKeyMultiSigner(creator)
@@ -198,8 +208,12 @@ func (km *KeyManager) NewVCSigner(
 	return signer.NewKMSSigner(fks, signatureType, km.metrics), nil
 }
 
-func (km *KeyManager) NewCertSigner() {
-
+func (km *KeyCertManager) GetX509Certificates(chainID string) ([]*x509.Certificate, error) {
+	getter, err := km.suite.CMSCertGetter()
+	if err != nil {
+		return nil, err
+	}
+	return getter.GetCertificates(chainID)
 }
 
 func createLocalSecretLock(

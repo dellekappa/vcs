@@ -41,7 +41,7 @@ type issuerProfileService interface {
 }
 
 type kmsRegistry interface {
-	GetKeyManager(config *vcskms.Config) (vcskms.VCSKeyManager, error)
+	GetKeyCertManager(config *vcskms.Config) (vcskms.VCSKeyCertManager, error)
 }
 
 type vcCrypto interface {
@@ -128,7 +128,7 @@ func (s *Service) DidConfig(
 			},
 		}}
 
-		kms, err := s.kmsRegistry.GetKeyManager(profile.KMSConfig)
+		kms, err := s.kmsRegistry.GetKeyCertManager(profile.KMSConfig)
 
 		if err != nil {
 			return nil, err
@@ -159,7 +159,7 @@ func (s *Service) DidConfig(
 				"origin": profile.URL,
 			},
 		}}
-		kms, err := s.kmsRegistry.GetKeyManager(profile.KMSConfig)
+		kms, err := s.kmsRegistry.GetKeyCertManager(profile.KMSConfig)
 
 		if err != nil {
 			return nil, err

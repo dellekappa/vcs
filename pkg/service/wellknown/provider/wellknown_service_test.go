@@ -44,7 +44,7 @@ func TestController_GetOpenIDCredentialIssuerConfig(t *testing.T) {
 				mockTestIssuerProfile = loadProfile(t)
 
 				mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).
-					DoAndReturn(func(config *vcskms.Config) (vcskms.VCSKeyManager, error) {
+					DoAndReturn(func(config *vcskms.Config) (vcskms.VCSKeyCertManager, error) {
 						assert.EqualValues(t, "local", config.KMSType)
 						assert.EqualValues(t, "https://example.com", config.Endpoint)
 						return nil, nil

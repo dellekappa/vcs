@@ -29,7 +29,7 @@ func NewPinGenerator() *PinGenerator {
 func (p *PinGenerator) Generate(_ string) string {
 	var finalPin strings.Builder
 
-	for i := 0; i < 6; i++ {
+	for i := 0; i < 5; i++ {
 		finalPin.WriteString(fmt.Sprint(rand.Int31n(maxNumber))) //nolint:gosec
 	}
 

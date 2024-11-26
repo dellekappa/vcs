@@ -92,7 +92,7 @@ type requestObjectStore interface {
 }
 
 type kmsRegistry interface {
-	GetKeyManager(config *vcskms.Config) (vcskms.VCSKeyManager, error)
+	GetKeyCertManager(config *vcskms.Config) (vcskms.VCSKeyCertManager, error)
 }
 
 type profileService interface {
@@ -769,7 +769,7 @@ func (s *Service) createRequestObjectJWT(presentationDefinition *presexch.Presen
 	purpose string,
 	customScopes []string,
 	profile *profileapi.Verifier) (string, error) {
-	kms, err := s.kmsRegistry.GetKeyManager(profile.KMSConfig)
+	kms, err := s.kmsRegistry.GetKeyCertManager(profile.KMSConfig)
 	if err != nil {
 		return "", resterr.NewSystemError(resterr.VerifierKMSRegistryComponent, "get-key-manaer",
 			fmt.Errorf("initiate oidc interaction: get key manager failed: %w", err))

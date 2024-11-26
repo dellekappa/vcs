@@ -606,7 +606,7 @@ func (s *Service) getSignedCredentialOfferJWT(
 	profile *profileapi.Issuer,
 	credentialOffer *CredentialOfferResponse,
 ) (string, error) {
-	kms, err := s.kmsRegistry.GetKeyManager(profile.KMSConfig)
+	kms, err := s.kmsRegistry.GetKeyCertManager(profile.KMSConfig)
 	if err != nil {
 		return "", fmt.Errorf("get kms: %w", err)
 	}

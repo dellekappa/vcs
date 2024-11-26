@@ -14,10 +14,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.43.4
 	github.com/aws/smithy-go v1.20.4
 	github.com/cucumber/godog v0.12.5
-	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f
-	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83
+	github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c
+	github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178
 	github.com/dellekappa/sidetree-go v0.0.0-20241123093113-8f4592fa7b94
-	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8
+	github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.0
 	github.com/greenpau/go-calculator v1.0.1

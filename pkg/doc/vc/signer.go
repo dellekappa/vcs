@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 package vc
 
 import (
+	"crypto/x509"
 	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/vc-go/verifiable"
 
@@ -15,6 +16,10 @@ import (
 
 type keyManager interface {
 	NewVCSigner(creator string, signatureType vcsverifiable.SignatureType) (SignerAlgorithm, error)
+}
+
+type certManager interface {
+	GetX509Certificates(chainID string) ([]*x509.Certificate, error)
 }
 
 type SignerAlgorithm interface {
@@ -32,6 +37,7 @@ type Signer struct {
 	Format                  vcsverifiable.Format               // VC format - LDP/JWT.
 	SignatureRepresentation verifiable.SignatureRepresentation // For LDP only - proof/JWS.
 	KMS                     keyManager
+	CMS                     certManager
 	VCStatusListType        StatusType // Type of VC status list
 	SDJWT                   SDJWT
 	DataIntegrityProof      DataIntegrityProofConfig

@@ -62,7 +62,7 @@ type profileService interface {
 }
 
 type kmsRegistry interface {
-	GetKeyManager(config *vcskms.Config) (vcskms.VCSKeyManager, error)
+	GetKeyCertManager(config *vcskms.Config) (vcskms.VCSKeyCertManager, error)
 }
 
 type eventPublisher interface {

@@ -68,4 +68,4 @@ func (m *MockKMS) CreateCryptoKey(_ kmsapi.KeyType) (string, interface{}, error)
 	return "", nil, nil
 }
 
-var _ kcms.VCSKeyManager = &MockKMS{}
+var _ kcms.VCSKeyCertManager = &MockKMS{}

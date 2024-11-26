@@ -44,7 +44,7 @@ type profileService interface {
 }
 
 type kmsRegistry interface {
-	GetKeyManager(config *vcskms.Config) (vcskms.VCSKeyManager, error)
+	GetKeyCertManager(config *vcskms.Config) (vcskms.VCSKeyCertManager, error)
 }
 
 type vcCrypto interface {
@@ -147,7 +147,7 @@ func (s *Service) signCSL(profileID, profileVersion string, csl *verifiable.Cred
 		return nil, fmt.Errorf("failed to get profile: %w", err)
 	}
 
-	keyManager, err := s.kmsRegistry.GetKeyManager(issuerProfile.KMSConfig)
+	keyManager, err := s.kmsRegistry.GetKeyCertManager(issuerProfile.KMSConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get KMS: %w", err)
 	}

@@ -95,10 +95,10 @@ type PresentationDefinition = json.RawMessage
 
 var _ ServerInterface = (*Controller)(nil) // make sure Controller implements ServerInterface
 
-type kmsManager = kcms.VCSKeyManager
+type kmsManager = kcms.VCSKeyCertManager
 
 type kmsRegistry interface {
-	GetKeyManager(config *kcms.Config) (kmsManager, error)
+	GetKeyCertManager(config *kcms.Config) (kmsManager, error)
 }
 
 type profileService interface {

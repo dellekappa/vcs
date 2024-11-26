@@ -39,7 +39,7 @@ var secretLockKeyFile string
 
 func TestNewLocalKeyManager(t *testing.T) {
 	t.Run("key not found", func(t *testing.T) {
-		km, err := kcms.NewAriesKeyManager(&kcms.Config{
+		km, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:           kcms.Local,
 			SecretLockKeyPath: secretLockKeyFile,
 			DBType:            "mem",
@@ -76,7 +76,7 @@ func TestNewLocalKeyManager(t *testing.T) {
 			require.NoError(t, pool.Purge(mongoDBResource), "failed to purge MongoDB resource")
 		}()
 
-		km, err := kcms.NewAriesKeyManager(&kcms.Config{
+		km, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:           kcms.Local,
 			SecretLockKeyPath: secretLockKeyFile,
 			DBType:            "mongodb",
@@ -95,7 +95,7 @@ func TestNewLocalKeyManager(t *testing.T) {
 			require.NoError(t, pool.Purge(mongoDBResource), "failed to purge MongoDB resource")
 		}()
 
-		km, err := kcms.NewAriesKeyManager(&kcms.Config{
+		km, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:           kcms.Local,
 			SecretLockKeyPath: secretLockKeyFile,
 			DBType:            "mongodb",
@@ -109,7 +109,7 @@ func TestNewLocalKeyManager(t *testing.T) {
 	})
 
 	t.Run("Fail mongodb", func(t *testing.T) {
-		km, err := kcms.NewAriesKeyManager(&kcms.Config{
+		km, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:           kcms.Local,
 			SecretLockKeyPath: secretLockKeyFile,
 			DBType:            "mongodb",
@@ -122,7 +122,7 @@ func TestNewLocalKeyManager(t *testing.T) {
 	})
 
 	t.Run("Incorrect SecretLockKeyPath", func(t *testing.T) {
-		_, err := kcms.NewAriesKeyManager(&kcms.Config{
+		_, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:           kcms.Local,
 			SecretLockKeyPath: "incorrect",
 			DBType:            "mem",
@@ -134,7 +134,7 @@ func TestNewLocalKeyManager(t *testing.T) {
 	})
 
 	t.Run("Incorrect db type", func(t *testing.T) {
-		_, err := kcms.NewAriesKeyManager(&kcms.Config{
+		_, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:           kcms.Local,
 			SecretLockKeyPath: secretLockKeyFile,
 			DBType:            "incorrect",
@@ -148,7 +148,7 @@ func TestNewLocalKeyManager(t *testing.T) {
 
 func TestNewWebKeyManager(t *testing.T) {
 	t.Run("wrong endpoint for kms web", func(t *testing.T) {
-		km, err := kcms.NewAriesKeyManager(&kcms.Config{
+		km, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:    kcms.Web,
 			HTTPClient: &http.Client{},
 			Endpoint:   "url",
@@ -168,7 +168,7 @@ func TestNewWebKeyManager(t *testing.T) {
 
 func TestNewAWSKeyManager(t *testing.T) {
 	t.Run("wrong key type for kms aws", func(t *testing.T) {
-		km, err := kcms.NewAriesKeyManager(&kcms.Config{
+		km, err := kcms.NewAriesKeyCertManager(&kcms.Config{
 			KMSType:    kcms.AWS,
 			HTTPClient: &http.Client{},
 			Endpoint:   "url",

@@ -20,9 +20,9 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc
 	github.com/deepmap/oapi-codegen v1.16.3
-	github.com/dellekappa/did-go v0.0.0-20241123085337-242e75ade55f
-	github.com/dellekappa/kcms-go v0.0.0-20241122164159-bc8f31db5a83
-	github.com/dellekappa/vc-go v0.0.0-20241123085653-5ff81a960fa8
+	github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c
+	github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178
+	github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b
 	github.com/fxamacker/cbor/v2 v2.7.0
 	github.com/getkin/kin-openapi v0.127.0
 	github.com/go-jose/go-jose/v3 v3.0.3

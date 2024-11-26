@@ -314,12 +314,15 @@ func (c *Crypto) signCredentialMDOC(signerData *vc.Signer,
 		hashAlg = crypto.SHA256
 	}
 
-	options := []verifiable.MakeMDocOption{
-		verifiable.MakeMDocWithHash(hashAlg),
-		//verifiable.MakeMDocWithCerts(signerData.MDoc.Certs),
+	certs, err := signerData.CMS.GetX509Certificates(signerData.KMSKeyID)
+	if err != nil {
+		return nil, fmt.Errorf("getting certs based on key with id %s: %w", signerData.KMSKeyID, err)
 	}
 
-	//TODO: we need certs to be passed over. For testing purpose we generate self signed cert
+	options := []verifiable.MakeMDocOption{
+		verifiable.MakeMDocWithHash(hashAlg),
+		verifiable.MakeMDocWithCerts(certs),
+	}
 
 	return c.getMDocSignedCredential(credential, s, cwtAlgo, method, options...)
 }

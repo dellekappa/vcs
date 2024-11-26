@@ -27,7 +27,7 @@ import (
 )
 
 type kmsRegistry interface {
-	GetKeyManager(config *kcms.Config) (kcms.VCSKeyManager, error)
+	GetKeyCertManager(config *kcms.Config) (kcms.VCSKeyCertManager, error)
 }
 
 type cryptoJWTSigner interface {
@@ -236,7 +236,7 @@ func (s *Service) signIssuerMetadata(
 	profile *profileapi.Issuer,
 	meta *issuer.WellKnownOpenIDIssuerConfiguration,
 ) (string, error) {
-	keyManager, err := s.kmsRegistry.GetKeyManager(profile.KMSConfig)
+	keyManager, err := s.kmsRegistry.GetKeyCertManager(profile.KMSConfig)
 	if err != nil {
 		return "", fmt.Errorf("get kms: %w", err)
 	}

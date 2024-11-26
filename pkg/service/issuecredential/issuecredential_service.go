@@ -62,7 +62,7 @@ type vcCrypto interface {
 }
 
 type kmsRegistry interface {
-	GetKeyManager(config *vcskms.Config) (vcskms.VCSKeyManager, error)
+	GetKeyCertManager(config *vcskms.Config) (vcskms.VCSKeyCertManager, error)
 }
 
 type vcStatusManager interface {
@@ -111,9 +111,9 @@ func (s *Service) IssueCredential(
 		f(options)
 	}
 
-	kms, err := s.kmsRegistry.GetKeyManager(profile.KMSConfig) // If nil - default config is used.
+	kcms, err := s.kmsRegistry.GetKeyCertManager(profile.KMSConfig) // If nil - default config is used.
 	if err != nil {
-		return nil, fmt.Errorf("get kms: %w", err)
+		return nil, fmt.Errorf("get kcms: %w", err)
 	}
 
 	signer := &vc.Signer{
@@ -122,7 +122,8 @@ func (s *Service) IssueCredential(
 		KMSKeyID:                profile.SigningDID.KMSKeyID,
 		SignatureType:           profile.VCConfig.SigningAlgorithm,
 		KeyType:                 profile.VCConfig.KeyType,
-		KMS:                     kms,
+		KMS:                     kcms,
+		CMS:                     kcms,
 		Format:                  profile.VCConfig.Format,
 		SignatureRepresentation: profile.VCConfig.SignatureRepresentation,
 		VCStatusListType:        profile.VCConfig.Status.Type,
