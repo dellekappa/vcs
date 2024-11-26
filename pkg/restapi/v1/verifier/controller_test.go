@@ -2207,11 +2207,11 @@ func requireCustomError(t *testing.T, expectedCode resterr.ErrorCode, actual err
 }
 
 func TestController_AuthFailed(t *testing.T) {
-	keyManager := mocks.NewMockVCSKeyManager(gomock.NewController(t))
+	keyManager := mocks.NewMockVCSKeyCertManager(gomock.NewController(t))
 	keyManager.EXPECT().SupportedKeyTypes().AnyTimes().Return(ariesSupportedKeyTypes)
 
 	kmsRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	kmsRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(keyManager, nil)
+	kmsRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(keyManager, nil)
 
 	mockProfileSvc := NewMockProfileService(gomock.NewController(t))
 	mockProfileSvc.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().
@@ -2242,11 +2242,11 @@ func TestController_AuthFailed(t *testing.T) {
 }
 
 func TestController_InitiateOidcInteraction(t *testing.T) {
-	keyManager := mocks.NewMockVCSKeyManager(gomock.NewController(t))
+	keyManager := mocks.NewMockVCSKeyCertManager(gomock.NewController(t))
 	keyManager.EXPECT().SupportedKeyTypes().AnyTimes().Return(ariesSupportedKeyTypes)
 
 	kmsRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	kmsRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(keyManager, nil)
+	kmsRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(keyManager, nil)
 
 	mockProfileSvc := NewMockProfileService(gomock.NewController(t))
 
@@ -2292,11 +2292,11 @@ func TestController_InitiateOidcInteraction(t *testing.T) {
 }
 
 func TestController_initiateOidcInteraction(t *testing.T) {
-	keyManager := mocks.NewMockVCSKeyManager(gomock.NewController(t))
+	keyManager := mocks.NewMockVCSKeyCertManager(gomock.NewController(t))
 	keyManager.EXPECT().SupportedKeyTypes().AnyTimes().Return(ariesSupportedKeyTypes)
 
 	kmsRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	kmsRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(keyManager, nil)
+	kmsRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(keyManager, nil)
 
 	mockProfileSvc := NewMockProfileService(gomock.NewController(t))
 

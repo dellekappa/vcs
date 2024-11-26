@@ -18,8 +18,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/dellekappa/vc-go/crypto-ext/pubkey"
-	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"io"
 	"net/http"
 	"net/url"
@@ -27,15 +25,6 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	vdrapi "github.com/dellekappa/did-go/vdr/api"
-	"github.com/dellekappa/vc-go/cwt"
-	"github.com/dellekappa/vc-go/dataintegrity"
-	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
-	"github.com/dellekappa/vc-go/dataintegrity/suite/eddsa2022"
-	"github.com/dellekappa/vc-go/jwt"
-	"github.com/dellekappa/vc-go/proof"
-	"github.com/dellekappa/vc-go/proof/checker"
-	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/fxamacker/cbor/v2"
 	gojose "github.com/go-jose/go-jose/v3"
 	"github.com/google/uuid"
@@ -49,6 +38,18 @@ import (
 	"go.opentelemetry.io/otel/trace"
 	"golang.org/x/oauth2"
 
+	vdrapi "github.com/dellekappa/did-go/vdr/api"
+	"github.com/dellekappa/vc-go/crypto-ext/pubkey"
+	"github.com/dellekappa/vc-go/cwt"
+	"github.com/dellekappa/vc-go/dataintegrity"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
+	"github.com/dellekappa/vc-go/dataintegrity/suite/eddsa2022"
+	"github.com/dellekappa/vc-go/jwt"
+	"github.com/dellekappa/vc-go/proof"
+	"github.com/dellekappa/vc-go/proof/checker"
+	"github.com/dellekappa/vc-go/verifiable"
+
+	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"github.com/trustbloc/vcs/pkg/observability/tracing/attributeutil"
 	profileapi "github.com/trustbloc/vcs/pkg/profile"
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"
@@ -716,12 +717,13 @@ func (c *Controller) HandleProof(
 		kid, ok := jws.Headers.KeyID()
 		if !ok {
 			key, jwkOk := jws.Headers.JWK()
-			jwkJson, err := key.MarshalJSON()
+			jwkJSON, err := key.MarshalJSON() //nolint:govet
 			if err != nil {
-				return "", "", nil, resterr.NewOIDCError(string(resterr.InvalidOrMissingProofOIDCErr), fmt.Errorf("marshall jwk: %w", err))
+				return "", "", nil, resterr.NewOIDCError(string(resterr.InvalidOrMissingProofOIDCErr),
+					fmt.Errorf("marshall jwk: %w", err))
 			}
 			if jwkOk {
-				kid = fmt.Sprintf("did:jwk:%s#0", base64.URLEncoding.EncodeToString(jwkJson))
+				kid = fmt.Sprintf("did:jwk:%s#0", base64.URLEncoding.EncodeToString(jwkJSON))
 			}
 		}
 
@@ -884,11 +886,12 @@ func (c *Controller) OidcCredential(e echo.Context) error { //nolint:funlen
 
 	var credentialTypes []string
 
-	if lo.FromPtr(credentialReq.Format) == string(vcsverifiable.VcSdJwt) {
+	switch lo.FromPtr(credentialReq.Format) {
+	case string(vcsverifiable.VcSdJwt):
 		credentialTypes = []string{lo.FromPtr(credentialReq.Vct)}
-	} else if lo.FromPtr(credentialReq.Format) == string(vcsverifiable.MsoMdoc) {
+	case string(vcsverifiable.MsoMdoc):
 		credentialTypes = []string{lo.FromPtr(credentialReq.Doctype)}
-	} else if credentialReq.CredentialDefinition != nil {
+	default:
 		credentialTypes = credentialReq.CredentialDefinition.Type
 	}
 

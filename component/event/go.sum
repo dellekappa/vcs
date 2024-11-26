@@ -100,6 +100,7 @@ github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c h1:TQJsV9sP12Dnl
 github.com/dellekappa/did-go v0.0.0-20241126122450-59cb7046634c/go.mod h1:5eO3dLXBmxT9UDbm/MuWKs5NPPVfGr63hJlr8gZxuUU=
 github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178 h1:2gBuVLmDHW93Yk65mjq5BLrMIT350OcxR8yg8P+C6L8=
 github.com/dellekappa/kcms-go v0.0.0-20241126111333-26c606ba9178/go.mod h1:9E9mD2Uzs1gIZeKIE6YQxLanEpM79s1NOFmvsPLNErc=
+github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b h1:7L0RF8QHv+m/0Nh0nTi/ON/jb3eomKle3g1IowSdeiA=
 github.com/dellekappa/vc-go v0.0.0-20241126125628-201d1aa5837b/go.mod h1:QdA8NU63PXqO/RzmbLd6ovNxQPWuBbpmo95L9Y1ibl0=
 github.com/dgraph-io/ristretto v0.1.1 h1:6CWw5tJNgpegArSHpNHJKldNeq03FQCwYvfMVWajOK8=
 github.com/dgraph-io/ristretto v0.1.1/go.mod h1:S1GPSBCYCIhmVNfcth17y2zZtQT6wzkzgwUve0VDWWA=

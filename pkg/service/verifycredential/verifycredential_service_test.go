@@ -13,7 +13,6 @@ import (
 	"testing"
 
 	"github.com/dellekappa/did-go/doc/did"
-	ariesmockstorage "github.com/dellekappa/did-go/legacy/mock/storage"
 	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/dellekappa/kcms-go/kms"
@@ -23,6 +22,7 @@ import (
 	"github.com/dellekappa/kcms-go/suite/localsuite"
 	"github.com/dellekappa/vc-go/dataintegrity"
 	"github.com/dellekappa/vc-go/dataintegrity/suite/ecdsa2019"
+	mockstorage "github.com/dellekappa/vc-go/legacy/mock/storage"
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
@@ -835,10 +835,12 @@ func makeMockDIDResolution(id string, vm *did.VerificationMethod, vr did.Verific
 func createKMS(t *testing.T) api.Suite {
 	t.Helper()
 
-	store, err := kms.NewAriesProviderWrapper(ariesmockstorage.NewMockStoreProvider())
+	kmsStore, err := kms.NewAriesProviderWrapper(mockstorage.NewKMSMockStoreProvider())
 	require.NoError(t, err)
 
-	localSuite, err := localsuite.NewLocalCryptoSuite("local-lock://custom/primary/key/", store, &noop.NoLock{})
+	cmsStore := mockstorage.NewCMSMockStore()
+
+	localSuite, err := localsuite.NewLocalKCMSSuite("local-lock://custom/primary/key/", kmsStore, cmsStore, &noop.NoLock{})
 	require.NoError(t, err)
 
 	return localSuite

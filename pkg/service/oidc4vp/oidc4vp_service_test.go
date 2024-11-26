@@ -31,16 +31,16 @@ import (
 	ldcontext "github.com/dellekappa/did-go/doc/ld/context"
 	lddocloader "github.com/dellekappa/did-go/doc/ld/documentloader"
 	util "github.com/dellekappa/did-go/doc/util/time"
-	ariesmockstorage "github.com/dellekappa/did-go/legacy/mock/storage"
 	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/dellekappa/kcms-go/doc/util/fingerprint"
 	"github.com/dellekappa/kcms-go/secretlock/noop"
 	"github.com/dellekappa/kcms-go/spi/kms"
+	mockstorage "github.com/dellekappa/vc-go/legacy/mock/storage"
 	"github.com/dellekappa/vc-go/presexch"
 	"github.com/dellekappa/vc-go/verifiable"
 
-	"github.com/trustbloc/vcs/internal/mock/vcskms"
+	"github.com/trustbloc/vcs/internal/mock/vcskcms"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"github.com/trustbloc/vcs/pkg/event/spi"
 	"github.com/trustbloc/vcs/pkg/internal/testutil"
@@ -76,8 +76,8 @@ func TestService_InitiateOidcInteraction(t *testing.T) {
 	assert.NoError(t, err)
 
 	kmsRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	kmsRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(
-		&vcskms.MockKMS{Signer: customSigner}, nil)
+	kmsRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(
+		&vcskcms.MockKCMS{Signer: customSigner}, nil)
 
 	txManager := NewMockTransactionManager(gomock.NewController(t))
 	txManager.EXPECT().CreateTx(
@@ -287,7 +287,7 @@ func TestService_InitiateOidcInteraction(t *testing.T) {
 
 	t.Run("fail to get kms form registry", func(t *testing.T) {
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(nil, errors.New("fail"))
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(nil, errors.New("fail"))
 
 		mockEventSvc.EXPECT().Publish(gomock.Any(), spi.VerifierEventTopic, gomock.Any()).DoAndReturn(
 			expectedPublishEventFunc(t, spi.VerifierOIDCInteractionFailed, nil, func(t *testing.T, e *spi.Event) {
@@ -1608,10 +1608,12 @@ func TestService_RetrieveClaims(t *testing.T) {
 func createCryptoSuite(t *testing.T) api.Suite {
 	t.Helper()
 
-	p, err := arieskms.NewAriesProviderWrapper(ariesmockstorage.NewMockStoreProvider())
+	p, err := arieskms.NewAriesProviderWrapper(mockstorage.NewKMSMockStoreProvider())
 	assert.NoError(t, err)
 
-	cryptoSuite, err := localsuite.NewLocalCryptoSuite("local-lock://custom/primary/key/", p, &noop.NoLock{})
+	s := mockstorage.NewCMSMockStore()
+
+	cryptoSuite, err := localsuite.NewLocalKCMSSuite("local-lock://custom/primary/key/", p, s, &noop.NoLock{})
 	assert.NoError(t, err)
 
 	return cryptoSuite

@@ -4,7 +4,7 @@ Copyright SecureKey Technologies Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-//go:generate mockgen -destination mocks/kms_mocks.go -self_package mocks -package mocks -source=kms.go -mock_names VCSKeyManager=MockVCSKeyManager
+//go:generate mockgen -destination mocks/kcms_mocks.go -self_package mocks -package mocks -source=kms.go -mock_names VCSKeyCertManager=MockVCSKeyCertManager
 
 package kcms
 

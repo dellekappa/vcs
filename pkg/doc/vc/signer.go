@@ -8,6 +8,7 @@ package vc
 
 import (
 	"crypto/x509"
+
 	"github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/vc-go/verifiable"
 

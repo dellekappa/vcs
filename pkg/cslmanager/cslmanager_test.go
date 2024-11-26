@@ -22,7 +22,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 
-	"github.com/trustbloc/vcs/internal/mock/vcskms"
+	"github.com/trustbloc/vcs/internal/mock/vcskcms"
 
 	"github.com/stretchr/testify/require"
 
@@ -59,7 +59,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 	t.Run("test success", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		mockKMSRegistry := NewMockKMSRegistry(ctrl)
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(5).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(5).Return(&vcskcms.MockKCMS{}, nil)
 		ctx := context.Background()
 
 		cslIndexStore := newMockCSLIndexStore()
@@ -120,7 +120,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 	t.Run("test error get key manager", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		mockKMSRegistry := NewMockKMSRegistry(ctrl)
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(1).Return(nil, errors.New("some error"))
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(1).Return(nil, errors.New("some error"))
 
 		cslIndexStore := newMockCSLIndexStore()
 		cslVCStore := newMockCSLVCStore()
@@ -149,7 +149,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 		profile.VCConfig.Status.Type = "undefined"
 
 		mockKMSRegistry := NewMockKMSRegistry(ctrl)
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(1).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(1).Return(&vcskcms.MockKCMS{}, nil)
 
 		cslIndexStore := newMockCSLIndexStore()
 		cslVCStore := newMockCSLVCStore()
@@ -248,7 +248,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 
 	t.Run("test error from CSL VC store", func(t *testing.T) {
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 		ctx := context.Background()
 
 		cslIndexStore := newMockCSLIndexStore()
@@ -279,7 +279,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 
 	t.Run("test error put typedID to store - list size too small", func(t *testing.T) {
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(1).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(1).Return(&vcskcms.MockKCMS{}, nil)
 
 		s, err := New(&Config{
 			CSLIndexStore: newMockCSLIndexStore(),
@@ -349,7 +349,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 
 	t.Run("test error from store csl list in store", func(t *testing.T) {
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(1).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(1).Return(&vcskcms.MockKCMS{}, nil)
 
 		s, err := New(&Config{
 			CSLVCStore: newMockCSLVCStore(),
@@ -373,7 +373,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 
 	t.Run("test error update latest list id", func(t *testing.T) {
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(1).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(1).Return(&vcskcms.MockKCMS{}, nil)
 
 		s, err := New(&Config{
 			CSLVCStore: newMockCSLVCStore(),
@@ -398,7 +398,7 @@ func TestCredentialStatusList_CreateCSLEntry(t *testing.T) {
 	t.Run("test error put typedID to store", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		mockKMSRegistry := NewMockKMSRegistry(ctrl)
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(1).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(1).Return(&vcskcms.MockKCMS{}, nil)
 
 		mockVCStatusStore := NewMockVCStatusStore(ctrl)
 		mockVCStatusStore.EXPECT().

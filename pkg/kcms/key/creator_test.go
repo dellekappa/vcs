@@ -12,13 +12,13 @@ import (
 	"errors"
 	"testing"
 
-	ariesmockstorage "github.com/dellekappa/did-go/legacy/mock/storage"
 	"github.com/dellekappa/kcms-go/doc/jose/jwk"
 	arieskms "github.com/dellekappa/kcms-go/kms"
 	mockwrapper "github.com/dellekappa/kcms-go/mock/wrapper"
 	"github.com/dellekappa/kcms-go/secretlock/noop"
 	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/dellekappa/kcms-go/suite/localsuite"
+	mockstorage "github.com/dellekappa/vc-go/legacy/mock/storage"
 	"github.com/stretchr/testify/require"
 
 	"github.com/dellekappa/kcms-go/spi/kms"
@@ -94,10 +94,12 @@ func TestCryptoKeyCreator(t *testing.T) {
 func newKMS(t *testing.T) (api.RawKeyCreator, func(kid string) error) {
 	t.Helper()
 
-	p, err := arieskms.NewAriesProviderWrapper(ariesmockstorage.NewMockStoreProvider())
+	p, err := arieskms.NewAriesProviderWrapper(mockstorage.NewKMSMockStoreProvider())
 	require.NoError(t, err)
 
-	suite, err := localsuite.NewLocalCryptoSuite("local-lock://custom/primary/key/", p, &noop.NoLock{})
+	s := mockstorage.NewCMSMockStore()
+
+	suite, err := localsuite.NewLocalKCMSSuite("local-lock://custom/primary/key/", p, s, &noop.NoLock{})
 	require.NoError(t, err)
 
 	kc, err := suite.RawKeyCreator()

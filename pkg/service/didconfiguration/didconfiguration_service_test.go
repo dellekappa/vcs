@@ -147,14 +147,14 @@ func TestDidConfiguration(t *testing.T) {
 
 	for _, testCase := range cases {
 		t.Run(testCase.name, func(t *testing.T) {
-			keyManager := mocks.NewMockVCSKeyManager(gomock.NewController(t))
+			keyManager := mocks.NewMockVCSKeyCertManager(gomock.NewController(t))
 			keyManager.EXPECT().SupportedKeyTypes().AnyTimes().Return([]kms.KeyType{
 				kms.ED25519Type,
 				kms.X25519ECDHKWType,
 			})
 
 			kmsRegistrySvc := NewMockKmsRegistry(gomock.NewController(t))
-			kmsRegistrySvc.EXPECT().GetKeyManager(gomock.Any()).Return(keyManager, nil)
+			kmsRegistrySvc.EXPECT().GetKeyCertManager(gomock.Any()).Return(keyManager, nil)
 
 			verifierProfileSvc := NewMockVerifierProfileService(gomock.NewController(t))
 			if testCase.verifierProfile != nil {
@@ -236,6 +236,8 @@ func TestDidConfiguration(t *testing.T) {
 				}
 
 				assert.Equal(t, signedJwt, jws)
+			case vcsverifiable.Mdoc:
+				panic("not yet implemented")
 			}
 		})
 	}
@@ -345,7 +347,7 @@ func TestKmsError(t *testing.T) {
 			}
 
 			kmsRegistrySvc := NewMockKmsRegistry(gomock.NewController(t))
-			kmsRegistrySvc.EXPECT().GetKeyManager(gomock.Any()).Return(nil, errors.New("kms error"))
+			kmsRegistrySvc.EXPECT().GetKeyCertManager(gomock.Any()).Return(nil, errors.New("kms error"))
 
 			configService := New(&Config{
 				VerifierProfileService: verifierProfileSvc,
@@ -367,14 +369,14 @@ func TestKmsError(t *testing.T) {
 }
 
 func TestWithSignError(t *testing.T) {
-	keyManager := mocks.NewMockVCSKeyManager(gomock.NewController(t))
+	keyManager := mocks.NewMockVCSKeyCertManager(gomock.NewController(t))
 	keyManager.EXPECT().SupportedKeyTypes().AnyTimes().Return([]kms.KeyType{
 		kms.ED25519Type,
 		kms.X25519ECDHKWType,
 	})
 
 	kmsRegistrySvc := NewMockKmsRegistry(gomock.NewController(t))
-	kmsRegistrySvc.EXPECT().GetKeyManager(gomock.Any()).Return(keyManager, nil)
+	kmsRegistrySvc.EXPECT().GetKeyCertManager(gomock.Any()).Return(keyManager, nil)
 
 	verifierProfileSvc := NewMockVerifierProfileService(gomock.NewController(t))
 

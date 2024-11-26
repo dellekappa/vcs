@@ -95,6 +95,8 @@ func proveVP(
 		signJWS(t, presentation, didDoc.VerificationMethod[0].ID, fks)
 	case vcs.Cwt:
 		signCWT(t, presentation, didDoc.VerificationMethod[0].ID, fks)
+	case vcs.Mdoc:
+		t.Fatal("not yet implemented")
 	}
 
 	return &SignedPresentationResult{
@@ -144,6 +146,8 @@ func proveVPWithExistingPrivateKey(
 		signJWS(t, presentation, verMethodDIDKeyID, signer)
 	case vcs.Cwt:
 		signCWT(t, presentation, verMethodDIDKeyID, signer)
+	case vcs.Mdoc:
+		t.Fatal("not yet implemented")
 	}
 
 	return presentation

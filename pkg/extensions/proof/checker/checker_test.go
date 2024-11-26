@@ -107,7 +107,7 @@ func TestProofChecker_CheckCWTProof(t *testing.T) {
 
 	t.Run("missed kid and COSE_Key in cwt header", func(t *testing.T) {
 		err := testable.CheckCWTProof(checker.CheckCWTProofRequest{
-			Algo: cose.AlgorithmEd25519,
+			Algo: cose.AlgorithmEdDSA,
 		}, "issuerID", nil, nil)
 		require.ErrorContains(t, err, "missed kid and COSE_Key in cwt header")
 	})
@@ -138,7 +138,7 @@ func TestProofChecker_CheckCWTProof(t *testing.T) {
 	t.Run("unsupported cwt alg:", func(t *testing.T) {
 		err := testable.CheckCWTProof(checker.CheckCWTProofRequest{
 			KeyID: "lookupId",
-			Algo:  cose.AlgorithmEd25519,
+			Algo:  cose.AlgorithmEdDSA,
 		}, "issuerID", nil, nil)
 		require.ErrorContains(t, err, "can't verifiy with \"test\" verification method")
 	})
@@ -152,7 +152,7 @@ func TestProofCheckerIssuerCwt(t *testing.T) {
 	err := testable.CheckCWTProof(
 		checker.CheckCWTProofRequest{
 			KeyID: "tid",
-			Algo:  cose.AlgorithmEd25519,
+			Algo:  cose.AlgorithmEdDSA,
 		},
 		"abcd", nil, nil)
 

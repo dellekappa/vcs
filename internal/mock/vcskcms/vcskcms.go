@@ -4,23 +4,26 @@ Copyright Gen Digital Inc. All Rights Reserved.
 SPDX-License-Identifier: Apache-2.0
 */
 
-package vcskms
+package vcskcms
 
 import (
+	"crypto/x509"
+
 	"github.com/dellekappa/kcms-go/doc/jose/jwk"
 	mockwrapper "github.com/dellekappa/kcms-go/mock/wrapper"
 	kmsapi "github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/kcms-go/suite/api"
+
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 	"github.com/trustbloc/vcs/pkg/kcms"
 	"github.com/trustbloc/vcs/pkg/kcms/signer"
 )
 
-// MockKMS mocks kms.VCSKeyManager.
+// MockKCMS mocks kcms.VCSKeyCertManager.
 //
-// Set either MockKMS.Signer or MockKMS.FixedSigner.
-type MockKMS struct {
+// Set either MockKCMS.Signer or MockKCMS.FixedSigner.
+type MockKCMS struct {
 	Signer      api.KMSCryptoMultiSigner
 	FixedSigner api.FixedKeyMultiSigner
 	VCSignerErr error
@@ -28,7 +31,7 @@ type MockKMS struct {
 }
 
 // NewVCSigner mock.
-func (m *MockKMS) NewVCSigner(creator string, signatureType vcsverifiable.SignatureType) (vc.SignerAlgorithm, error) {
+func (m *MockKCMS) NewVCSigner(creator string, signatureType vcsverifiable.SignatureType) (vc.SignerAlgorithm, error) {
 	if m.VCSignerErr != nil {
 		return nil, m.VCSignerErr
 	}
@@ -54,18 +57,26 @@ func (m *MockKMS) NewVCSigner(creator string, signatureType vcsverifiable.Signat
 }
 
 // SupportedKeyTypes unimplemented stub.
-func (m *MockKMS) SupportedKeyTypes() []kmsapi.KeyType {
+func (m *MockKCMS) SupportedKeyTypes() []kmsapi.KeyType {
 	return m.KeyTypes
 }
 
 // CreateJWKKey unimplemented stub.
-func (m *MockKMS) CreateJWKKey(_ kmsapi.KeyType) (string, *jwk.JWK, error) {
+func (m *MockKCMS) CreateJWKKey(_ kmsapi.KeyType) (string, *jwk.JWK, error) {
 	return "", nil, nil
 }
 
 // CreateCryptoKey unimplemented stub.
-func (m *MockKMS) CreateCryptoKey(_ kmsapi.KeyType) (string, interface{}, error) {
+func (m *MockKCMS) CreateCryptoKey(_ kmsapi.KeyType) (string, interface{}, error) {
 	return "", nil, nil
 }
 
-var _ kcms.VCSKeyCertManager = &MockKMS{}
+func (m *MockKCMS) CreateX509Certificate(_ *x509.Certificate, _ *jwk.JWK) (*x509.Certificate, error) {
+	return nil, nil //nolint:nilnil
+}
+
+func (m *MockKCMS) GetX509Certificates(_ string) ([]*x509.Certificate, error) {
+	return nil, nil //nolint:nilnil
+}
+
+var _ kcms.VCSKeyCertManager = &MockKCMS{}

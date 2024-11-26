@@ -78,10 +78,7 @@ func (s *PrepareCredentialService) PrepareCredential(
 }
 
 func (s *PrepareCredentialService) prepareCredentialFromClaims(
-	_ context.Context,
-	req *PrepareCredentialsRequest,
-) (*verifiable.Credential, error) {
-
+	_ context.Context, req *PrepareCredentialsRequest) (*verifiable.Credential, error) {
 	contexts := req.CredentialConfiguration.CredentialTemplate.Contexts
 	if len(contexts) == 0 {
 		contexts = []string{defaultCtx}

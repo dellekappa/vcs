@@ -137,6 +137,8 @@ func proveVC(
 				false, jwsAlgo, proofCreator, didDoc.VerificationMethod[0].ID)
 			require.NoError(t, jwtErr)
 		}
+	case vcsverifiable.Mdoc:
+		t.Fatal("not yet implemented")
 	}
 
 	return credential, &vdrmock.VDRegistry{

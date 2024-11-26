@@ -10,31 +10,31 @@ import (
 	"context"
 	"crypto/x509"
 	"fmt"
-	cmsapi "github.com/dellekappa/kcms-go/spi/cms"
-	"github.com/trustbloc/vcs/pkg/storage/mongodb/cmsstore"
 	"io"
 	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/config"
+
 	"github.com/dellekappa/did-go/legacy/mem"
 	"github.com/dellekappa/kcms-go/doc/jose/jwk"
 	arieskms "github.com/dellekappa/kcms-go/kms"
 	"github.com/dellekappa/kcms-go/secretlock/local"
+	cmsapi "github.com/dellekappa/kcms-go/spi/cms"
 	kmsapi "github.com/dellekappa/kcms-go/spi/kms"
 	"github.com/dellekappa/kcms-go/spi/secretlock"
 	"github.com/dellekappa/kcms-go/suite/api"
 	"github.com/dellekappa/kcms-go/suite/localsuite"
 	"github.com/dellekappa/kcms-go/suite/websuite"
 
-	awssvc "github.com/trustbloc/vcs/pkg/kcms/aws"
-	"github.com/trustbloc/vcs/pkg/storage/mongodb"
-	"github.com/trustbloc/vcs/pkg/storage/mongodb/arieskmsstore"
-
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
+	awssvc "github.com/trustbloc/vcs/pkg/kcms/aws"
 	"github.com/trustbloc/vcs/pkg/kcms/key"
 	"github.com/trustbloc/vcs/pkg/kcms/signer"
+	"github.com/trustbloc/vcs/pkg/storage/mongodb"
+	"github.com/trustbloc/vcs/pkg/storage/mongodb/arieskmsstore"
+	"github.com/trustbloc/vcs/pkg/storage/mongodb/cmsstore"
 )
 
 // nolint: gochecknoglobals

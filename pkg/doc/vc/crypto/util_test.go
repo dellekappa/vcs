@@ -7,10 +7,6 @@ SPDX-License-Identifier: Apache-2.0
 package crypto
 
 import (
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
-	"github.com/veraison/go-cose"
 	"testing"
 
 	"github.com/dellekappa/did-go/doc/did"
@@ -169,28 +165,4 @@ func TestValidateProof(t *testing.T) {
 			}
 		})
 	}
-}
-
-func TestCBORSignature(t *testing.T) {
-	data := map[string]interface{}{}
-
-	// create a signer
-	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-	if err != nil {
-		t.Fatal(err)
-	}
-	signer, err := cose.NewSigner(cose.AlgorithmES256, privateKey)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// create message header
-	headers := cose.Headers{
-		Protected: cose.ProtectedHeader{
-			cose.HeaderLabelAlgorithm: cose.AlgorithmES256,
-		},
-	}
-
-	// sign and marshal message
-	cose.Sign1(rand.Reader, signer, headers, data, nil)
 }

@@ -26,7 +26,6 @@ import (
 	"time"
 
 	"github.com/dellekappa/did-go/doc/did"
-	ariesmockstorage "github.com/dellekappa/did-go/legacy/mock/storage"
 	vdrapi "github.com/dellekappa/did-go/vdr/api"
 	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/dellekappa/kcms-go/doc/jose"
@@ -37,6 +36,7 @@ import (
 	"github.com/dellekappa/kcms-go/suite/localsuite"
 	"github.com/dellekappa/vc-go/cwt"
 	"github.com/dellekappa/vc-go/jwt"
+	mockstorage "github.com/dellekappa/vc-go/legacy/mock/storage"
 	"github.com/dellekappa/vc-go/proof"
 	"github.com/dellekappa/vc-go/proof/creator"
 	"github.com/dellekappa/vc-go/proof/testsupport"
@@ -582,10 +582,12 @@ func makeMockDIDResolution(id string, vm *did.VerificationMethod, vr did.Verific
 func createCryptoSuite(t *testing.T) api.Suite {
 	t.Helper()
 
-	p, err := arieskms.NewAriesProviderWrapper(ariesmockstorage.NewMockStoreProvider())
+	p, err := arieskms.NewAriesProviderWrapper(mockstorage.NewKMSMockStoreProvider())
 	require.NoError(t, err)
 
-	suite, err := localsuite.NewLocalCryptoSuite("local-lock://custom/primary/key/", p, &noop.NoLock{})
+	s := mockstorage.NewCMSMockStore()
+
+	suite, err := localsuite.NewLocalKCMSSuite("local-lock://custom/primary/key/", p, s, &noop.NoLock{})
 	require.NoError(t, err)
 
 	return suite

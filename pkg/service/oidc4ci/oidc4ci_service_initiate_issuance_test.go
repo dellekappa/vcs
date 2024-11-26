@@ -2142,7 +2142,7 @@ func TestService_InitiateIssuanceWithRemoteStore(t *testing.T) {
 					DBName:            "DBName",
 				}
 
-				kmsRegistry.EXPECT().GetKeyManager(kmsConfig).Return(nil, nil)
+				kmsRegistry.EXPECT().GetKeyCertManager(kmsConfig).Return(nil, nil)
 
 				cryptoJWTSigner.EXPECT().NewJWTSigned(gomock.Any(), gomock.Any()).
 					DoAndReturn(func(claims interface{}, signerData *vc.Signer) (string, error) {
@@ -2225,7 +2225,7 @@ func TestService_InitiateIssuanceWithRemoteStore(t *testing.T) {
 
 				eventService.EXPECT().Publish(gomock.Any(), spi.IssuerEventTopic, gomock.Any()).Times(0)
 
-				kmsRegistry.EXPECT().GetKeyManager(gomock.Any()).Return(nil, errors.New("some error"))
+				kmsRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Return(nil, errors.New("some error"))
 
 				issuanceReq = &oidc4ci.InitiateIssuanceRequest{
 					ClientWellKnownURL: walletWellKnownURL,
@@ -2294,7 +2294,7 @@ func TestService_InitiateIssuanceWithRemoteStore(t *testing.T) {
 					DBName:            "DBName",
 				}
 
-				kmsRegistry.EXPECT().GetKeyManager(kmsConfig).Return(nil, nil)
+				kmsRegistry.EXPECT().GetKeyCertManager(kmsConfig).Return(nil, nil)
 
 				cryptoJWTSigner.EXPECT().NewJWTSigned(gomock.Any(), gomock.Any()).Return("", errors.New("some error"))
 

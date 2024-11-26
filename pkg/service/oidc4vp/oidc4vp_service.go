@@ -847,6 +847,8 @@ func GetSupportedVPFormats(
 			formats.LdpVP = &presexch.LdpType{ProofType: supportedFormats[vcsverifiable.Ldp]}
 		case vcsverifiable.Cwt:
 			formats.CwtVP = &presexch.CwtType{Alg: supportedFormats[vcsverifiable.Cwt]}
+		case vcsverifiable.Mdoc:
+			panic("not yet implemented")
 		}
 	}
 
@@ -858,6 +860,8 @@ func GetSupportedVPFormats(
 			formats.LdpVC = &presexch.LdpType{ProofType: supportedFormats[vcsverifiable.Ldp]}
 		case vcsverifiable.Cwt:
 			formats.LdpVC = &presexch.LdpType{ProofType: supportedFormats[vcsverifiable.Cwt]}
+		case vcsverifiable.Mdoc:
+			panic("not yet implemented")
 		}
 	}
 

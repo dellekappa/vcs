@@ -496,11 +496,12 @@ func findCredentialConfigurationID(
 ) (string, *profileapi.CredentialsConfigurationSupported, error) {
 	for k, v := range profile.CredentialMetaData.CredentialsConfigurationSupported {
 		var supportedTypes []string
-		if v.Format == verifiable.VcSdJwt {
+		switch v.Format { //nolint:exhaustive
+		case verifiable.VcSdJwt:
 			supportedTypes = []string{v.Vct}
-		} else if v.Format == verifiable.MsoMdoc {
+		case verifiable.MsoMdoc:
 			supportedTypes = []string{v.Doctype}
-		} else {
+		default:
 			supportedTypes = v.CredentialDefinition.Type
 		}
 

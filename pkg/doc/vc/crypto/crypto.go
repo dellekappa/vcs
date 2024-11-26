@@ -613,35 +613,3 @@ func getSignatureRepresentation(signRep string) (verifiable.SignatureRepresentat
 
 	return signatureRepresentation, nil
 }
-
-//func createX509Cert(key *ecdsa.PrivateKey) (*x509.Certificate, error) {
-//	//key, err := rsa.GenerateKey(rand.Reader, 4096)
-//	//if err != nil {
-//	//	return err
-//	//}
-//
-//	template := &x509.Certificate{
-//		SerialNumber: big.NewInt(2019),
-//		Subject: pkix.Name{
-//			Organization:  []string{"Poste Italiane"},
-//			Country:       []string{"IT"},
-//			Province:      []string{""},
-//			Locality:      []string{"Rome"},
-//			StreetAddress: []string{"viale Europa"},
-//			PostalCode:    []string{"00144"},
-//		},
-//		NotBefore:             time.Now(),
-//		NotAfter:              time.Now().AddDate(10, 0, 0),
-//		IsCA:                  false,
-//		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-//		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
-//		BasicConstraintsValid: true,
-//	}
-//
-//	der, err := x509.CreateCertificate(rand.Reader, template, template, &key.PublicKey, key)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	return x509.ParseCertificate(der)
-//}

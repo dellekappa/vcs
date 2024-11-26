@@ -60,9 +60,7 @@ func NewService(config *Config) *Service {
 	}
 }
 
-func (s *Service) GetOpenIDConfig(
-	issuerProfile *profileapi.Issuer) (*issuer.WellKnownOpenIDConfiguration, error) {
-
+func (s *Service) GetOpenIDConfig(issuerProfile *profileapi.Issuer) (*issuer.WellKnownOpenIDConfiguration, error) {
 	issuerMetadata := s.getOpenIDIssuerConfig(issuerProfile)
 
 	metadata := &issuer.WellKnownOpenIDConfiguration{
@@ -189,14 +187,14 @@ func (s *Service) getOpenIDIssuerConfig(issuerProfile *profileapi.Issuer) *issue
 
 	credentialsConfigurationSupported := s.buildCredentialConfigurationsSupported(issuerProfile)
 
-	//issuerURL, _ := url.JoinPath(s.externalHostURL, "issuer", issuerProfile.ID, issuerProfile.Version)
+	// issuerURL, _ := url.JoinPath(s.externalHostURL, "issuer", issuerProfile.ID, issuerProfile.Version)
 	issuerURL, _ := url.JoinPath(s.externalHostURL, "oidc", "idp", issuerProfile.ID, issuerProfile.Version)
 
-	//credentialIssuerMetadataDisplay := s.buildCredentialIssuerMetadataDisplay(
+	// credentialIssuerMetadataDisplay := s.buildCredentialIssuerMetadataDisplay(
 	//	issuerProfile.Name,
 	//	issuerProfile.URL,
 	//	issuerProfile.CredentialMetaData.Display,
-	//)
+	// )
 
 	final := &issuer.WellKnownOpenIDIssuerConfiguration{
 		CredentialIssuer:               &issuerURL,
@@ -266,44 +264,44 @@ func (s *Service) signIssuerMetadata(
 	return signedIssuerMetadata, nil
 }
 
-func (s *Service) buildCredentialIssuerMetadataDisplay(
-	issuerProfileName, issuerProfileURL string,
-	issuerProfileDisplay []*profileapi.CredentialDisplay,
-) []issuer.CredentialDisplay {
-	var display []issuer.CredentialDisplay
-	if issuerProfileDisplay != nil {
-		display = make([]issuer.CredentialDisplay, 0, len(issuerProfileDisplay))
-
-		for _, d := range issuerProfileDisplay {
-			credentialDisplay := issuer.CredentialDisplay{
-				BackgroundColor: lo.ToPtr(d.BackgroundColor),
-				Locale:          lo.ToPtr(d.Locale),
-				Name:            lo.ToPtr(d.Name),
-				TextColor:       lo.ToPtr(d.TextColor),
-				Url:             lo.ToPtr(d.URL),
-			}
-
-			if d.Logo != nil {
-				credentialDisplay.Logo = &issuer.Logo{
-					AltText: lo.ToPtr(d.Logo.AlternativeText),
-					Uri:     d.Logo.URI,
-				}
-			}
-
-			display = append(display, credentialDisplay)
-		}
-	} else {
-		display = []issuer.CredentialDisplay{
-			{
-				Locale: lo.ToPtr("en-US"),
-				Name:   lo.ToPtr(issuerProfileName),
-				Url:    lo.ToPtr(issuerProfileURL),
-			},
-		}
-	}
-
-	return display
-}
+// func (s *Service) buildCredentialIssuerMetadataDisplay(
+//	issuerProfileName, issuerProfileURL string,
+//	issuerProfileDisplay []*profileapi.CredentialDisplay,
+// ) []issuer.CredentialDisplay {
+//	var display []issuer.CredentialDisplay
+//	if issuerProfileDisplay != nil {
+//		display = make([]issuer.CredentialDisplay, 0, len(issuerProfileDisplay))
+//
+//		for _, d := range issuerProfileDisplay {
+//			credentialDisplay := issuer.CredentialDisplay{
+//				BackgroundColor: lo.ToPtr(d.BackgroundColor),
+//				Locale:          lo.ToPtr(d.Locale),
+//				Name:            lo.ToPtr(d.Name),
+//				TextColor:       lo.ToPtr(d.TextColor),
+//				Url:             lo.ToPtr(d.URL),
+//			}
+//
+//			if d.Logo != nil {
+//				credentialDisplay.Logo = &issuer.Logo{
+//					AltText: lo.ToPtr(d.Logo.AlternativeText),
+//					Uri:     d.Logo.URI,
+//				}
+//			}
+//
+//			display = append(display, credentialDisplay)
+//		}
+//	} else {
+//		display = []issuer.CredentialDisplay{
+//			{
+//				Locale: lo.ToPtr("en-US"),
+//				Name:   lo.ToPtr(issuerProfileName),
+//				Url:    lo.ToPtr(issuerProfileURL),
+//			},
+//		}
+//	}
+//
+//	return display
+// }
 
 func (s *Service) buildCredentialConfigurationsSupported(
 	issuerProfile *profileapi.Issuer,
@@ -321,7 +319,7 @@ func (s *Service) buildCredentialConfigurationsSupported(
 		if issuerProfile.VCConfig != nil {
 			cryptographicBindingMethodsSupported = []string{string(issuerProfile.VCConfig.DIDMethod)}
 			signingAlgValuesSupported = []string{string(issuerProfile.VCConfig.SigningAlgorithm)}
-			//signingAlgValuesSupported = []string{string(issuerProfile.VCConfig.KeyType)}
+			// signingAlgValuesSupported = []string{string(issuerProfile.VCConfig.KeyType)}
 		}
 
 		display := s.buildCredentialConfigurationsSupportedDisplay(credentialSupported.Display)
@@ -354,14 +352,14 @@ func (s *Service) buildCredentialConfigurationsSupported(
 			Vct:                                  lo.EmptyableToPtr(credentialSupported.Vct),
 		}
 
-		//if c.Format == "mso_mdoc" {
+		// if c.Format == "mso_mdoc" {
 		//	c.IsoCredentialSigningAlgorithmsSupported = []int{-7}
 		//	c.IsoCredentialCurvesSupported = []int{1}
 		//	c.Policy = &issuer.CredentialPolicy{
 		//		OneTimeUse: true,
 		//		BatchSize:  lo.ToPtr(50),
 		//	}
-		//}
+		// }
 
 		credentialsConfigurationSupported.Set(credentialConfigurationID, c)
 	}

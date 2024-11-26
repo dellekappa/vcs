@@ -362,14 +362,13 @@ func withDIDDomain(didDomain string) verMethodOpt {
 }
 
 func createAndAppendX509Cert(didDomain string, key *jwk.JWK, km KeyCertCreator) error {
-
 	template := &x509.Certificate{
-		SerialNumber: big.NewInt(2019),
+		SerialNumber: big.NewInt(2019), //nolint:gomnd
 		Subject: pkix.Name{
 			CommonName: didDomain,
 		},
 		NotBefore: time.Now(),
-		NotAfter:  time.Now().AddDate(10, 0, 0),
+		NotAfter:  time.Now().AddDate(10, 0, 0), //nolint:gomnd
 		IsCA:      false,
 		// ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
 		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,

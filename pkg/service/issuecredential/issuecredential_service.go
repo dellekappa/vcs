@@ -11,8 +11,11 @@ package issuecredential
 import (
 	"context"
 	"fmt"
-	"github.com/dellekappa/vc-go/verifiable"
+
 	"github.com/samber/lo"
+
+	"github.com/dellekappa/vc-go/verifiable"
+
 	"github.com/trustbloc/vcs/pkg/doc/vc"
 	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 	"github.com/trustbloc/vcs/pkg/doc/vc/vcutil"

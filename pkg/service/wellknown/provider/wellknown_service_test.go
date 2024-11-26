@@ -43,7 +43,7 @@ func TestController_GetOpenIDCredentialIssuerConfig(t *testing.T) {
 			setup: func() {
 				mockTestIssuerProfile = loadProfile(t)
 
-				mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).
+				mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).
 					DoAndReturn(func(config *vcskms.Config) (vcskms.VCSKeyCertManager, error) {
 						assert.EqualValues(t, "local", config.KMSType)
 						assert.EqualValues(t, "https://example.com", config.Endpoint)
@@ -70,7 +70,7 @@ func TestController_GetOpenIDCredentialIssuerConfig(t *testing.T) {
 				mockTestIssuerProfile = loadProfile(t)
 				mockTestIssuerProfile.OIDCConfig.EnableDynamicClientRegistration = false
 
-				mockKMSRegistry.EXPECT().GetKeyManager(&vcskms.Config{
+				mockKMSRegistry.EXPECT().GetKeyCertManager(&vcskms.Config{
 					KMSType:  "local",
 					Endpoint: "https://example.com",
 				}).Return(nil, nil)
@@ -130,7 +130,7 @@ func TestController_GetOpenIDCredentialIssuerConfig(t *testing.T) {
 			setup: func() {
 				mockTestIssuerProfile = loadProfile(t)
 
-				mockKMSRegistry.EXPECT().GetKeyManager(&vcskms.Config{
+				mockKMSRegistry.EXPECT().GetKeyCertManager(&vcskms.Config{
 					KMSType:  "local",
 					Endpoint: "https://example.com",
 				}).Return(nil, errors.New("some error"))
@@ -148,7 +148,7 @@ func TestController_GetOpenIDCredentialIssuerConfig(t *testing.T) {
 			setup: func() {
 				mockTestIssuerProfile = loadProfile(t)
 
-				mockKMSRegistry.EXPECT().GetKeyManager(&vcskms.Config{
+				mockKMSRegistry.EXPECT().GetKeyCertManager(&vcskms.Config{
 					KMSType:  "local",
 					Endpoint: "https://example.com",
 				}).Return(nil, nil)
@@ -232,16 +232,16 @@ func checkWellKnownOpenIDIssuerConfiguration(
 		assert.Equal(t, []string{"ECDSASecp256k1DER"}, credentialConfigurationSupported.CredentialSigningAlgValuesSupported)
 
 		credentialConfigurationSupportedDisplay := credentialConfigurationSupported.Display
-		assert.Equal(t, 1, len(credentialConfigurationSupportedDisplay))
-		assert.Equal(t, "#12107c", lo.FromPtr(credentialConfigurationSupportedDisplay[0].BackgroundColor))
-		assert.Equal(t, "en-US", lo.FromPtr(credentialConfigurationSupportedDisplay[0].Locale))
+		assert.Equal(t, 1, len(lo.FromPtr(credentialConfigurationSupportedDisplay)))
+		assert.Equal(t, "#12107c", lo.FromPtr(lo.FromPtr(credentialConfigurationSupportedDisplay)[0].BackgroundColor))
+		assert.Equal(t, "en-US", lo.FromPtr(lo.FromPtr(credentialConfigurationSupportedDisplay)[0].Locale))
 		assert.Equal(t, &issuer.Logo{
 			AltText: lo.ToPtr("a square logo of a employee verification"),
 			Uri:     "https://example.com/public/logo.png",
-		}, credentialConfigurationSupportedDisplay[0].Logo)
-		assert.Equal(t, "Verified Employee", lo.FromPtr(credentialConfigurationSupportedDisplay[0].Name))
-		assert.Equal(t, "#FFFFFF", lo.FromPtr(credentialConfigurationSupportedDisplay[0].TextColor))
-		assert.Equal(t, "", lo.FromPtr(credentialConfigurationSupportedDisplay[0].Url))
+		}, lo.FromPtr(credentialConfigurationSupportedDisplay)[0].Logo)
+		assert.Equal(t, "Verified Employee", lo.FromPtr(lo.FromPtr(credentialConfigurationSupportedDisplay)[0].Name))
+		assert.Equal(t, "#FFFFFF", lo.FromPtr(lo.FromPtr(credentialConfigurationSupportedDisplay)[0].TextColor))
+		assert.Equal(t, "", lo.FromPtr(lo.FromPtr(credentialConfigurationSupportedDisplay)[0].Url))
 
 		assert.Equal(t, "doctype1", lo.FromPtr(credentialConfigurationSupported.Doctype))
 		assert.Equal(t, "ldp_vc", credentialConfigurationSupported.Format)

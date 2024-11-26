@@ -23,15 +23,15 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 
-	"github.com/trustbloc/vcs/internal/mock/vcskms"
+	"github.com/trustbloc/vcs/internal/mock/vcskcms"
 
 	"github.com/dellekappa/did-go/doc/did"
 	"github.com/dellekappa/did-go/doc/did/endpoint"
 	util "github.com/dellekappa/did-go/doc/util/time"
-	ariesmockstorage "github.com/dellekappa/did-go/legacy/mock/storage"
 	vdrmock "github.com/dellekappa/did-go/vdr/mock"
 	"github.com/dellekappa/kcms-go/secretlock/noop"
 	"github.com/dellekappa/kcms-go/spi/kms"
+	mockstorage "github.com/dellekappa/vc-go/legacy/mock/storage"
 	"github.com/dellekappa/vc-go/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/doc/vc"
@@ -65,8 +65,8 @@ func TestService_IssueCredential(t *testing.T) {
 	mockVCStatusManager := NewMockVCStatusManager(ctr)
 
 	kmsRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	kmsRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(
-		&vcskms.MockKMS{Signer: customSigner}, nil)
+	kmsRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(
+		&vcskcms.MockKCMS{Signer: customSigner}, nil)
 
 	ctx := context.Background()
 
@@ -275,7 +275,7 @@ func TestService_IssueCredential(t *testing.T) {
 
 	t.Run("Error kmsRegistry", func(t *testing.T) {
 		registry := NewMockKMSRegistry(gomock.NewController(t))
-		registry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(nil, errors.New("some error"))
+		registry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(nil, errors.New("some error"))
 
 		service := issuecredential.New(&issuecredential.Config{
 			KMSRegistry: registry,
@@ -290,7 +290,7 @@ func TestService_IssueCredential(t *testing.T) {
 	})
 	t.Run("Error VCStatusManager.CreateStatusListEntry", func(t *testing.T) {
 		registry := NewMockKMSRegistry(gomock.NewController(t))
-		registry.EXPECT().GetKeyManager(gomock.Any()).Return(nil, nil)
+		registry.EXPECT().GetKeyCertManager(gomock.Any()).Return(nil, nil)
 
 		vcStatusManager := NewMockVCStatusManager(gomock.NewController(t))
 		vcStatusManager.EXPECT().CreateStatusListEntry(
@@ -314,7 +314,7 @@ func TestService_IssueCredential(t *testing.T) {
 	})
 	t.Run("Error SignCredential", func(t *testing.T) {
 		kmRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		kmRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(nil, nil)
+		kmRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(nil, nil)
 
 		vcStatusManager := NewMockVCStatusManager(gomock.NewController(t))
 		vcStatusManager.EXPECT().CreateStatusListEntry(ctx, gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes().Return(
@@ -348,7 +348,7 @@ func TestService_IssueCredential(t *testing.T) {
 	})
 	t.Run("Error unknown signature format", func(t *testing.T) {
 		kmRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		kmRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(nil, nil)
+		kmRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(nil, nil)
 
 		vcStatusManager := NewMockVCStatusManager(gomock.NewController(t))
 		vcStatusManager.EXPECT().CreateStatusListEntry(ctx, gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes().Return(
@@ -388,7 +388,7 @@ func TestService_IssueCredential(t *testing.T) {
 
 	t.Run("Error CredentialIssuanceHistoryStore", func(t *testing.T) {
 		kmRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		kmRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(nil, nil)
+		kmRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(nil, nil)
 
 		vcStatusManager := NewMockVCStatusManager(gomock.NewController(t))
 		vcStatusManager.EXPECT().CreateStatusListEntry(ctx, gomock.Any(), gomock.Any(), gomock.Any()).AnyTimes().Return(
@@ -537,10 +537,12 @@ func createDIDDoc(didID, keyID string) *did.Doc { //nolint:unparam
 func createCryptoSuite(t *testing.T) api.Suite {
 	t.Helper()
 
-	p, err := arieskms.NewAriesProviderWrapper(ariesmockstorage.NewMockStoreProvider())
+	p, err := arieskms.NewAriesProviderWrapper(mockstorage.NewKMSMockStoreProvider())
 	require.NoError(t, err)
 
-	suite, err := localsuite.NewLocalCryptoSuite("local-lock://custom/primary/key/", p, &noop.NoLock{})
+	s := mockstorage.NewCMSMockStore()
+
+	suite, err := localsuite.NewLocalKCMSSuite("local-lock://custom/primary/key/", p, s, &noop.NoLock{})
 	require.NoError(t, err)
 
 	return suite

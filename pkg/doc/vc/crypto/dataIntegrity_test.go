@@ -23,7 +23,7 @@ import (
 	"github.com/dellekappa/vc-go/verifiable"
 	"github.com/stretchr/testify/require"
 
-	"github.com/trustbloc/vcs/internal/mock/vcskms"
+	"github.com/trustbloc/vcs/internal/mock/vcskcms"
 	vcsverifiable "github.com/trustbloc/vcs/pkg/doc/verifiable"
 
 	"github.com/trustbloc/vcs/pkg/internal/testutil"
@@ -195,7 +195,7 @@ func TestCrypto_SignCredentialLDPDataIntegrity(t *testing.T) { //nolint:gocognit
 			kmsapi.ED25519,
 		)
 
-		ariesSigner.KMS = &vcskms.MockKMS{
+		ariesSigner.KMS = &vcskcms.MockKCMS{
 			Signer: &mockwrapper.MockKMSCrypto{FixedKeyCryptoErr: errors.New("some error")},
 		}
 

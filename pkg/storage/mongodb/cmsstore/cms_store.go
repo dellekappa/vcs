@@ -9,11 +9,14 @@ package cmsstore
 import (
 	"errors"
 	"fmt"
-	cmsapi "github.com/dellekappa/kcms-go/spi/cms"
-	"github.com/trustbloc/vcs/pkg/storage/mongodb"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	cmsapi "github.com/dellekappa/kcms-go/spi/cms"
+
+	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 )
 
 // Store provides local KMS storage using mongodb.

@@ -238,3 +238,6 @@ issues:
         - gosec
         - noctx
         - wrapcheck
+    - path: "(.+)gomock_reflect_(.+)"
+      linters:
+        - typecheck

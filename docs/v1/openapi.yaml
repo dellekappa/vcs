@@ -2274,7 +2274,7 @@ components:
           type: string
           description: Hashed token received from the client.
         jwk:
-          x-go-type: JWK
+          x-go-type: JSONWebKey
           description: The public key of the client
         requested_credential_response_encryption:
           $ref: '#/components/schemas/RequestedCredentialResponseEncryption'

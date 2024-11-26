@@ -65,6 +65,8 @@ func MapToVPFormat(format vcsverifiable.Format) (VPFormat, error) {
 		return LdpVp, nil
 	case vcsverifiable.Cwt:
 		return CwtVp, nil
+	case vcsverifiable.Mdoc:
+		panic("not yet implemented")
 	}
 
 	return "", fmt.Errorf("vc format missmatch %s, rest api supports only [%s, %s]", format, JwtVcJsonLd, LdpVc)

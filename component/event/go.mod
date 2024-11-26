@@ -162,6 +162,4 @@ require (
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
 
-replace (
-	github.com/trustbloc/vcs => ../../
-)
+replace github.com/trustbloc/vcs => ../../

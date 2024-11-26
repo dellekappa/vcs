@@ -9,7 +9,9 @@ package checker
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
+
+	"github.com/tidwall/gjson"
+	"github.com/veraison/go-cose"
 
 	"github.com/dellekappa/did-go/doc/ld/processor"
 	"github.com/dellekappa/did-go/doc/ld/proof"
@@ -17,12 +19,11 @@ import (
 	"github.com/dellekappa/kcms-go/doc/jose/jwk"
 	"github.com/dellekappa/kcms-go/doc/jose/jwk/jwksupport"
 	"github.com/dellekappa/kcms-go/spi/kms"
-	"github.com/tidwall/gjson"
-	"github.com/veraison/go-cose"
-
 	"github.com/dellekappa/vc-go/crypto-ext/pubkey"
 	proofdesc "github.com/dellekappa/vc-go/proof"
 	"github.com/dellekappa/vc-go/vermethod"
+
+	"github.com/trustbloc/vcs/pkg/doc/vc/crypto"
 )
 
 type verificationMethodResolver interface {
@@ -49,7 +50,8 @@ type signatureVerifierWrapper struct {
 	wrappedVerifyFunc VerifyFunc
 }
 
-func newSignatureVerifierWrapper(wrapped signatureVerifier, wrapperFunc func(verify VerifyFunc) VerifyFunc) signatureVerifier {
+func newSignatureVerifierWrapper(wrapped signatureVerifier,
+	wrapperFunc func(verify VerifyFunc) VerifyFunc) signatureVerifier {
 	return &signatureVerifierWrapper{
 		wrapped:           wrapped,
 		wrappedVerifyFunc: wrapperFunc(wrapped.Verify),
@@ -251,7 +253,7 @@ func (c *ProofChecker) CheckJWTProof(headers jose.Headers, expectedProofIssuer s
 			return fmt.Errorf("invalid public key id: %w", err)
 		}
 	} else {
-		keyBytes, err := key.PublicKeyBytes()
+		keyBytes, err := key.PublicKeyBytes() //nolint:govet
 		if err != nil {
 			return fmt.Errorf("invalid public jwk: %w", err)
 		}
@@ -262,7 +264,7 @@ func (c *ProofChecker) CheckJWTProof(headers jose.Headers, expectedProofIssuer s
 		}
 	}
 
-	pubKey, err := convertToPublicKey(supportedProof.proofDescriptor.SupportedVerificationMethods(), vm)
+	pubKey, err := convertToPublicKey(supportedProof.proofDescriptor.SupportedVerificationMethods(), vm) //nolint:govet
 	if err != nil {
 		return fmt.Errorf("jwt with alg %s check: %w", alg, err)
 	}
@@ -415,7 +417,8 @@ func (c *ProofChecker) WithSignatureVerificationWrapping(wrapper func(VerifyFunc
 	}
 }
 
-func wrapSignatureVerifiers(verifiers []signatureVerifier, wrapper func(verify VerifyFunc) VerifyFunc) []signatureVerifier {
+func wrapSignatureVerifiers(verifiers []signatureVerifier,
+	wrapper func(verify VerifyFunc) VerifyFunc) []signatureVerifier {
 	result := make([]signatureVerifier, len(verifiers))
 	for i := range verifiers {
 		result[i] = newSignatureVerifierWrapper(verifiers[i], wrapper)
@@ -503,7 +506,8 @@ func (c *ProofCheckerBase) getSignatureVerifier(keyType kms.KeyType) (signatureV
 	return nil, fmt.Errorf("no vefiers with supported key type %s", keyType)
 }
 
-func (c *ProofCheckerBase) WithSignatureVerificationWrapping(wrapper func(verify VerifyFunc) VerifyFunc) *ProofCheckerBase {
+func (c *ProofCheckerBase) WithSignatureVerificationWrapping(
+	wrapper func(verify VerifyFunc) VerifyFunc) *ProofCheckerBase {
 	return &ProofCheckerBase{
 		supportedLDProofs:  c.supportedLDProofs,
 		supportedJWTProofs: c.supportedJWTProofs,
@@ -543,7 +547,8 @@ func (c *EmbeddedVMProofChecker) CheckJWTProof(headers jose.Headers, _ string, m
 	return verifier.Verify(signature, msg, pubKey)
 }
 
-func (c *EmbeddedVMProofChecker) WithSignatureVerificationWrapping(wrapper func(VerifyFunc) VerifyFunc) *EmbeddedVMProofChecker {
+func (c *EmbeddedVMProofChecker) WithSignatureVerificationWrapping(
+	wrapper func(VerifyFunc) VerifyFunc) *EmbeddedVMProofChecker {
 	base := &c.ProofCheckerBase
 	return &EmbeddedVMProofChecker{
 		ProofCheckerBase: *base.WithSignatureVerificationWrapping(wrapper),

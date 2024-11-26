@@ -1310,7 +1310,6 @@ func (c *Controller) OpenidCredentialIssuerConfig(ctx echo.Context, profileID, p
 	}
 
 	return util.WriteOutput(ctx)(config, nil)
-
 }
 
 // OpenidCredentialIssuerConfigV2 request VCS IDP OIDC Configuration.

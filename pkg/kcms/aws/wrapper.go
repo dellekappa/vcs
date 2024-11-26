@@ -100,7 +100,7 @@ func (s *suiteImpl) CMSCertGetter() (api.CMSCertGetter, error) {
 	return nil, api.ErrNotImplemented
 }
 
-func (s *suiteImpl) FixedKeyCertIssuer(kid string) (api.FixedKeyCertIssuer, error) {
+func (s *suiteImpl) FixedKeyCertIssuer(_ string) (api.FixedKeyCertIssuer, error) {
 	return nil, api.ErrNotImplemented
 }
 

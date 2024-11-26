@@ -21,7 +21,7 @@ import (
 	"github.com/piprate/json-gold/ld"
 	"github.com/stretchr/testify/require"
 
-	"github.com/trustbloc/vcs/internal/mock/vcskms"
+	"github.com/trustbloc/vcs/internal/mock/vcskcms"
 
 	"github.com/dellekappa/did-go/doc/did"
 	vdrmock "github.com/dellekappa/did-go/vdr/mock"
@@ -118,7 +118,7 @@ func TestService_HandleEvent(t *testing.T) {
 	mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 	mockProfileSrv.EXPECT().GetProfile(gomock.Any(), gomock.Any()).AnyTimes().Return(profile, nil)
 	mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+	mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 	crypto := vccrypto.New(
 		&vdrmock.VDRegistry{ResolveValue: createDIDDoc("did:test:abc")}, loader)
 
@@ -223,7 +223,7 @@ func TestService_handleEventPayload(t *testing.T) {
 	mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 	mockProfileSrv.EXPECT().GetProfile(gomock.Any(), gomock.Any()).AnyTimes().Return(profile, nil)
 	mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+	mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 	crypto := vccrypto.New(
 		&vdrmock.VDRegistry{ResolveValue: createDIDDoc("did:test:abc")}, loader)
 
@@ -444,7 +444,7 @@ func TestService_signCSL(t *testing.T) {
 	mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 	mockProfileSrv.EXPECT().GetProfile(gomock.Any(), gomock.Any()).AnyTimes().Return(profile, nil)
 	mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-	mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+	mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 	crypto := vccrypto.New(
 		&vdrmock.VDRegistry{ResolveValue: createDIDDoc("did:test:abc")}, loader)
 
@@ -489,7 +489,7 @@ func TestService_signCSL(t *testing.T) {
 
 	t.Run("Error failed to get KMS", func(t *testing.T) {
 		mockKMSRegistryErr := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistryErr.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(nil, errors.New("some error"))
+		mockKMSRegistryErr.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(nil, errors.New("some error"))
 		s := New(&Config{
 			ProfileService: mockProfileSrv,
 			KMSRegistry:    mockKMSRegistryErr,

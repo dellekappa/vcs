@@ -26,7 +26,7 @@ import (
 	"github.com/piprate/json-gold/ld"
 	"github.com/stretchr/testify/require"
 
-	"github.com/trustbloc/vcs/internal/mock/vcskms"
+	"github.com/trustbloc/vcs/internal/mock/vcskcms"
 
 	timeutil "github.com/dellekappa/did-go/doc/util/time"
 	vdr2 "github.com/dellekappa/did-go/vdr"
@@ -137,7 +137,7 @@ func TestCredentialStatusList_CreateStatusListEntry(t *testing.T) {
 		mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().Return(getTestProfile(), nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(5).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(5).Return(&vcskcms.MockKCMS{}, nil)
 		ctx := context.Background()
 
 		cslVCStore := newMockCSLVCStore()
@@ -230,7 +230,7 @@ func TestCredentialStatusList_CreateStatusListEntry_Bitstring(t *testing.T) {
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().
 			Return(getTestProfileEx(vc.BitstringStatusList, vcsverifiable.Ed25519Signature2018), nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).Times(5).Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).Times(5).Return(&vcskcms.MockKCMS{}, nil)
 		ctx := context.Background()
 
 		cslVCStore := newMockCSLVCStore()
@@ -368,7 +368,7 @@ func TestCredentialStatusList_UpdateVCStatus(t *testing.T) {
 		mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().Return(profile, nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 		cslVCStore := newMockCSLVCStore()
 		cslIndexStore := newMockCSLIndexStore()
 		crypto := vccrypto.New(
@@ -487,7 +487,7 @@ func TestCredentialStatusList_UpdateVCStatus(t *testing.T) {
 		mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().Return(getTestProfile(), nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 
 		s, err := New(&Config{
 			ProfileService: mockProfileSrv,
@@ -515,7 +515,7 @@ func TestCredentialStatusList_UpdateVCStatus(t *testing.T) {
 		mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().Return(getTestProfile(), nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 
 		s, err := New(&Config{
 			DocumentLoader: loader,
@@ -552,7 +552,7 @@ func TestCredentialStatusList_UpdateVCStatus(t *testing.T) {
 		mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().Return(getTestProfile(), nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 
 		s, err := New(&Config{
 			DocumentLoader: loader,
@@ -746,7 +746,7 @@ func TestCredentialStatusList_UpdateVCStatus(t *testing.T) {
 		mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().Return(getTestProfile(), nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 		mockEventPublisher := NewMockEventPublisher(gomock.NewController(t))
 		mockEventPublisher.EXPECT().Publish(gomock.Any(), eventTopic, gomock.Any()).Times(1).Return(errors.New("some error"))
 
@@ -798,7 +798,7 @@ func TestCredentialStatusList_UpdateVCStatus(t *testing.T) {
 		mockProfileSrv := NewMockProfileService(gomock.NewController(t))
 		mockProfileSrv.EXPECT().GetProfile(profileID, profileVersion).AnyTimes().Return(profile, nil)
 		mockKMSRegistry := NewMockKMSRegistry(gomock.NewController(t))
-		mockKMSRegistry.EXPECT().GetKeyManager(gomock.Any()).AnyTimes().Return(&vcskms.MockKMS{}, nil)
+		mockKMSRegistry.EXPECT().GetKeyCertManager(gomock.Any()).AnyTimes().Return(&vcskcms.MockKCMS{}, nil)
 		cslIndexStore := newMockCSLIndexStore()
 		cslVCStore := newMockCSLVCStore()
 		loader := testutil.DocumentLoader(t)
