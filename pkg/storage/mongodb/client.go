@@ -9,6 +9,8 @@ package mongodb
 import (
 	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/connstring"
+	"strings"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -20,13 +22,15 @@ import (
 )
 
 const (
-	defaultTimeout = 15 * time.Second
+	defaultTimeout   = 15 * time.Second
+	mongoHostMatcher = ``
 )
 
 type Client struct {
 	client       *mongo.Client
 	databaseName string
 	timeout      time.Duration
+	cosmos       bool
 }
 
 func New(connString string, databaseName string, opts ...ClientOpt) (*Client, error) {
@@ -53,6 +57,11 @@ func New(connString string, databaseName string, opts ...ClientOpt) (*Client, er
 		mongoOpts.Monitor = otelmongo.NewMonitor(otelmongo.WithTracerProvider(op.traceProvider))
 	}
 
+	cosmos, err := detectCosmosConnectionString(connString)
+	if err != nil {
+		return nil, fmt.Errorf("failed to detect cosmos MongoDB connection: %w", err)
+	}
+
 	ctxWithTimeout, cancel := context.WithTimeout(context.Background(), op.timeout)
 	defer cancel()
 
@@ -64,6 +73,7 @@ func New(connString string, databaseName string, opts ...ClientOpt) (*Client, er
 	return &Client{
 		client:       client,
 		databaseName: databaseName,
+		cosmos:       cosmos,
 		timeout:      op.timeout,
 	}, nil
 }
@@ -92,6 +102,29 @@ func (c *Client) Close() error {
 	return nil
 }
 
+func (c *Client) IsCosmos() bool {
+	return c.cosmos
+}
+
+func (c *Client) NewExpirationIndex(fieldName string) mongo.IndexModel {
+	var expSeconds int32 = 0
+	if c.IsCosmos() {
+		fieldName = "_ts"
+		expSeconds = -1
+	}
+
+	return mongo.IndexModel{
+		// cosmos _ts index https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/time-to-live
+		// mongo ttl index https://www.mongodb.com/community/forums/t/ttl-index-internals/4086/2
+		Keys: map[string]interface{}{
+			fieldName: 1,
+		},
+		// expire at specific clock time in case of mongo
+		// https://www.mongodb.com/docs/manual/tutorial/expire-data/#expire-documents-at-a-specific-clock-time
+		Options: mongooptions.Index().SetExpireAfterSeconds(expSeconds),
+	}
+}
+
 type clientOpts struct {
 	timeout       time.Duration
 	traceProvider trace.TracerProvider
@@ -116,4 +149,19 @@ func WithTraceProvider(traceProvider trace.TracerProvider) ClientOpt {
 	return func(opts *clientOpts) {
 		opts.traceProvider = traceProvider
 	}
+}
+
+func detectCosmosConnectionString(connString string) (bool, error) {
+	cs, err := connstring.Parse(connString)
+	if err != nil {
+		return false, err
+	}
+	for _, h := range cs.Hosts {
+		hname := strings.Split(h, ":")[0]
+		if strings.HasSuffix(hname, "cosmos.azure.com") || strings.HasSuffix(hname, "documents.azure.com") {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }

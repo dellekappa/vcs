@@ -12,14 +12,12 @@ import (
 	"fmt"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-
 	"github.com/trustbloc/vcs/pkg/restapi/resterr"
 	"github.com/trustbloc/vcs/pkg/service/issuecredential"
 	"github.com/trustbloc/vcs/pkg/storage/mongodb"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 const (
@@ -29,6 +27,7 @@ const (
 type mongoDocument struct {
 	ID        primitive.ObjectID        `bson:"_id,omitempty"`
 	ExpireAt  time.Time                 `bson:"expire_at"`
+	TTL       int32                     `bson:"ttl"`
 	ClaimData issuecredential.ClaimData `bson:"claim_data"`
 }
 
@@ -53,12 +52,8 @@ func New(ctx context.Context, mongoClient *mongodb.Client, ttl int32) (*Store, e
 }
 
 func (s *Store) migrate(ctx context.Context) error {
-	_, err := s.mongoClient.Database().Collection(collectionName).Indexes().CreateOne(ctx, mongo.IndexModel{
-		Keys: map[string]interface{}{
-			"expire_at": 1,
-		},
-		Options: options.Index().SetExpireAfterSeconds(0),
-	})
+	_, err := s.mongoClient.Database().Collection(collectionName).Indexes().CreateOne(ctx,
+		s.mongoClient.NewExpirationIndex("expire_at"))
 	if err != nil {
 		return fmt.Errorf("create index for collection %s: %w", collectionName, err)
 	}
@@ -78,6 +73,7 @@ func (s *Store) Create(
 
 	doc := &mongoDocument{
 		ExpireAt:  time.Now().Add(time.Duration(claimDataTTL) * time.Second),
+		TTL:       claimDataTTL,
 		ClaimData: *data,
 	}
 

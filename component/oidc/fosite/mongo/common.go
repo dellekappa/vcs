@@ -60,6 +60,7 @@ func (s *Store) createSession(
 
 	if ttl > 0 {
 		obj.ExpireAt = lo.ToPtr(time.Now().UTC().Add(ttl))
+		obj.TTL = lo.ToPtr(int32(ttl.Seconds()))
 	}
 
 	_, err := collection.InsertOne(ctx, obj)

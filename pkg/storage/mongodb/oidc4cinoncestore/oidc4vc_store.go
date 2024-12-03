@@ -28,6 +28,7 @@ const (
 type mongoDocument struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty"`
 	ExpireAt time.Time          `bson:"expireAt"`
+	TTL      int32              `bson:"ttl"`
 
 	OpState                            string `bson:"opState,omitempty"`
 	ProfileID                          string
@@ -82,12 +83,7 @@ func (s *Store) migrate(ctx context.Context) error {
 				},
 				Options: options.Index().SetUnique(true),
 			},
-			{ // ttl index https://www.mongodb.com/community/forums/t/ttl-index-internals/4086/2
-				Keys: map[string]interface{}{
-					"expireAt": 1,
-				},
-				Options: options.Index().SetExpireAfterSeconds(0),
-			},
+			s.mongoClient.NewExpirationIndex("expireAt"),
 		}); err != nil {
 		return err
 	}
@@ -121,6 +117,7 @@ func (s *Store) createInternal(
 
 	if profileTransactionDataTTL != 0 {
 		obj.ExpireAt = time.Now().UTC().Add(time.Duration(profileTransactionDataTTL) * time.Second)
+		obj.TTL = profileTransactionDataTTL
 	}
 
 	collection := s.mongoClient.Database().Collection(collectionName)
@@ -201,6 +198,7 @@ func (s *Store) mapTransactionDataToMongoDocument(data *issuecredential.Transact
 	return &mongoDocument{
 		ID:                                 primitive.ObjectID{},
 		ExpireAt:                           time.Now().UTC().Add(s.defaultTTL),
+		TTL:                                int32(s.defaultTTL.Seconds()),
 		OpState:                            data.OpState,
 		ProfileID:                          data.ProfileID,
 		ProfileVersion:                     data.ProfileVersion,

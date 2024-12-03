@@ -65,12 +65,7 @@ func (s *Store) migrate(ctx context.Context) error {
 				},
 				Options: options.Index().SetUnique(true),
 			},
-			{
-				Keys: map[string]interface{}{
-					"expireAt": 1,
-				},
-				Options: options.Index().SetExpireAfterSeconds(0),
-			},
+			s.mongoClient.NewExpirationIndex("expireAt"),
 		},
 	}
 
@@ -118,6 +113,7 @@ func (s *Store) SetClientAssertionJWT(ctx context.Context, jti string, exp time.
 		LookupID: jti,
 		Record:   jti,
 		ExpireAt: lo.ToPtr(exp),
+		TTL:      lo.ToPtr(int32(exp.Sub(time.Now()).Seconds())),
 	}
 
 	_, err := collection.InsertOne(ctx, obj)
@@ -149,6 +145,7 @@ type genericDocument[T any] struct {
 	Record   T                  `bson:"record"`
 	LookupID string             `bson:"_lookupId"`
 	ExpireAt *time.Time         `bson:"expireAt,omitempty"`
+	TTL      *int32             `bson:"ttl,omitempty"`
 }
 
 func getInternal[T any](

@@ -12,13 +12,11 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/trustbloc/vcs/pkg/service/oidc4vp"
+	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-
-	"github.com/trustbloc/vcs/pkg/service/oidc4vp"
-	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 )
 
 const (
@@ -28,6 +26,7 @@ const (
 type mongoDocument struct {
 	ID       primitive.ObjectID `bson:"_id,omitempty"`
 	ExpireAt time.Time          `bson:"expire_at"`
+	TTL      int32              `bson:"ttl"`
 	*oidc4vp.ClaimData
 }
 
@@ -56,12 +55,8 @@ func New(
 }
 
 func (s *Store) migrate(ctx context.Context) error {
-	_, err := s.mongoClient.Database().Collection(collectionName).Indexes().CreateOne(ctx, mongo.IndexModel{
-		Keys: map[string]interface{}{
-			"expire_at": 1,
-		},
-		Options: options.Index().SetExpireAfterSeconds(0),
-	})
+	_, err := s.mongoClient.Database().Collection(collectionName).Indexes().CreateOne(ctx,
+		s.mongoClient.NewExpirationIndex("expire_at"))
 	if err != nil {
 		return fmt.Errorf("create index for collection %s: %w", collectionName, err)
 	}
@@ -79,6 +74,7 @@ func (s *Store) Create(claims *oidc4vp.ClaimData, profileReceivedClaimsDataTTL i
 
 	doc := &mongoDocument{
 		ExpireAt:  time.Now().Add(ttl),
+		TTL:       int32(ttl.Seconds()),
 		ClaimData: claims,
 	}
 

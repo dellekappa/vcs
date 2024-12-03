@@ -66,12 +66,7 @@ func (s *Store) migrate(ctx context.Context) error {
 			},
 			Options: options.Index().SetUnique(true),
 		},
-		{
-			Keys: map[string]interface{}{
-				"expireAt": 1,
-			},
-			Options: options.Index().SetExpireAfterSeconds(0),
-		},
+		s.mongoClient.NewExpirationIndex("expireAt"),
 	}
 
 	indexes := map[string][]mongo.IndexModel{

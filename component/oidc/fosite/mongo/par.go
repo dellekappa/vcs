@@ -43,6 +43,7 @@ func (s *Store) CreatePARSession(ctx context.Context, requestURI string, request
 		LookupID: requestURI,
 		Record:   clone,
 		ExpireAt: lo.ToPtr(time.Now().UTC().Add(defaultTTL)),
+		TTL:      lo.ToPtr(int32(defaultTTL.Seconds())),
 	}
 
 	_, err := collection.InsertOne(ctx, obj)

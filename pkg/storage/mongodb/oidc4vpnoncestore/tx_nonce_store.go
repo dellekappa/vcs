@@ -11,12 +11,10 @@ import (
 	"fmt"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-
 	"github.com/trustbloc/vcs/pkg/service/oidc4vp"
 	"github.com/trustbloc/vcs/pkg/storage/mongodb"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 const (
@@ -27,6 +25,7 @@ type nonceDocument struct {
 	ID       string       `bson:"_id,omitempty"`
 	TxID     oidc4vp.TxID `bson:"txID"`
 	ExpireAt time.Time    `bson:"expireAt"`
+	TTL      int32        `bson:"ttl"`
 }
 
 // TxNonceStore stores oidc transactions in mongo.
@@ -55,12 +54,7 @@ func (ts *TxNonceStore) migrate() error {
 
 	if _, err := ts.mongoClient.Database().Collection(nonceCollection).Indexes().
 		CreateMany(ctxWithTimeout, []mongo.IndexModel{
-			{ // ttl index https://www.mongodb.com/community/forums/t/ttl-index-internals/4086/2
-				Keys: map[string]interface{}{
-					"expireAt": 1,
-				},
-				Options: options.Index().SetExpireAfterSeconds(0),
-			},
+			ts.mongoClient.NewExpirationIndex("expireAt"),
 		}); err != nil {
 		return err
 	}
@@ -106,6 +100,7 @@ func (ts *TxNonceStore) SetIfNotExist(nonce string, profileNonceStoreDataTTL int
 		ID:       nonce,
 		TxID:     txID,
 		ExpireAt: time.Now().Add(ttl),
+		TTL:      int32(ttl.Seconds()),
 	}
 
 	_, err := collection.InsertOne(ctxWithTimeout, doc)

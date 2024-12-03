@@ -14,13 +14,11 @@ import (
 
 	"github.com/dellekappa/vc-go/presexch"
 	jsonld "github.com/piprate/json-gold/ld"
+	"github.com/trustbloc/vcs/pkg/service/oidc4vp"
+	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-
-	"github.com/trustbloc/vcs/pkg/service/oidc4vp"
-	"github.com/trustbloc/vcs/pkg/storage/mongodb"
 )
 
 const (
@@ -35,6 +33,7 @@ type txDocument struct {
 	ReceivedClaimsID       string                 `bson:"receivedClaimsID"`
 	CustomScopes           []string               `bson:"customScopes,omitempty"`
 	ExpireAt               time.Time              `bson:"expire_at"`
+	TTL                    int32                  `bson:"ttl"`
 }
 
 type txUpdateDocument struct {
@@ -68,12 +67,8 @@ func NewTxStore(
 }
 
 func (p *TxStore) migrate(ctx context.Context) error {
-	_, err := p.mongoClient.Database().Collection(txCollection).Indexes().CreateOne(ctx, mongo.IndexModel{
-		Keys: map[string]interface{}{
-			"expire_at": 1,
-		},
-		Options: options.Index().SetExpireAfterSeconds(0),
-	})
+	_, err := p.mongoClient.Database().Collection(txCollection).Indexes().CreateOne(ctx,
+		p.mongoClient.NewExpirationIndex("expire_at"))
 	if err != nil {
 		return fmt.Errorf("create index for collection %s: %w", txCollection, err)
 	}
@@ -105,6 +100,7 @@ func (p *TxStore) Create(
 
 	txDoc := &txDocument{
 		ExpireAt:               time.Now().Add(ttl),
+		TTL:                    int32(ttl.Seconds()),
 		ProfileID:              profileID,
 		ProfileVersion:         profileVersion,
 		PresentationDefinition: pdContent,
