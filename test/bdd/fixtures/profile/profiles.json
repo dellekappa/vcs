@@ -2,12 +2,12 @@
   "issuers": [
     {
       "issuer": {
-        "id": "acme_issuer",
+        "id": "ipzs",
         "version": "v1.0",
-        "groupID": "group_acme_issuer",
-        "name": "Acme Issuer",
+        "groupID": "ipzs",
+        "name": "Istituto Poligrafico Zecca dello Stato (fake)",
         "organizationID": "00000000-0000-0000-0000-000000000001",
-        "url": "http://vcs.local.test:8080",
+        "url": "https://www.ipzs.fake.it",
         "active": true,
         "vcConfig": {
           "refreshServiceEnabled": false,
@@ -49,12 +49,12 @@
           {
             "type": "eu.europa.ec.eudi.pid_jwt_vc_json",
             "id": "eudi.pid.jwt",
-            "issuer": "did:jwk:acme_issuer"
+            "issuer": "did:jwk:ipzs_fake"
           },
           {
             "type": "eu.europa.ec.eudi.pid.1",
             "id": "eudi.pid.mdoc",
-            "issuer": "did:jwk:acme_issuer"
+            "issuer": "did:jwk:ipzs_fake"
           }
         ],
         "credentialMetadata": {
@@ -274,12 +274,6 @@
               "format": "vc+sd-jwt",
               "proof_types_supported": {
                 "cwt": {
-                  "proof_alg_values_supported": [
-                    -7
-                  ],
-                  "proof_crv_values_supported": [
-                    1
-                  ],
                   "proof_signing_alg_values_supported": [
                     "ES256"
                   ]
@@ -602,12 +596,6 @@
                   }
                 }
               },
-              "credential_alg_values_supported": [
-                -7
-              ],
-              "credential_crv_values_supported": [
-                1
-              ],
               "credential_signing_alg_values_supported": [
                 "ES256"
               ],
@@ -627,18 +615,8 @@
               ],
               "doctype": "eu.europa.ec.eudi.pid.1",
               "format": "mso_mdoc",
-              "policy": {
-                "batch_size": 50,
-                "one_time_use": true
-              },
               "proof_types_supported": {
                 "cwt": {
-                  "proof_alg_values_supported": [
-                    -7
-                  ],
-                  "proof_crv_values_supported": [
-                    1
-                  ],
                   "proof_signing_alg_values_supported": [
                     "ES256"
                   ]
@@ -655,7 +633,7 @@
         }
       },
       "createDID": true,
-      "didDomain": "https://my.custom.issuer.com"
+      "didDomain": "https://www.ipzs.fake.it"
     },
     {
       "issuer": {
