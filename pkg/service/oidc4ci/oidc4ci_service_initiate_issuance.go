@@ -30,7 +30,7 @@ import (
 )
 
 const (
-	TxCodeLength = 6
+	TxCodeLength = 5
 
 	GrantTypeAuthorizationCode = "authorization_code"
 	GrantTypePreAuthorizedCode = "urn:ietf:params:oauth:grant-type:pre-authorized_code"
