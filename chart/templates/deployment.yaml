@@ -1,0 +1,155 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "vcs.fullname" . }}
+  labels:
+    {{- include "vcs.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "vcs.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- if or .Values.podAnnotations .Values.restartOnDeployPolicy }}
+      annotations:
+        {{- with .Values.podAnnotations }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if eq .Values.restartOnDeployPolicy "always" }}
+        helm.sh/deploy-date: "{{ now }}"
+        {{- else if eq .Values.restartOnDeployPolicy "oncmchange" }}
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- end}}
+      {{- end}}
+      labels:
+        {{- include "vcs.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.hostAliases}}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "vcs.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          env:
+            {{- range $key,$value := .Values.envFromField }}
+            - name: {{ $key  }}
+              valueFrom:
+                fieldRef:
+                  fieldPath: {{ $value | quote }}
+            {{- end }}
+            {{- range  $key, $value := .Values.envFromSecret }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $value.secret }}
+                  key: {{ $value.key }}
+            {{- end }}
+            {{- range $key,$value := .Values.env }}
+            - name: {{ $key  }}
+              value: {{ $value | quote }}
+            {{- end }}
+          image: "{{ include "image" . }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["vc-rest", "start"]
+          args:
+            - "--mode"
+            - "issuer"
+            - "-d"
+            - "true"
+            - "-u"
+            - "0.0.0.0:{{.Values.server.port}}"
+            {{- if .Values.server.externalUrl }}
+            - "-x"
+            - "{{ .Values.server.externalUrl }}"
+            {{- else if .Values.ingress.enabled }}
+            - "-x"
+            - "https://{{ (index .Values.ingress.hosts 0).host }}"
+            {{- else if .Values.route.enabled }}
+            - "-x"
+            - "https://{{ .Values.route.host }}"
+            {{- end }}
+            - "--oauth-client-file-path"
+            - "/etc/vcs/conf/clients.json"
+            - "-t"
+            - "{{.Values.store.type}}"
+            {{- if and (eq .Values.store.type "mongodb") .Values.store.mongodb.url}}
+            - "-v"
+            - "{{.Values.store.mongodb.url}}"
+            {{- end}}
+            - "--database-prefix"
+            - "trustbloc_"
+            - "--data-encryption-disabled"
+            - "true"
+            - "--data-encryption-key-id"
+            - "enc-key-1"
+            - "--default-kms-type"
+            - "local"
+            - "-k"
+            - "mem"
+            - "--default-kms-secret-lock-key-path"
+            - "/etc/vcs/secret-lock"
+            - "--profiles-file-path"
+            - "/etc/vcs/conf/authorities.json"
+            - "--tls-systemcertpool"
+            - "true"
+            - "--metrics-provider-name"
+            - "prometheus"
+            - "--prom-http-url"
+            - "{{.Values.observability.host}}:{{.Values.observability.port}}"
+          ports:
+            - name: http
+              containerPort: {{ .Values.server.port }}
+              protocol: TCP
+            - name: obs
+              containerPort: {{.Values.observability.port }}
+              protocol: TCP
+          {{- if .Values.observability.probes.liveness.enabled }}
+          livenessProbe:
+            {{- omit .Values.observability.probes.liveness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          {{- if .Values.observability.probes.readiness.enabled }}
+          readinessProbe:
+            {{- omit .Values.observability.probes.readiness "enabled" | toYaml | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: vcs-conf
+              mountPath: /etc/vcs/conf
+            {{- with .Values.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: vcs-conf
+          configMap:
+            name: {{ include "vcs.fullname" . }}-conf
+        {{- with .Values.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,27 @@
+{{- if  eq .Values.route.enabled true  -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "vcs.fullname" . }}
+  labels:
+    {{- include "vcs.labels" . | nindent 4 }}
+    {{- with .Values.route.labels }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end}}
+spec:
+  host: {{ .Values.route.host }}
+  tls:
+    insecureEdgeTerminationPolicy: Allow
+    termination: edge
+  to:
+    kind: Service
+    name: {{ include "vcs.fullname" . }}
+    weight: 100
+status:
+  ingress:
+    - host: ""
+{{- end }}
